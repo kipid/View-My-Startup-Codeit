@@ -1,5 +1,5 @@
 function NotFoundPage() {
-	return (<h1>Page is not found.</h1>);
+  return "존재하지 않는 페이지입니다.";
 }
 
 export default NotFoundPage;
