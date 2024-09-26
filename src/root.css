@@ -1,5 +1,7 @@
 :root {
   /* Text size (Responsive font-size) */
+  --48px: 3rem;
+  /* 48px */
   --40px: 2.5rem;
   /* 40px */
   --32px: 2rem;
