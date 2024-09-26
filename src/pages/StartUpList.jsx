@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Pagination from "../Pagination";
+import Pagination from "../components/Pagination";
 
 function StartUpList() {
 	const [pageNum, setPageNum] = useState(1);
