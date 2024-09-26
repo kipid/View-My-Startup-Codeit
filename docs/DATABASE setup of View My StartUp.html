@@ -16,10 +16,108 @@
 <script src="https://tistory3.daumcdn.net/tistory/1468360/skin/images/docuK-prepare-2.3.js" charset="utf-8"></script>
 </codeprint><!-- docuK-style -->
 
-<meta charset="utf-8" name="description" content=""/>
+<meta charset="utf-8" name="description" content="DATABASE setup of View My StartUp"/>
 
 <codeprint class="SEE">
 # DATABASE setup of View My StartUp
+
+
+
+## PH
+
+<ul>
+<li>2024-09-26 : First posting.</li>
+</ul>
+
+
+
+## Schema 모음.
+
+User: <refer class="model-User"></refer>
+
+Company: <refer class="model-Company"></refer>
+
+Investment: <refer class="model-Investment"></refer>
+
+
+
+## User
+
+<div id="model-User"><div class="number none">User</div>
+
+```[.scrollable]
+model User {
+  id       String @id @default(uuid())
+  name     String // 유저 성명
+  nickname String // 서비스 내 표시할 별명
+  email    String // 이메일
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investments Investment[]
+  company     Company?
+}
+```/
+
+</div>
+
+
+
+## Company
+
+<div id="model-Company"><div class="number none">Company</div>
+
+```[.scrollable]
+model Company {
+  // TODO 가상 투자 금액 총계를 직접 저장할 것인가, 매번 계산할 것인가
+  id            String @id @default(uuid())
+  name          String @unique
+  description   String
+  category      String // 회사 카테고리. 입력단에서 검증해야함.
+  AccumulInvest BigInt // NOTE 누적 투자 금액(실제)
+  revenue       BigInt // NOTE 매출액
+  employees     Int // NOTE 고용 인원수
+  selectedCount Int // NOTE 선택된 횟수
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investments Investment[]
+  owner       User         @relation(fields: [ownerId], references: [id])
+  ownerId     String       @unique
+}
+```/
+
+</div>
+
+
+
+## Investment
+
+<div id="model-Investment"><div class="number none">Investment</div>
+
+```[.scrollable]
+model Investment {
+  id       String @id @default(uuid())
+  name     String
+  amount   Int
+  comment  String
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String // NOTE 투자자
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String // NOTE 투자대상 기업
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+```/
+
+</div>
 
 
 
@@ -33,10 +131,10 @@
 <codeprint id="docuK-script">
 <script>
 (function(m, $, undefined) {
-m.printMode=true;
-m.ripplesDisabled=true;
+m.printMode=false;
+m.ripplesDisabled=false;
 m.recoeveUserId="kipid";
-m.recoCats="";
+m.recoCats="[IT/Programming]--국비 지원 코딩/공부--Project-1";
 m.wait=1024;
 m.delayPad=0;
 
