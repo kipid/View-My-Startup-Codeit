@@ -16,16 +16,140 @@
 <script src="https://tistory3.daumcdn.net/tistory/1468360/skin/images/docuK-prepare-2.3.js" charset="utf-8"></script>
 </codeprint><!-- docuK-style -->
 
-<meta charset="utf-8" name="description" content=""/>
+
+<meta charset="utf-8" name="description" content="DATABASE setup of View My StartUp"/>
+
+<style>
+img {
+	background-color:white;
+}
+</style>
 
 <codeprint class="SEE">
 # DATABASE setup of View My StartUp
 
 
 
+## PH
+
+<ul>
+<li>2024-09-26 : First posting.</li>
+</ul>
+
+
+
+## ERD models
+
+### model 1
+
+<div class="center">
+<img delayed-src="https://blog.kakaocdn.net/dn/ZJ8oY/btsJNCAZvZg/fp8XZ5R7a5dME0agMKA78k/tfile.svg"/>
+</div>
+
+
+
+### model 2
+
+<div class="center">
+<img delayed-src="https://blog.kakaocdn.net/dn/dbDi67/btsJNPzWsfz/Yn9MoK4Q9TFm3r3F8fDC8k/tfile.svg"/>
+</div>
+
+
+
+## Schema 모음.
+
+User: <refer class="model-User"></refer>
+
+Company: <refer class="model-Company"></refer>
+
+Investment: <refer class="model-Investment"></refer>
+
+
+
+## User
+
+<div id="model-User"><div class="number none">User</div>
+
+```[.scrollable]
+model User {
+  id       String @id @default(uuid())
+  name     String // 유저 성명
+  nickname String // 서비스 내 표시할 별명
+  email    String // 이메일
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investments Investment[]
+  company     Company?
+}
+```/
+
+</div>
+
+
+
+## Company
+
+<div id="model-Company"><div class="number none">Company</div>
+
+```[.scrollable]
+model Company {
+  // TODO 가상 투자 금액 총계를 직접 저장할 것인가, 매번 계산할 것인가
+  id            String @id @default(uuid())
+  name          String @unique
+  description   String
+  category      String // 회사 카테고리. 입력단에서 검증해야함.
+  AccumulInvest BigInt // NOTE 누적 투자 금액(실제)
+  revenue       BigInt // NOTE 매출액
+  employees     Int // NOTE 고용 인원수
+  selectedCount Int // NOTE 선택된 횟수
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investments Investment[]
+  owner       User         @relation(fields: [ownerId], references: [id])
+  ownerId     String       @unique
+}
+```/
+
+</div>
+
+
+
+## Investment
+
+<div id="model-Investment"><div class="number none">Investment</div>
+
+```[.scrollable]
+model Investment {
+  id       String @id @default(uuid())
+  name     String
+  amount   Int
+  comment  String
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String // NOTE 투자자
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String // NOTE 투자대상 기업
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+```/
+
+</div>
+
+
+
 ## RRA
 
 <ol class="refs">
+<li id="ref-docs"><a target="_blank" href="https://kipid.tistory.com/entry/2%EA%B8%B0-View-My-Startup-PART-2-1%ED%8C%80">코드잇 풀스택 2기 초급 프로젝트 (1팀): View My Startup</a></li>
 <li id="prisma"><a target="_blank" href="https://kipid.tistory.com/entry/prisma-with-PostgreSQL-%EB%A5%BC-%EB%B0%B0%EC%9B%8C%EB%B4%85%EC%8B%9C%EB%8B%A4">kipid's blog :: prisma with PostgreSQL 를 배워봅시다.</a></li>
 </ol>
 </codeprint><!-- SEE -->
@@ -33,10 +157,10 @@
 <codeprint id="docuK-script">
 <script>
 (function(m, $, undefined) {
-m.printMode=true;
-m.ripplesDisabled=true;
+m.printMode=false;
+m.ripplesDisabled=false;
 m.recoeveUserId="kipid";
-m.recoCats="";
+m.recoCats="[IT/Programming]--국비 지원 코딩/공부--Project-1";
 m.wait=1024;
 m.delayPad=0;
 
