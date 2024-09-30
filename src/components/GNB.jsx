@@ -4,7 +4,7 @@ import styles from "./GNB.module.css";
 
 function getLinkStyle({ isActive }) {
   return {
-    color: isActive ? "#ffffff" : "#747474",
+    color: isActive ? "var(--gray-900)" : "var(--gray-700)",
   };
 }
 
@@ -16,6 +16,13 @@ function Nav() {
           <img className={styles.siteLogo} src={siteLogo} alt="logo" />
         </Link>
         <div className={styles.navMenus}>
+          <NavLink
+            className={styles.navLinkStyle}
+            to={"/user/:userId/companies"}
+            style={getLinkStyle}
+          >
+            <p className={styles.menu}>전체 기업 리스트</p>
+          </NavLink>
           <NavLink
             className={styles.navLinkStyle}
             to={"/user/:userId/my-comparison"}
