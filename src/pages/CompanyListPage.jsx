@@ -4,11 +4,13 @@ import Pagination from '../components/Pagination.jsx';
 import { getCompanies } from '../apis/companiesService.js';
 import useAsync from '../hooks/useAsync.js';
 import PopUp from '../components/PopUp.jsx';
+import { COMPANY } from '../mocks/companyMock';
+import CompanyList from '../components/CompanyList.jsx';
 
 function CompanyListPage() {
 	const [keyword, setKeyword] = useState("");
 	const [sort, setSort] = useState("recent");
-	const [companies, setCompanies] = useState([]);
+	const [companies, setCompanies] = useState(COMPANY);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [pageSize, setPageSize] = useState(20);
@@ -90,7 +92,7 @@ function CompanyListPage() {
 					</select>
 				</div>
 			</div>
-			{/* <CompanyList companies={companies} /> */}
+			<CompanyList companies={companies} />
 			<Pagination pageNum={pageNum} pageNumMax={pageNumMax} setPageNum={setPageNum} />
 			<PopUp error={errorLoadingCompanies} popUpText={errorLoadingCompanies?.message} setError={setError} />
 		</>
