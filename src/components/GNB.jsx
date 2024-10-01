@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import styles from './GNB.module.css';
+import { useUser } from '../context/UserProvider';
 
 function getLinkStyle({ isActive }) {
 	return {
@@ -8,6 +9,8 @@ function getLinkStyle({ isActive }) {
 }
 
 function Nav() {
+	const user = useUser();
+
 	return (
 		<header className={styles.gnb}>
 			<div className={styles.gnbContainer}>
@@ -29,6 +32,15 @@ function Nav() {
 					</NavLink>
 				</div>
 			</div>
+			{user ? (
+				<Link to="/profile">
+					<div className={styles.login}>{user.nickname}</div>
+				</Link>
+			) : (
+				<Link to="/login">
+					<div className={styles.login}>로그인</div>
+				</Link>
+			)}
 		</header>
 	);
 }
