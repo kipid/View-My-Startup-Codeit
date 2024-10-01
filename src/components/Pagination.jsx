@@ -77,7 +77,7 @@ function Pagination({ pageNum, setPageNum, pageNumMax }) {
 	return (
 		<div
 			className={styles.pagination}
-			onClick={function (event) {
+			onClick={event => {
 				const pages = event.currentTarget.querySelectorAll('div');
 				const { target } = event;
 				const targetN = Number(target.innerText);
