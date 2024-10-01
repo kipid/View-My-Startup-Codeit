@@ -3,6 +3,7 @@ import instance from './instance.js';
 export async function postPwdIter(data = { email: '' }) {
 	const iter = await instance.post(`/account/iter`, data);
 	return iter.data;
+	// return { iter: Number, salt: String }
 }
 
 export async function postLogin(data = { email: 'anonymous@example.com', pwdEncrypted: '123456' }) {
