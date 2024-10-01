@@ -8864,9 +8864,6 @@
   // src/components/GNB.jsx
   init_react_shim();
 
-  // src/assets/site-logo.png
-  var site_logo_default = "./site-logo-TRDHGMH5.png";
-
   // src/components/GNB.module.css
   var GNB_default = {
     gnb: "GNB_gnb",
@@ -8886,7 +8883,7 @@
   }
   function Nav() {
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", { className: GNB_default.gnb, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: GNB_default.gnbContainer, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { className: GNB_default.siteLogo, src: site_logo_default, alt: "logo" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { className: "/images/site-logo.png", src: siteLogo, alt: "logo" }) }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: GNB_default.navMenus, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
           NavLink,
