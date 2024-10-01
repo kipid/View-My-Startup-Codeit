@@ -1,0 +1,72 @@
+#companyDetailPage {
+	width: 1200px;
+
+	#investments {
+		width: 100%;
+		height: 583px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+
+		#investmentsHeader {
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
+			height: 40px;
+
+			p {
+				display: flex;
+				align-content: center;
+				flex-wrap: wrap;
+				font-size: 20px;
+				font-weight: 700;
+			}
+
+			button {
+				padding: 8px 24px;
+				background-color: #eb5230;
+				border-radius: 50px;
+				color: white;
+				font-weight: 600;
+				font-size: 16px;
+				text-align: center;
+			}
+		}
+
+		#investmentBody {
+			display: flex;
+			flex-direction: column;
+
+			table {
+				width: 100%;
+				height: 375px;
+				padding-top: 16px;
+
+				caption {
+					text-align: left;
+				}
+
+				thead > tr {
+					height: 39px;
+
+					th {
+						width: 84px;
+
+						&:last-child {
+							width: auto;
+						}
+					}
+				}
+
+				tbody > tr {
+					text-align: center;
+					height: 64px;
+
+					td:last-child {
+						text-align: left;
+					}
+				}
+			}
+		}
+	}
+}
