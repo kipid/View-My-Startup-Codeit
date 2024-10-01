@@ -13,6 +13,7 @@ function LoginPage() {
 	const [pwdError, setPwdError] = useState('');
 	const [pwdVisibility, setPwdVisibility] = useState(false);
 	const [validation, setValidation] = useState({ email: false, pwd: false });
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		if (!email) {
@@ -38,9 +39,17 @@ function LoginPage() {
 		}
 	}, [email, pwd]);
 
+	const handleLogin = () => {
+		try {
+
+		} catch (err) {
+			setError(err);
+		}
+	}
+
 	return (
 		<>
-			<main className={styles.main}>
+			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/Property-1=lg.png" alt="판다마켓 logo" />
 				</Link>
@@ -72,6 +81,13 @@ function LoginPage() {
 								type={pwdVisibility ? 'text' : 'password'}
 								required
 								value={pwd}
+								onKeyDown={e => {
+									if (e.key === "Process") return;
+									if (e.code === "Enter") {
+										e.preventDefault();
+										handleLogin();
+									}
+								}}
 								onChange={e => setPwd(e.target.value)}
 								className={!pwd || pwd.length < PWD_MIN_LENGTH ? styles.alert : ''}
 							/>
@@ -86,7 +102,7 @@ function LoginPage() {
 					<div id="pwd-error" className={styles.pwd_error}>
 						{pwdError}
 					</div>
-					<button id="button-login" type="button" disabled={!(validation.email && validation.pwd)}>
+					<button id="button-login" type="button" disabled={!(validation.email && validation.pwd)} onClick={handleLogin}>
 						로그인
 					</button>
 				</form>
@@ -104,8 +120,8 @@ function LoginPage() {
 				<div className={styles.check_description}>
 					판다마켓이 처음이신가요? <Link to="/signup">회원가입</Link>
 				</div>
-			</main>
-			<PopUp />
+			</section>
+			<PopUp error={} popUpText={} setError={}/>
 		</>
 	);
 }
