@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
+import { postLogin, postPwdIter } from '../apis/loginSignupService';
+import encrypt from '../apis/encrypt';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -41,11 +43,15 @@ function LoginPage() {
 
 	const handleLogin = () => {
 		try {
-
+			postPwdIter({ email }).then(async iter => {
+				const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
+				setPwd('');
+				const user = await postLogin({ email, pwdEncrypted });
+			});
 		} catch (err) {
 			setError(err);
 		}
-	}
+	};
 
 	return (
 		<>
@@ -82,8 +88,8 @@ function LoginPage() {
 								required
 								value={pwd}
 								onKeyDown={e => {
-									if (e.key === "Process") return;
-									if (e.code === "Enter") {
+									if (e.key === 'Process') return;
+									if (e.code === 'Enter') {
 										e.preventDefault();
 										handleLogin();
 									}
@@ -121,7 +127,7 @@ function LoginPage() {
 					판다마켓이 처음이신가요? <Link to="/signup">회원가입</Link>
 				</div>
 			</section>
-			<PopUp error={} popUpText={} setError={}/>
+			<PopUp error={error} popUpText={error?.message} setError={setError} />
 		</>
 	);
 }
