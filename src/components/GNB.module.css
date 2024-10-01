@@ -4,7 +4,7 @@
 	width: 100%;
 	height: 60px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	background-color: var(--gray-100);
 	border-bottom: 1px solid var(--gray-400);
@@ -13,6 +13,18 @@
 
 	@media (max-width: 744px) {
 		height: 56px;
+	}
+}
+
+.login {
+	display: inline-block;
+	padding: var(--24px) var(--12px);
+	font-size: var(--16px);
+	background-color: var(--prime-blue);
+	color: var(--gray-900);
+
+	@media (max-width: 744px) {
+		padding: var(--12px);
 	}
 }
 
