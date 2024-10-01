@@ -13,7 +13,7 @@ function Nav() {
 		<header className={styles.gnb}>
 			<div className={styles.gnbContainer}>
 				<Link to="/">
-					<img className="/images/site-logo.png" src={siteLogo} alt="logo" />
+					<img className={styles.siteLogo} src={siteLogo} alt="logo" />
 				</Link>
 				<div className={styles.navMenus}>
 					<NavLink className={styles.navLinkStyle} to="/user/:userId/companies" style={getLinkStyle}>

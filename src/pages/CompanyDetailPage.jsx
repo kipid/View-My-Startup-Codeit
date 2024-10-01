@@ -1,5 +1,5 @@
 function CompanyDetailPage() {
-  return "여기는 기업 상세 페이지입니다.";
+	return <div id="companyDetailPage">asdf</div>;
 }
 
 export default CompanyDetailPage;
