@@ -2,7 +2,7 @@
 	"env": {
 		"browser": true,
 		"es6": true,
-		"node": true,
+		"node": true
 	},
 	"root": true,
 	"extends": [
@@ -14,7 +14,7 @@
 		"plugin:jsx-a11y/recommended",
 		"plugin:react-hooks/recommended",
 		"prettier",
-		"plugin:prettier/recommended",
+		"plugin:prettier/recommended"
 	],
 	"plugins": ["prettier"],
 	"rules": {
@@ -24,6 +24,6 @@
 		"no-unused-vars": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-uses-react": "off",
-		"import/extensions": "off",
-	},
+		"import/extensions": "off"
+	}
 }
