@@ -5,7 +5,7 @@ function App() {
 	return (
 		<>
 			<GNB />
-			<div>
+			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 				<Outlet />
 			</div>
 		</>
