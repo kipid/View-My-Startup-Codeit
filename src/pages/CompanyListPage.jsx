@@ -6,61 +6,50 @@ import useAsync from '../hooks/useAsync.js';
 import PopUp from '../components/PopUp.jsx';
 
 function CompanyListPage() {
-	const [keyword, setKeyword] = useState("");
-	const [sort, setSort] = useState("recent");
+	const [keyword, setKeyword] = useState('');
+	const [sort, setSort] = useState('recent');
 	const [companies, setCompanies] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [pageSize, setPageSize] = useState(20);
 	const [isPending, errorLoadingCompanies, loadCompaniesAsync, setError] = useAsync(getCompanies);
-	const [showPopUp, setShowPopUp] = useState(false);
 
-	const popUp = (error) => {
-		if (error) {
-			setShowPopUp(true);
-		}
-	}
-
-	const onSearch = useCallback(async (keyword) => {
-		try {
-			setPageNum(1);
-			const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, keyword});
-			if (!result) {
-				return;
+	const onSearch = useCallback(
+		async keyword => {
+			try {
+				setPageNum(1);
+				const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, keyword });
+				if (!result) {
+					return;
+				}
+				setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
+				setCompanies(result.list);
+			} catch (err) {
+				setError(err);
 			}
-			setPageNumMax(Math.ceil(result.totalCount/pageSize) ?? 1);
-			setCompanies(result.list);
-		}
-		catch (err) {
-			if (err) {
-				popUp(err);
-			}
-			console.error(err);
-		}
-	}, [pageSize, sort, loadCompaniesAsync]);
+		},
+		[pageSize, sort, loadCompaniesAsync],
+	);
 
-	const handleSearch = useCallback(async (e, keyword) => {
-		if (isPending || e.key === "Process") return;
-		if (e.code === "Enter") {
+	const handleSearch = useCallback(async (e, keyw) => {
+		if (isPending || e.key === 'Process') return;
+		if (e.code === 'Enter') {
 			e.preventDefault();
-			onSearch(keyword);
+			onSearch(keyw);
 		}
-	})
+	});
 
 	useEffect(() => {
 		async function fetchData() {
 			try {
-				const result = await loadCompaniesAsync({ skip: (pageNum-1)*pageSize, take: pageSize, sort, keyword });
+				const result = await loadCompaniesAsync({ skip: (pageNum - 1) * pageSize, take: pageSize, sort, keyword });
 				if (!result) {
 					return;
 				}
-				setPageNumMax(Math.ceil(result.totalCount/pageSize) ?? 1);
+				setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
 				setCompanies(result.list);
 			} catch (err) {
-				if (err) {
-					popUp(err);
-				}
-				console.error(err);
+				setError(err);
 			}
 		}
 		fetchData();
@@ -74,12 +63,18 @@ function CompanyListPage() {
 				<h2>전체 스타트업 목록</h2>
 				<div className={styles.keywordAndSortOptions}>
 					<div className={styles.keywordInputContainer}>
-						<input name="keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder='검색어를 입력해주세요' onKeyDown={(e) => {
-							handleSearch(e, keyword);
-						}}/>
-						<img src="/images/ic_search.png" alt="Search" onClick={() => onSearch(keyword)}/>
+						<input
+							name="keyword"
+							value={keyword}
+							onChange={e => setKeyword(e.target.value)}
+							placeholder="검색어를 입력해주세요"
+							onKeyDown={e => {
+								handleSearch(e, keyword);
+							}}
+						/>
+						<img src="/images/ic_search.png" alt="Search" onClick={() => onSearch(keyword)} />
 					</div>
-					<select value={sort} onChange={(e) => setSort(e.target.value)}>
+					<select value={sort} onChange={e => setSort(e.target.value)}>
 						<option value="recent">최신순</option>
 						<option value="accumulInvestDesc">누적 투자금액 높은순</option>
 						<option value="accumulInvestAsc">누적 투자금액 낮은순</option>
