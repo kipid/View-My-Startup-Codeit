@@ -26,6 +26,7 @@
 		"react/jsx-uses-react": "off",
 		"import/extensions": "off",
 		"no-bitwise": "off",
+		"consistent-return": "off",
 		"react/prop-types": "off",
 		"jsx-a11y/click-events-have-key-events": "off",
 		"jsx-a11y/no-static-element-interactions": "off",
