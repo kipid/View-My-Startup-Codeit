@@ -177,8 +177,7 @@ const hash13 = str => {
 	h >>>= 0;
 	return pad(h.toString(16), 8);
 };
-const encrypt = (salt, pwd0, iter0) => {
-	const iter = pwd0.length + 131 + (iter0 && iter0.constructor === Number && iter0 >= 0 ? iter0 : 0);
+const encrypt = (salt, pwd0, iter) => {
 	const pwd = salt + pwd0;
 	let h1 = hash1(pwd);
 	let h2 = hash2(pwd);
