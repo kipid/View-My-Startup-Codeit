@@ -17,8 +17,8 @@ function Main() {
 			<Routes>
 				<Route path="/" element={<App />}>
 					<Route index element={<LandingPage />} />
-					<Route path="login" element={LoginPage} />
-					<Route path="signup" element={SignupPage} />
+					<Route path="login" element={<LoginPage />} />
+					<Route path="signup" element={<SignupPage />} />
 					<Route path="user/:userId">
 						<Route path="companies">
 							<Route index element={<CompanyListPage />} />
