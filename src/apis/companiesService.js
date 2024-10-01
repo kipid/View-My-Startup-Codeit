@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-const instance = axios.create({
-	baseURL: `https://localhost:3000`,
-});
+import instance from './instance.js';
 
 export async function getCompanies(params = { skip: 0, take: 20, sort: 'recent', keyword: '' }) {
 	// try {
