@@ -25,5 +25,6 @@
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-uses-react": "off",
 		"import/extensions": "off",
+		"react/prop-types": "off",
 	},
 }
