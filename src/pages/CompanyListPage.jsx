@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styles from './CompanyListPage.module.css';
 import Pagination from '../components/Pagination.jsx';
-import { getCompanies } from '../apis/companiesService.js';
+import { getCompanies } from '../shared/apis/companiesService.js';
 import useAsync from '../shared/hooks/useAsync.js';
 import PopUp from '../components/PopUp.jsx';
 
