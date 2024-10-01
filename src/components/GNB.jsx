@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import siteLogo from "../assets/site-logo.png";
 import styles from "./GNB.module.css";
 
 function getLinkStyle({ isActive }) {
@@ -13,7 +12,7 @@ function Nav() {
     <header className={styles.gnb}>
       <div className={styles.gnbContainer}>
         <Link to={"/"}>
-          <img className={styles.siteLogo} src={siteLogo} alt="logo" />
+          <img className="/images/site-logo.png" src={siteLogo} alt="logo" />
         </Link>
         <div className={styles.navMenus}>
           <NavLink
