@@ -6,7 +6,7 @@ export function UserProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const valueOfUserContext = useMemo(() => ({ user, setUser }), [user]);
 
-	return <UserContext.Provider value={valueOfUserContext()}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={valueOfUserContext}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {
