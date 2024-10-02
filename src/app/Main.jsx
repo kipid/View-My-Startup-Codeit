@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
 import App from './App.jsx';
 import LandingPage from '../pages/LandingPage.jsx';
 import CompanyDetailPage from '../pages/CompanyDetailPage.jsx';
