@@ -14,19 +14,6 @@ import NotFoundPage from '../pages/NotFoundPage.jsx';
 import { UserProvider, useSetUser } from '../context/UserProvider.jsx';
 
 function Main() {
-	const setUser = useSetUser();
-	useEffect(() => {
-		const userUuid = localStorage.getItem('userUuid');
-		if (userUuid) {
-			const nickname = localStorage.getItem('nickname');
-			const sessionSalt = localStorage.getItem('sessionSalt');
-			const sessionPwd = localStorage.getItem('sessionPwd');
-			if (sessionSalt && sessionPwd) {
-				setUser({ uuid: userUuid, nickname, sessionSalt, sessionPwd });
-			}
-		}
-	}, [setUser]);
-
 	return (
 		<UserProvider>
 			<BrowserRouter>
