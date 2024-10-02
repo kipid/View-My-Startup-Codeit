@@ -84,7 +84,7 @@ const companies = [
   },
 ];
 
-function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
+function CompanySelectList({ item, onSelect, isSelected }) {
   const handleClick = () => {
     onSelect(item, !isSelected);
   };
@@ -100,42 +100,31 @@ function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
         <p className={styles.companyName}>{item.name}</p>
         <p className={styles.companyCategory}>{item.category}</p>
       </div>
-      {isSelectedList ? (
-        <button
-          className={styles.cancelSelectButton}
-          onClick={() => onSelect(item, false)}
-        >
-          선택 해제
-        </button>
-      ) : (
-        <button
-          className={isSelected ? styles.clickedButton : styles.unclickedButton}
-          onClick={handleClick}
-        >
-          {isSelected ? (
-            <div className={styles.clickedButtonContents}>
-              <img
-                src={checkIcon}
-                alt="선택 완료"
-                className={styles.checkIcon}
-              />
-              <span>선택완료</span>
-            </div>
-          ) : (
-            "선택하기"
-          )}
-        </button>
-      )}
+      <button
+        className={isSelected ? styles.clickedButton : styles.unclickedButton}
+        onClick={handleClick}
+      >
+        {isSelected ? (
+          <div className={styles.clickedButtonContents}>
+            <img src={checkIcon} alt="선택 완료" className={styles.checkIcon} />
+            <span>선택완료</span>
+          </div>
+        ) : (
+          "선택하기"
+        )}
+      </button>
     </div>
   );
 }
 
-// 모달 종료 시 selectedCompanies 데이터 props로 전달 구현 추가 예정
-function SelectComparisonModal({ onClose }) {
+// 모달 종료 시 selectedCompany 데이터 props로 전달 구현 추가 예정
+// selectHistory는 이후 나의 기업 선택 횟수 API에서 userId로 가져온 리스트를 사용할 예정
+function SelectMyCompanyModal({ onClose }) {
   const [pageNum, setPageNum] = useState(1);
   const [pageNumMax, setPageNumMax] = useState(5);
   const [search, setSearch] = useState("");
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectHistory, setSelectHistory] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleKeyUp = (e) => {
@@ -150,21 +139,32 @@ function SelectComparisonModal({ onClose }) {
       )
     : companies;
   const searchTotal = searchedCompanies.length;
+  console.log(searchedCompanies);
+  console.log(search);
+  console.log(searchTotal);
 
   const handleSelect = (item, isSelected) => {
     if (isSelected) {
-      if (selectTotal < 5) {
-        setSelectedCompanies((prev) => [...prev, item.id]);
-        setErrorMessage("");
+      if (selectedCompany) {
+        setErrorMessage("*나의 기업은 1개만 선택 가능합니다.");
       } else {
-        setErrorMessage("*비교할 기업은 최대 5개까지 선택 가능합니다.");
+        setSelectedCompany(item.id);
+        setSelectHistory((prev) => {
+          if (prev.length < 5 && !prev.includes(item.id)) {
+            return [item.id, ...prev];
+          } else if (!prev.includes(item.id)) {
+            return [item.id, ...prev.slice(0, 4)];
+          }
+          return prev;
+        });
+        setErrorMessage("");
       }
     } else {
-      setSelectedCompanies((prev) => prev.filter((id) => id !== item.id));
+      setSelectedCompany("");
       setErrorMessage("");
     }
   };
-  const selectTotal = selectedCompanies.length;
+  const historyTotal = selectHistory.length;
 
   const companiesPerPage = 5;
   const startIndex = (pageNum - 1) * companiesPerPage;
@@ -179,7 +179,7 @@ function SelectComparisonModal({ onClose }) {
   return (
     <>
       <div className={styles.modalHead}>
-        <p className={styles.modalTitle}>비교할 기업 선택하기</p>
+        <p className={styles.modalTitle}>나의 기업 선택하기</p>
         <img
           className={styles.closeIcon}
           src={closeIcon}
@@ -192,29 +192,30 @@ function SelectComparisonModal({ onClose }) {
         placeholder="검색어를 입력해 주세요."
         onChange={handleKeyUp}
       />
-      <p className={styles.modalSubtitle}>선택한 기업 ({selectTotal})</p>
-      {companies
-        .filter((company) => selectedCompanies.includes(company.id))
+
+      <p className={styles.modalSubtitle}>최근 선택한 기업 ({historyTotal})</p>
+      {selectHistory
+        .map((id) => companies.find((company) => company.id === id))
         .map((company) => (
           <CompanySelectList
             key={company.id}
             item={company}
             onSelect={handleSelect}
-            isSelected={true}
-            isSelectedList={true}
+            isSelected={selectedCompany.includes(company.id)}
           />
         ))}
+
       <p className={styles.modalSubtitle}>검색 결과 ({searchTotal})</p>
       {currentPage.map((company) => (
         <CompanySelectList
           key={company.id}
           item={company}
           onSelect={handleSelect}
-          isSelected={selectedCompanies.includes(company.id)}
-          isSelectedList={false}
+          isSelected={selectedCompany.includes(company.id)}
         />
       ))}
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+
       <Pagination
         pageNum={pageNum}
         setPageNum={setPageNum}
@@ -225,4 +226,4 @@ function SelectComparisonModal({ onClose }) {
   );
 }
 
-export default SelectComparisonModal;
+export default SelectMyCompanyModal;
