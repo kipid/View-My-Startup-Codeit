@@ -245,6 +245,6 @@ export function generateRandomHexString(length = 32) {
 	return result;
 }
 
-export const iterFull = 10000;
-export const iterSessionFull = 1000;
+export const ITER_FULL = 10000;
+export const ITER_SSN_FULL = 1000;
 export default encrypt;
