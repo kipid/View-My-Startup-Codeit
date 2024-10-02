@@ -236,6 +236,15 @@ const encrypt = (salt, pwd0, iter) => {
 	return h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13;
 };
 
+export function generateRandomHexString(length = 32) {
+	const characters = '0123456789abcdef';
+	let result = '';
+	for (let i = 0; i < length; i += 1) {
+		result += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return result;
+}
+
 export const iterFull = 10000;
 export const iterSessionFull = 1000;
 export default encrypt;
