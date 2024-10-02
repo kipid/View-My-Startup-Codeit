@@ -2,6 +2,8 @@
 	position: sticky;
 	top: 0;
 	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
 	height: 60px;
 	display: flex;
 	justify-content: space-between;
@@ -18,13 +20,16 @@
 
 .login {
 	display: inline-block;
-	padding: var(--24px) var(--12px);
-	font-size: var(--16px);
+	width: max-content;
+	padding: var(--6px) var(--12px);
+	margin-right: var(--12px);
+	font-size: var(--14px);
 	background-color: var(--prime-blue);
 	color: var(--gray-900);
+	border-radius: var(--5px);
 
 	@media (max-width: 744px) {
-		padding: var(--12px);
+		padding: var(--6px);
 	}
 }
 
@@ -42,7 +47,15 @@
 
 	@media (max-width: 744px) {
 		margin-left: 16px;
-		gap: 24px;
+		gap: 10px;
+	}
+}
+
+.logoContainer {
+	flex-shrink: 0;
+
+	@media (max-width: 744px) {
+		margin-left: -8px;
 	}
 }
 
@@ -59,6 +72,10 @@
 .navMenus {
 	display: flex;
 	gap: 34px;
+
+	@media (max-width: 744px) {
+		gap: 8px;
+	}
 }
 
 .navLinkStyle {
