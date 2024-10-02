@@ -27,7 +27,7 @@ function Nav() {
 	return (
 		<header className={styles.gnb}>
 			<div className={styles.gnbContainer}>
-				<Link to="/">
+				<Link to="/" className={styles.logoContainer}>
 					<img className={styles.siteLogo} src="/images/site-logo.png" alt="logo" />
 				</Link>
 				<div className={styles.navMenus}>
