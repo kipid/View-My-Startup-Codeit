@@ -40,67 +40,38 @@ function CompanyDetailPage() {
 
 	return (
 		<div id={style.companyDetailPage}>
-			<div id="companyDetail">
-				<div id="companyDetailHeader" style={{ height: 112, borderBottom: '1px solid #747474', marginTop: 40 }}>
-					<div style={{ display: 'flex', gap: 18, height: 80 }}>
+			<div id={style.companyDetail}>
+				<div id={style.companyDetailHeader}>
+					<div>
 						<img src={logo} alt="companyLogo" />
-						<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-							<p style={{ fontSize: 24, fontWeight: 700 }}>{companyDetail.name}</p>
-							<p style={{ fontSize: 20, fontWeight: 500, color: '#747474' }}>{companyDetail.category}</p>
+						<div>
+							<p id={style.companyName}>{companyDetail.name}</p>
+							<p id={style.companyCategory}>{companyDetail.category}</p>
 						</div>
 					</div>
 				</div>
 
-				<div id="companyDetailInfo" style={{ margin: '36px 0', display: 'flex', justifyContent: 'space-between', height: 92 }}>
-					<div
-						style={{
-							width: 384,
-							borderRadius: 10,
-							backgroundColor: '#282828',
-							padding: '36px 24px',
-							display: 'flex',
-							justifyContent: 'space-between',
-						}}
-					>
-						<p style={{ fontSize: 16, fontWeight: 400, color: '#DBDBDB' }}>누적 투자 금액</p>
-						<p style={{ fontSize: 16, fontWeight: 600, color: 'white' }}>{getScaledNumber(companyDetail.accumulInvest)} 원</p>
+				<div id={style.companyDetailInfo}>
+					<div>
+						<p>누적 투자 금액</p>
+						<p>{getScaledNumber(companyDetail.accumulInvest)} 원</p>
 					</div>
-					<div
-						style={{
-							width: 384,
-							borderRadius: 10,
-							backgroundColor: '#282828',
-							padding: '36px 24px',
-							display: 'flex',
-							justifyContent: 'space-between',
-						}}
-					>
-						<p style={{ fontSize: 16, fontWeight: 400, color: '#DBDBDB' }}>매출액</p>
-						<p style={{ fontSize: 16, fontWeight: 600, color: 'white' }}>{getScaledNumber(companyDetail.revenue)} 원</p>
+					<div>
+						<p>매출액</p>
+						<p>{getScaledNumber(companyDetail.revenue)} 원</p>
 					</div>
-					<div
-						style={{
-							width: 384,
-							borderRadius: 10,
-							backgroundColor: '#282828',
-							padding: '36px 24px',
-							display: 'flex',
-							justifyContent: 'space-between',
-						}}
-					>
-						<p style={{ fontSize: 16, fontWeight: 400, color: '#DBDBDB' }}>고용 인원</p>
-						<p style={{ fontSize: 16, fontWeight: 600, color: 'white' }}>{companyDetail.employee}명</p>
+					<div>
+						<p>고용 인원</p>
+						<p>{companyDetail.employee}명</p>
 					</div>
 				</div>
 
-				<div
-					id="companyDetailDesc"
-					style={{ width: 1196, height: 287, borderRadius: 10, padding: 24, backgroundColor: '#212121', margin: '32px 0' }}
-				>
+				<div id={style.companyDetailDesc}>
 					<p>기업 소개</p>
-					<pre style={{ whiteSpace: 'pre-wrap', overflow: 'auto', height: 204 }}>{companyDetail.description}</pre>
+					<pre>{companyDetail.description}</pre>
 				</div>
 			</div>
+
 			<div id={style.investments}>
 				<div id={style.investmentsHeader}>
 					<p>View My Startup에서 받은 투자</p>
