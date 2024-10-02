@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination.jsx';
 import style from './CompanyDetailPage.module.css';
 import logo from '../assets/codeit_logo.svg';
+import { INVESTMENT } from '../shared/mock/mock.js';
 
 const name = '코드잇';
 const category = 'IT/테크';
@@ -17,6 +18,8 @@ const description = `코드잇은 '온라인 코딩 교육 서비스'를 운영�
 const accumulInvest = 14000000000;
 const revenue = 4430000000;
 const employee = 95;
+
+const pageSize = 5;
 
 const getScaledNumber = number => {
 	const scaler = 10000;
@@ -34,8 +37,23 @@ const getScaledNumber = number => {
 };
 
 function CompanyDetailPage() {
+	const [list, setList] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
+	const [totalAmount, setTotalAmount] = useState(0);
+
+	useEffect(() => {
+		const startIdx = pageSize * (pageNum - 1);
+		const data = INVESTMENT.slice(startIdx, startIdx + pageSize);
+		const count = INVESTMENT.length;
+		const total = INVESTMENT.reduce((acc, cur) => {
+			return Number(cur.amount) + acc;
+		}, 0);
+
+		setList(data);
+		setPageNumMax(Math.ceil(count / pageSize) ?? 1);
+		setTotalAmount(total);
+	}, [pageNum]);
 	const companyDetail = { name, category, accumulInvest, revenue, employee, description };
 
 	return (
@@ -80,7 +98,7 @@ function CompanyDetailPage() {
 
 				<div id={style.investmentBody}>
 					<table>
-						<caption>총 X원</caption>
+						<caption>총 {totalAmount}원</caption>
 						<thead>
 							<tr>
 								<th>투자자 이름</th>
@@ -90,36 +108,16 @@ function CompanyDetailPage() {
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>김연우</td>
-								<td>1위</td>
-								<td>10억</td>
-								<td>코드잇은 정말 훌륭한 기업입니다!</td>
-							</tr>
-							<tr>
-								<td>김연우</td>
-								<td>1위</td>
-								<td>10억</td>
-								<td>코드잇은 정말 훌륭한 기업입니다!</td>
-							</tr>
-							<tr>
-								<td>김연우</td>
-								<td>1위</td>
-								<td>10억</td>
-								<td>코드잇은 정말 훌륭한 기업입니다!</td>
-							</tr>
-							<tr>
-								<td>김연우</td>
-								<td>1위</td>
-								<td>10억</td>
-								<td>코드잇은 정말 훌륭한 기업입니다!</td>
-							</tr>
-							<tr>
-								<td>김연우</td>
-								<td>1위</td>
-								<td>10억</td>
-								<td>코드잇은 정말 훌륭한 기업입니다!</td>
-							</tr>
+							{list.map((item, idx) => {
+								return (
+									<tr key={item.id}>
+										<td>{item.name}</td>
+										<td>{idx + 1 + (pageNum - 1) * pageSize}위</td>
+										<td>{item.amount}원</td>
+										<td>{item.comment}</td>
+									</tr>
+								);
+							})}
 						</tbody>
 					</table>
 
