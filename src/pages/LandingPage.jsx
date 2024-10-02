@@ -1,5 +1,5 @@
 function LandingPage() {
-  return "여기는 랜딩 페이지입니다.";
+	return <h1>여기는 랜딩 페이지입니다.</h1>;
 }
 
 export default LandingPage;

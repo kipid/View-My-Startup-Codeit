@@ -7305,10 +7305,10 @@
 
   // src/index.jsx
   init_react_shim();
-  var import_react4 = __toESM(require_react(), 1);
+  var import_react9 = __toESM(require_react(), 1);
   var import_client = __toESM(require_client(), 1);
 
-  // src/Main.jsx
+  // src/app/Main.jsx
   init_react_shim();
 
   // node_modules/react-router-dom/dist/index.js
@@ -8858,71 +8858,88 @@
     return matchPath(path.pathname, nextPath) != null || matchPath(path.pathname, currentPath) != null;
   }
 
-  // src/App.jsx
+  // src/app/Main.jsx
+  var import_react8 = __toESM(require_react(), 1);
+
+  // src/app/App.jsx
   init_react_shim();
 
   // src/components/GNB.jsx
   init_react_shim();
+  var import_react2 = __toESM(require_react(), 1);
 
   // src/components/GNB.module.css
   var GNB_default = {
     gnb: "GNB_gnb",
+    login: "GNB_login",
     gnbContainer: "GNB_gnbContainer",
+    logoContainer: "GNB_logoContainer",
     siteLogo: "GNB_siteLogo",
     navMenus: "GNB_navMenus",
     navLinkStyle: "GNB_navLinkStyle",
     menu: "GNB_menu"
   };
 
-  // src/components/GNB.jsx
+  // src/context/UserProvider.jsx
+  init_react_shim();
   var import_jsx_runtime = __toESM(require_jsx_runtime(), 1);
+  var { useState: useState3, useMemo: useMemo3, createContext: createContext3, useContext: useContext3 } = require_react();
+  var UserContext = createContext3();
+  function UserProvider({ children }) {
+    const [user, setUser] = useState3(null);
+    const valueOfUserContext = useMemo3(() => ({ user, setUser }), [user]);
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserContext.Provider, { value: valueOfUserContext, children });
+  }
+  function useUser() {
+    const context = useContext3(UserContext);
+    if (!context) {
+      throw new Error("\uBC18\uB4DC\uC2DC UserProvider \uC548\uC5D0\uC11C \uC0AC\uC6A9\uD574\uC57C \uD569\uB2C8\uB2E4.");
+    }
+    const { user } = context;
+    return user;
+  }
+  function useSetUser() {
+    const context = useContext3(UserContext);
+    if (!context) {
+      throw new Error("\uBC18\uB4DC\uC2DC UserProvider \uC548\uC5D0\uC11C \uC0AC\uC6A9\uD574\uC57C \uD569\uB2C8\uB2E4.");
+    }
+    const { setUser } = context;
+    return setUser;
+  }
+
+  // src/components/GNB.jsx
+  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
   function getLinkStyle({ isActive }) {
     return {
       color: isActive ? "var(--gray-900)" : "var(--gray-700)"
     };
   }
   function Nav() {
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", { className: GNB_default.gnb, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: GNB_default.gnbContainer, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", { className: "/images/site-logo.png", src: siteLogo, alt: "logo" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: GNB_default.navMenus, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-          NavLink,
-          {
-            className: GNB_default.navLinkStyle,
-            to: "/user/:userId/companies",
-            style: getLinkStyle,
-            children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: GNB_default.menu, children: "\uC804\uCCB4 \uAE30\uC5C5 \uB9AC\uC2A4\uD2B8" })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-          NavLink,
-          {
-            className: GNB_default.navLinkStyle,
-            to: "/user/:userId/my-comparison",
-            style: getLinkStyle,
-            children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: GNB_default.menu, children: "\uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50" })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-          NavLink,
-          {
-            className: GNB_default.navLinkStyle,
-            to: "/user/:userId/comparison-status",
-            style: getLinkStyle,
-            children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: GNB_default.menu, children: "\uBE44\uAD50 \uD604\uD669" })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-          NavLink,
-          {
-            className: GNB_default.navLinkStyle,
-            to: "/user/:userId/investment-status",
-            style: getLinkStyle,
-            children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: GNB_default.menu, children: "\uD22C\uC790 \uD604\uD669" })
-          }
-        )
-      ] })
-    ] }) });
+    const user = useUser();
+    const setUser = useSetUser();
+    (0, import_react2.useEffect)(() => {
+      const userUuid = localStorage.getItem("userUuid");
+      if (userUuid) {
+        const nickname = localStorage.getItem("nickname");
+        const sessionPwd = localStorage.getItem("sessionPwd");
+        const sessionCreatedAt = localStorage.getItem("sessionCreatedAt");
+        if (nickname && sessionPwd && sessionCreatedAt) {
+          setUser({ id: userUuid, nickname, sessionPwd, createdAt: sessionCreatedAt });
+        }
+      }
+    }, [setUser]);
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { className: GNB_default.gnb, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: GNB_default.gnbContainer, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: GNB_default.siteLogo, src: "/images/site-logo.png", alt: "logo" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: GNB_default.navMenus, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/companies", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uC804\uCCB4 \uAE30\uC5C5 \uB9AC\uC2A4\uD2B8" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/my-comparison", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/comparison-status", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uBE44\uAD50 \uD604\uD669" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/investment-status", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uD22C\uC790 \uD604\uD669" }) })
+        ] })
+      ] }),
+      user ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/profile", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: GNB_default.login, children: user.nickname }) }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/login", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: GNB_default.login, children: "\uB85C\uADF8\uC778" }) })
+    ] });
   }
   var GNB_default2 = Nav;
 
@@ -8933,52 +8950,97 @@
     selected: "Pagination_selected"
   };
 
-  // src/App.jsx
-  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
+  // src/app/App.jsx
+  var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
   function App() {
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(import_jsx_runtime2.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(GNB_default2, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("main", { className: Pagination_default.main, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Outlet, {}) })
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(GNB_default2, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("main", { className: Pagination_default.main, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Outlet, {}) })
     ] });
   }
   var App_default = App;
 
   // src/pages/LandingPage.jsx
   init_react_shim();
+  var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
   function LandingPage() {
-    return "\uC5EC\uAE30\uB294 \uB79C\uB529 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h1", { children: "\uC5EC\uAE30\uB294 \uB79C\uB529 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var LandingPage_default = LandingPage;
 
   // src/pages/CompanyDetailPage.jsx
   init_react_shim();
-  function CompanyDetailPage() {
-    return "\uC5EC\uAE30\uB294 \uAE30\uC5C5 \uC0C1\uC138 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
-  }
-  var CompanyDetailPage_default = CompanyDetailPage;
-
-  // src/pages/CompanyListPage.jsx
-  init_react_shim();
   var import_react3 = __toESM(require_react(), 1);
-
-  // src/pages/CompanyListPage.module.css
-  var CompanyListPage_default = {
-    heads: "CompanyListPage_heads",
-    keywordAndSortOptions: "CompanyListPage_keywordAndSortOptions",
-    keywordInputContainer: "CompanyListPage_keywordInputContainer"
-  };
 
   // src/components/Pagination.jsx
   init_react_shim();
-  var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
   function Pagination({ pageNum, setPageNum, pageNumMax }) {
-    return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
+    let paginationBody;
+    if (pageNum <= 1) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: "1" }),
+        pageNumMax >= 2 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "2" }),
+        pageNumMax >= 3 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "3" }),
+        pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "4" }),
+        pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "5" })
+      ] });
+    } else if (pageNum <= pageNumMax && pageNum === 2) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "1" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: "2" }),
+        pageNumMax >= 3 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "3" }),
+        pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "4" }),
+        pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "5" })
+      ] });
+    } else if (pageNum <= pageNumMax && pageNum === 3) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "1" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: "3" }),
+        pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "4" }),
+        pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "5" })
+      ] });
+    } else if (pageNum < pageNumMax - 2 && pageNum > 3) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum + 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum + 2 })
+      ] });
+    } else if (pageNum === pageNumMax - 2) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum + 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum + 2 })
+      ] });
+    } else if (pageNum === pageNumMax - 1) {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 3 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum - 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNum + 1 })
+      ] });
+    } else {
+      paginationBody = /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNumMax - 4 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNumMax - 3 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNumMax - 2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: pageNumMax - 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: Pagination_default.selected, children: pageNumMax })
+      ] });
+    }
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
       "div",
       {
         className: Pagination_default.pagination,
-        onClick: function(event) {
+        onClick: (event) => {
           const pages = event.currentTarget.querySelectorAll("div");
-          const target = event.target;
+          const { target } = event;
           const targetN = Number(target.innerText);
           if (isNaN(targetN)) {
             if (!target.classList.contains("disabled")) {
@@ -8987,9 +9049,7 @@
                 setPageNum(pageNumCandi <= 1 ? 1 : pageNumCandi);
               } else if (target.innerText === "&gt;" || target.innerText === ">") {
                 const pageNumCandi = Number(pages[pages.length - 2].innerText) + 1;
-                setPageNum(
-                  pageNumCandi >= pageNumMax ? pageNumMax : pageNumCandi
-                );
+                setPageNum(pageNumCandi >= pageNumMax ? pageNumMax : pageNumCandi);
               }
             }
           } else {
@@ -8997,58 +9057,93 @@
           }
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "<" }),
-          pageNum <= 1 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: "1" }),
-            pageNumMax >= 2 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "2" }),
-            pageNumMax >= 3 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "3" }),
-            pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "4" }),
-            pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "5" })
-          ] }) : pageNum <= pageNumMax && pageNum === 2 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "1" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: "2" }),
-            pageNumMax >= 3 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "3" }),
-            pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "4" }),
-            pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "5" })
-          ] }) : pageNum <= pageNumMax && pageNum === 3 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "1" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "2" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: "3" }),
-            pageNumMax >= 4 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "4" }),
-            pageNumMax >= 5 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: "5" })
-          ] }) : pageNum < pageNumMax - 2 && pageNum > 3 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 2 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum + 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum + 2 })
-          ] }) : pageNum === pageNumMax - 2 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 2 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum + 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum + 2 })
-          ] }) : pageNum === pageNumMax - 1 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 3 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 2 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum - 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: pageNum }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNum + 1 })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNumMax - 4 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNumMax - 3 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNumMax - 2 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: pageNumMax - 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: Pagination_default.selected, children: pageNumMax })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { children: ">" })
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: "<" }),
+          paginationBody,
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: ">" })
         ]
       }
     );
   }
   var Pagination_default2 = Pagination;
 
-  // src/apis/companiesService.js
+  // src/pages/CompanyDetailPage.module.css
+  var CompanyDetailPage_default = {
+    companyDetailPage: "CompanyDetailPage_companyDetailPage",
+    investments: "CompanyDetailPage_investments",
+    investmentsHeader: "CompanyDetailPage_investmentsHeader",
+    investmentBody: "CompanyDetailPage_investmentBody"
+  };
+
+  // src/pages/CompanyDetailPage.jsx
+  var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
+  function CompanyDetailPage() {
+    const [pageNum, setPageNum] = (0, import_react3.useState)(1);
+    const [pageNumMax, setPageNumMax] = (0, import_react3.useState)(1);
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { id: CompanyDetailPage_default.companyDetailPage, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { id: CompanyDetailPage_default.investments, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { id: CompanyDetailPage_default.investmentsHeader, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "View My Startup\uC5D0\uC11C \uBC1B\uC740 \uD22C\uC790" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", children: "\uAE30\uC5C5\uD22C\uC790\uD558\uAE30" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { id: CompanyDetailPage_default.investmentBody, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("table", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("caption", { children: "\uCD1D X\uC6D0" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "\uD22C\uC790\uC790 \uC774\uB984" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "\uC21C\uC704" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "\uD22C\uC790 \uAE08\uC561" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("th", { children: "\uD22C\uC790 \uCF54\uBA58\uD2B8" })
+          ] }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tbody", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uAE40\uC5F0\uC6B0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "1\uC704" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "10\uC5B5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uCF54\uB4DC\uC787\uC740 \uC815\uB9D0 \uD6CC\uB96D\uD55C \uAE30\uC5C5\uC785\uB2C8\uB2E4!" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uAE40\uC5F0\uC6B0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "1\uC704" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "10\uC5B5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uCF54\uB4DC\uC787\uC740 \uC815\uB9D0 \uD6CC\uB96D\uD55C \uAE30\uC5C5\uC785\uB2C8\uB2E4!" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uAE40\uC5F0\uC6B0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "1\uC704" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "10\uC5B5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uCF54\uB4DC\uC787\uC740 \uC815\uB9D0 \uD6CC\uB96D\uD55C \uAE30\uC5C5\uC785\uB2C8\uB2E4!" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uAE40\uC5F0\uC6B0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "1\uC704" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "10\uC5B5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uCF54\uB4DC\uC787\uC740 \uC815\uB9D0 \uD6CC\uB96D\uD55C \uAE30\uC5C5\uC785\uB2C8\uB2E4!" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uAE40\uC5F0\uC6B0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "1\uC704" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "10\uC5B5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("td", { children: "\uCF54\uB4DC\uC787\uC740 \uC815\uB9D0 \uD6CC\uB96D\uD55C \uAE30\uC5C5\uC785\uB2C8\uB2E4!" })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Pagination_default2, { pageNum, pageNumMax, setPageNum })
+      ] })
+    ] }) });
+  }
+  var CompanyDetailPage_default2 = CompanyDetailPage;
+
+  // src/pages/CompanyListPage.jsx
+  init_react_shim();
+  var import_react5 = __toESM(require_react(), 1);
+
+  // src/pages/CompanyListPage.module.css
+  var CompanyListPage_default = {
+    heads: "CompanyListPage_heads",
+    keywordAndSortOptions: "CompanyListPage_keywordAndSortOptions",
+    keywordInputContainer: "CompanyListPage_keywordInputContainer"
+  };
+
+  // src/shared/apis/companiesService.js
   init_react_shim();
 
   // node_modules/axios/index.js
@@ -11606,13 +11701,13 @@
   // node_modules/axios/lib/axios.js
   function createInstance(defaultConfig) {
     const context = new Axios_default(defaultConfig);
-    const instance2 = bind(Axios_default.prototype.request, context);
-    utils_default.extend(instance2, Axios_default.prototype, context, { allOwnKeys: true });
-    utils_default.extend(instance2, context, null, { allOwnKeys: true });
-    instance2.create = function create(instanceConfig) {
+    const instance3 = bind(Axios_default.prototype.request, context);
+    utils_default.extend(instance3, Axios_default.prototype, context, { allOwnKeys: true });
+    utils_default.extend(instance3, context, null, { allOwnKeys: true });
+    instance3.create = function create(instanceConfig) {
       return createInstance(mergeConfig(defaultConfig, instanceConfig));
     };
-    return instance2;
+    return instance3;
   }
   var axios = createInstance(defaults_default);
   axios.Axios = Axios_default;
@@ -11656,7 +11751,7 @@
     mergeConfig: mergeConfig2
   } = axios_default;
 
-  // src/apis/companiesService.js
+  // src/shared/apis/companiesService.js
   var instance = axios_default.create({
     baseURL: `https://localhost:3000`
   });
@@ -11665,25 +11760,28 @@
     return companies.data;
   }
 
-  // src/hooks/useAsync.js
+  // src/shared/hooks/useAsync.js
   init_react_shim();
-  var import_react2 = __toESM(require_react(), 1);
+  var import_react4 = __toESM(require_react(), 1);
   function useAsync(asyncFunc) {
-    const [pending, setPending] = (0, import_react2.useState)(false);
-    const [error, setError] = (0, import_react2.useState)(null);
-    const wrappedAsyncFunc = (0, import_react2.useCallback)(async (...args) => {
-      try {
-        setError(null);
-        setPending(true);
-        return await asyncFunc(...args);
-      } catch (err) {
-        console.error(err);
-        setError(err);
-        return;
-      } finally {
-        setPending(false);
-      }
-    }, [asyncFunc]);
+    const [pending, setPending] = (0, import_react4.useState)(false);
+    const [error, setError] = (0, import_react4.useState)(null);
+    const wrappedAsyncFunc = (0, import_react4.useCallback)(
+      async (...args) => {
+        try {
+          setError(null);
+          setPending(true);
+          return await asyncFunc(...args);
+        } catch (err) {
+          console.error(err);
+          setError(err);
+          return null;
+        } finally {
+          setPending(false);
+        }
+      },
+      [asyncFunc]
+    );
     return [pending, error, wrappedAsyncFunc, setError];
   }
   var useAsync_default = useAsync;
@@ -11700,57 +11798,62 @@
   };
 
   // src/components/PopUp.jsx
-  var import_jsx_runtime4 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
   function PopUp({ error, popUpText, setError }) {
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: [PopUp_default.popUpWrapper, error ? "" : "none"].join(" "), children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: PopUp_default.popUpContainer, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: PopUp_default.popUpText, children: popUpText }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: PopUp_default.popUpCloseButton, onClick: () => {
-        setError(null);
-      }, children: "\uB2EB\uAE30" })
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: [PopUp_default.popUpWrapper, error ? "" : "none"].join(" "), children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: PopUp_default.popUpContainer, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: PopUp_default.popUpText, children: popUpText }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        "button",
+        {
+          type: "button",
+          className: PopUp_default.popUpCloseButton,
+          onClick: () => {
+            setError(null);
+          },
+          children: "\uB2EB\uAE30"
+        }
+      )
     ] }) });
   }
   var PopUp_default2 = PopUp;
 
   // src/pages/CompanyListPage.jsx
-  var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
   function CompanyListPage() {
-    const [keyword, setKeyword] = (0, import_react3.useState)("");
-    const [sort, setSort] = (0, import_react3.useState)("recent");
-    const [companies, setCompanies] = (0, import_react3.useState)([]);
-    const [pageNum, setPageNum] = (0, import_react3.useState)(1);
-    const [pageNumMax, setPageNumMax] = (0, import_react3.useState)(1);
-    const [pageSize, setPageSize] = (0, import_react3.useState)(20);
+    const [keyword, setKeyword] = (0, import_react5.useState)("");
+    const [sort, setSort] = (0, import_react5.useState)("recent");
+    const [companies, setCompanies] = (0, import_react5.useState)([]);
+    const [pageNum, setPageNum] = (0, import_react5.useState)(1);
+    const [pageNumMax, setPageNumMax] = (0, import_react5.useState)(1);
+    const [pageSize, setPageSize] = (0, import_react5.useState)(20);
     const [isPending, errorLoadingCompanies, loadCompaniesAsync, setError] = useAsync_default(getCompanies);
-    const [showPopUp, setShowPopUp] = (0, import_react3.useState)(false);
-    const popUp = (error) => {
-      if (error) {
-        setShowPopUp(true);
-      }
-    };
-    const onSearch = (0, import_react3.useCallback)(async (keyword2) => {
-      try {
-        setPageNum(1);
-        const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, keyword: keyword2 });
-        if (!result) {
-          return;
+    const onSearch = (0, import_react5.useCallback)(
+      async (keyw) => {
+        try {
+          setPageNum(1);
+          const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, keyword: keyw });
+          if (!result) {
+            return;
+          }
+          setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
+          setCompanies(result.list);
+        } catch (err) {
+          setError(err);
         }
-        setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
-        setCompanies(result.list);
-      } catch (err) {
-        if (err) {
-          popUp(err);
+      },
+      [pageSize, sort, loadCompaniesAsync, setError]
+    );
+    const handleSearch = (0, import_react5.useCallback)(
+      async (e, keyw) => {
+        if (isPending || e.key === "Process") return;
+        if (e.code === "Enter") {
+          e.preventDefault();
+          onSearch(keyw);
         }
-        console.error(err);
-      }
-    }, [pageSize, sort, loadCompaniesAsync]);
-    const handleSearch = (0, import_react3.useCallback)(async (e, keyword2) => {
-      if (isPending || e.key === "Process") return;
-      if (e.code === "Enter") {
-        e.preventDefault();
-        onSearch(keyword2);
-      }
-    });
-    (0, import_react3.useEffect)(() => {
+      },
+      [isPending, onSearch]
+    );
+    (0, import_react5.useEffect)(() => {
       async function fetchData() {
         try {
           const result = await loadCompaniesAsync({ skip: (pageNum - 1) * pageSize, take: pageSize, sort, keyword });
@@ -11760,132 +11863,737 @@
           setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
           setCompanies(result.list);
         } catch (err) {
-          if (err) {
-            popUp(err);
-          }
-          console.error(err);
+          setError(err);
         }
       }
       fetchData();
       return () => {
       };
-    }, [pageNum, pageSize, sort]);
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: CompanyListPage_default.heads, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h2", { children: "\uC804\uCCB4 \uC2A4\uD0C0\uD2B8\uC5C5 \uBAA9\uB85D" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: CompanyListPage_default.keywordAndSortOptions, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: CompanyListPage_default.keywordInputContainer, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { name: "keyword", value: keyword, onChange: (e) => setKeyword(e.target.value), placeholder: "\uAC80\uC0C9\uC5B4\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694", onKeyDown: (e) => {
-              handleSearch(e, keyword);
-            } }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("img", { src: "/images/ic_search.png", alt: "Search", onClick: () => onSearch(keyword) })
+    }, [pageNum, pageSize, sort, loadCompaniesAsync, setError]);
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: CompanyListPage_default.heads, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: "\uC804\uCCB4 \uC2A4\uD0C0\uD2B8\uC5C5 \uBAA9\uB85D" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: CompanyListPage_default.keywordAndSortOptions, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: CompanyListPage_default.keywordInputContainer, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+              "input",
+              {
+                name: "keyword",
+                value: keyword,
+                onChange: (e) => setKeyword(e.target.value),
+                placeholder: "\uAC80\uC0C9\uC5B4\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                onKeyDown: (e) => {
+                  handleSearch(e, keyword);
+                }
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", onClick: () => onSearch(keyword), children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("img", { src: "/images/ic_search.png", alt: "Search" }) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: sort, onChange: (e) => setSort(e.target.value), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "recent", children: "\uCD5C\uC2E0\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "accumulInvestDesc", children: "\uB204\uC801 \uD22C\uC790\uAE08\uC561 \uB192\uC740\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "accumulInvestAsc", children: "\uB204\uC801 \uD22C\uC790\uAE08\uC561 \uB0AE\uC740\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "earningDesc", children: "\uB9E4\uCD9C\uC561 \uB192\uC740\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "earningAsc", children: "\uB9E4\uCD9C\uC561 \uB0AE\uC740\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "employeeDesc", children: "\uACE0\uC6A9 \uC778\uC6D0 \uB9CE\uC740\uC21C" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "employeeAsc", children: "\uACE0\uC6A9 \uC778\uC6D0 \uC801\uC740\uC21C" })
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("select", { value: sort, onChange: (e) => setSort(e.target.value), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "recent", children: "\uCD5C\uC2E0\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "accumulInvestDesc", children: "\uB204\uC801 \uD22C\uC790\uAE08\uC561 \uB192\uC740\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "accumulInvestAsc", children: "\uB204\uC801 \uD22C\uC790\uAE08\uC561 \uB0AE\uC740\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "earningDesc", children: "\uB9E4\uCD9C\uC561 \uB192\uC740\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "earningAsc", children: "\uB9E4\uCD9C\uC561 \uB0AE\uC740\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "employeeDesc", children: "\uACE0\uC6A9 \uC778\uC6D0 \uB9CE\uC740\uC21C" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "employeeAsc", children: "\uACE0\uC6A9 \uC778\uC6D0 \uC801\uC740\uC21C" })
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Pagination_default2, { pageNum, pageNumMax, setPageNum }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(PopUp_default2, { error: errorLoadingCompanies, popUpText: errorLoadingCompanies?.message, setError })
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Pagination_default2, { pageNum, pageNumMax, setPageNum }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(PopUp_default2, { error: errorLoadingCompanies, popUpText: errorLoadingCompanies?.message, setError })
     ] });
   }
   var CompanyListPage_default2 = CompanyListPage;
 
   // src/pages/ComparisonResultPage.jsx
   init_react_shim();
+  var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
   function ComparisonResultPage() {
-    return "\uC5EC\uAE30\uB294 \uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50 \uACB0\uACFC \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h1", { children: "\uC5EC\uAE30\uB294 \uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50 \uACB0\uACFC \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var ComparisonResultPage_default = ComparisonResultPage;
 
   // src/pages/ComparisonStatusPage.jsx
   init_react_shim();
+  var import_jsx_runtime10 = __toESM(require_jsx_runtime(), 1);
   function ComparisonStatusPage() {
-    return "\uC5EC\uAE30\uB294 \uBE44\uAD50 \uD604\uD669 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h1", { children: "\uC5EC\uAE30\uB294 \uBE44\uAD50 \uD604\uD669 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var ComparisonStatusPage_default = ComparisonStatusPage;
 
   // src/pages/InvestmentStatusPage.jsx
   init_react_shim();
+  var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
   function InvestmentStatusPage() {
-    return "\uC5EC\uAE30\uB294 \uD22C\uC790 \uD604\uD669 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h1", { children: "\uC5EC\uAE30\uB294 \uD22C\uC790 \uD604\uD669 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var InvestmentStatusPage_default = InvestmentStatusPage;
 
   // src/pages/MyComparisonPage.jsx
   init_react_shim();
+  var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
   function MyComparisonPage() {
-    return "\uC5EC\uAE30\uB294 \uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50 (\uC120\uD0DD) \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h1", { children: "\uC5EC\uAE30\uB294 \uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50 (\uC120\uD0DD) \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var MyComparisonPage_default = MyComparisonPage;
 
   // src/pages/LoginPage.jsx
   init_react_shim();
-  function LoginPage() {
-    return "\uB85C\uADF8\uC778 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+  var import_react6 = __toESM(require_react(), 1);
+
+  // src/pages/LoginPage.module.css
+  var LoginPage_default = {
+    section: "LoginPage_section",
+    logo: "LoginPage_logo",
+    alert: "LoginPage_alert",
+    error: "LoginPage_error",
+    pwd_container: "LoginPage_pwd_container",
+    button: "LoginPage_button",
+    oauth: "LoginPage_oauth",
+    oauth_images: "LoginPage_oauth_images",
+    check_description: "LoginPage_check_description"
+  };
+
+  // src/apis/loginSignupService.js
+  init_react_shim();
+
+  // src/apis/instance.js
+  init_react_shim();
+  var instance2 = axios_default.create({
+    baseURL: `https://localhost:3000`
+  });
+  var instance_default = instance2;
+
+  // src/apis/loginSignupService.js
+  async function postPwdIter(data = { email: "" }) {
+    const iter = await instance_default.post(`/account/iter`, data);
+    return iter.data;
   }
-  var LoginPage_default = LoginPage;
+  async function postLogin(data = { email: "anonymous@example.com", pwdEncrypted: "123456" }) {
+    const user = await instance_default.post(`/account/log-in`, data);
+    return user.data;
+  }
+  async function postSignup(data = { email: "anonymous@example.com", nickname: "anonymous", salt: "abc", pwdEncrypted: "123456", pwdCfm: "confirmed" }) {
+    const user = await instance_default.post(`/account/sign-up`, data);
+    return user.data;
+  }
+
+  // src/apis/encrypt.js
+  init_react_shim();
+  var pad = (str0, max) => {
+    const str = str0.toString();
+    return str.length < max ? pad(`0${str}`, max) : str;
+  };
+  var hash1 = (str) => {
+    let h = -17 - str.length;
+    for (let i = 0; i < str.length; i += 1) {
+      h += str.charCodeAt(i);
+      h += h << 10;
+      h ^= h >>> 6;
+    }
+    h += (h >>> 0) % 1318489 << 7;
+    h += h << 3;
+    h ^= h >>> 11;
+    h += h << 15;
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash2 = (str) => {
+    let h = str.length + 1;
+    let tmp;
+    for (let i = 0; i < str.length; i += 1) {
+      h += str.charCodeAt(i);
+      tmp = str.charCodeAt(str.length - 1 - i) << 11 ^ h;
+      h += h << 16 ^ tmp;
+      h ^= h >>> 7;
+      h += h << 11;
+    }
+    h += (h >>> 0) % 918679 << 11;
+    h ^= h << 3;
+    h += h >>> 5;
+    h ^= h << 4;
+    h += h >>> 17;
+    h ^= h << 25;
+    h += h >>> 6;
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash3 = (str) => {
+    let h = -1023 + str.length;
+    for (let i = 0; i < str.length; i += 1) {
+      h ^= (h << 5) + (h >>> 2) + str.charCodeAt(i);
+    }
+    h ^= h << 15;
+    h += h << 15;
+    h += (h >>> 0) % 1299451 << 2;
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash4 = (str) => {
+    const b = 378551;
+    let a = 63689;
+    let h = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      let q = 0;
+      for (let j = 0; j < 32; j += 1) {
+        if (a & 1 << j) {
+          q = q + (h << j) >>> 0;
+        }
+      }
+      h = q + str.charCodeAt(i) >>> 0;
+      q = 0;
+      for (let j = 0; j < 32; j += 1) {
+        if (b & 1 << j) {
+          q = q + (a << j) >>> 0;
+        }
+      }
+      a = q;
+    }
+    return pad(h.toString(16), 8);
+  };
+  var hash5 = (str) => {
+    let h = 1315423911;
+    for (let i = 0; i < str.length; i += 1) {
+      h ^= (h << 5) + str.charCodeAt(i) + (h >> 2) >>> 0;
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash6 = (str) => {
+    let h = 0;
+    let x = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      h = (h << 4) + str.charCodeAt(i) >>> 0;
+      if ((x = h & 4026531840) !== 0) {
+        h ^= x >> 24;
+      }
+      h &= ~x;
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash7 = (str) => {
+    const a = 131;
+    let h = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      let q = 0;
+      for (let j = 0; j < 32; j += 1) {
+        if (a & 1 << j) {
+          q = q + (h << j) >>> 0;
+        }
+      }
+      h = q + str.charCodeAt(i) >>> 0;
+    }
+    return pad(h.toString(16), 8);
+  };
+  var hash8 = (str) => {
+    let h = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      h = str.charCodeAt(i) + (h << 6) + (h << 16) - h >>> 0;
+    }
+    return pad(h.toString(16), 8);
+  };
+  var hash9 = (str) => {
+    let h = 5381;
+    for (let i = 0; i < str.length; i += 1) {
+      h = (h << 5) + h + str.charCodeAt(i) >>> 0;
+    }
+    return pad(h.toString(16), 8);
+  };
+  var hash10 = (str) => {
+    let h = str.length;
+    for (let i = 0; i < str.length; i += 1) {
+      h = h << 5 ^ h >> 27 ^ str.charCodeAt(i);
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash11 = (str) => {
+    let h = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      h = h << 7 ^ str.charCodeAt(i);
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash12 = (str) => {
+    const a = 2166136261;
+    let h = 0;
+    for (let i = 0; i < str.length; i += 1) {
+      let q = 0;
+      for (let j = 0; j < 32; j += 1) {
+        if (a & 1 << j) {
+          q = q + (h << j) >>> 0;
+        }
+      }
+      h = q >>> 0;
+      h ^= str.charCodeAt(i);
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var hash13 = (str) => {
+    let h = 2863311530;
+    for (let i = 0; i < str.length; i += 1) {
+      if ((i & 1) === 0) {
+        h ^= h << 7 ^ str.charCodeAt(i) * (h >> 3);
+      } else {
+        h ^= ~((h << 11) + str.charCodeAt(i) ^ h >> 5);
+      }
+    }
+    h >>>= 0;
+    return pad(h.toString(16), 8);
+  };
+  var encrypt = (salt, pwd0, iter) => {
+    const pwd = salt + pwd0;
+    let h1 = hash1(pwd);
+    let h2 = hash2(pwd);
+    let h3 = hash3(pwd);
+    let h4 = hash4(pwd);
+    let h5 = hash5(pwd);
+    let h6 = hash6(pwd);
+    let h7 = hash7(pwd);
+    let h8 = hash8(pwd);
+    let h9 = hash9(pwd);
+    let h10 = hash10(pwd);
+    let h11 = hash11(pwd);
+    let h12 = hash12(pwd);
+    let h13 = hash13(pwd);
+    let tmp1;
+    let tmp2;
+    let tmp3;
+    let tmp4;
+    let tmp5;
+    let tmp6;
+    let tmp7;
+    let tmp8;
+    let tmp9;
+    let tmp10;
+    let tmp11;
+    let tmp12;
+    let tmp13;
+    for (let i = 0; i < iter; i += 1) {
+      tmp1 = h13 + h12 + h11 + h10 + h9 + salt + h8 + h7 + h6 + h5 + h4 + h3 + h2 + h1;
+      tmp2 = h1 + h3 + salt + h2;
+      tmp3 = salt + h2 + h8 + h1 + h3;
+      tmp4 = h7 + salt + h5;
+      tmp5 = h4 + salt + h8;
+      tmp6 = h10 + h13 + salt + h6;
+      tmp7 = h6 + h1 + h9 + salt;
+      tmp8 = h9 + salt + h10;
+      tmp9 = h7 + salt + h12;
+      tmp10 = h11 + salt + h5;
+      tmp11 = h4 + salt + h13 + h2;
+      tmp12 = h11 + salt + h6;
+      tmp13 = h4 + h12 + salt + h8;
+      h1 = hash1(tmp1);
+      h2 = hash2(tmp2);
+      h3 = hash3(tmp3);
+      h4 = hash4(tmp4);
+      h5 = hash5(tmp5);
+      h6 = hash6(tmp6);
+      h7 = hash7(tmp7);
+      h8 = hash8(tmp8);
+      h9 = hash9(tmp9);
+      h10 = hash10(tmp10);
+      h11 = hash11(tmp11);
+      h12 = hash12(tmp12);
+      h13 = hash13(tmp13);
+    }
+    return h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13;
+  };
+  function generateRandomHexString(length = 32) {
+    const characters = "0123456789abcdef";
+    let result = "";
+    for (let i = 0; i < length; i += 1) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  }
+  var ITER_FULL = 1e4;
+  var encrypt_default = encrypt;
+
+  // src/pages/LoginPage.jsx
+  var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
+  var EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
+  var PWD_MIN_LENGTH = 6;
+  function LoginPage() {
+    const [email, setEmail] = (0, import_react6.useState)("");
+    const [emailError, setEmailError] = (0, import_react6.useState)("");
+    const [pwd, setPwd] = (0, import_react6.useState)("");
+    const [pwdError, setPwdError] = (0, import_react6.useState)("");
+    const [pwdVisibility, setPwdVisibility] = (0, import_react6.useState)(false);
+    const [validation, setValidation] = (0, import_react6.useState)({ email: false, pwd: false });
+    const [error, setError] = (0, import_react6.useState)(null);
+    (0, import_react6.useEffect)(() => {
+      if (!email) {
+        setEmailError("\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, email: false }));
+      } else if (EMAIL_REGEX.test(email)) {
+        setEmailError("");
+        setValidation((draft) => ({ ...draft, email: true }));
+      } else {
+        setEmailError("\uC798\uBABB\uB41C \uC774\uBA54\uC77C \uD615\uC2DD\uC785\uB2C8\uB2E4.");
+        setValidation((draft) => ({ ...draft, email: false }));
+      }
+      if (!pwd) {
+        setPwdError("\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, pwd: false }));
+      } else if (pwd.length < PWD_MIN_LENGTH) {
+        setPwdError(`\uBE44\uBC00\uBC88\uD638\uB294 ${PWD_MIN_LENGTH}\uC790 \uC774\uC0C1\uC774\uC5B4\uC57C \uD569\uB2C8\uB2E4.`);
+        setValidation((draft) => ({ ...draft, pwd: false }));
+      } else {
+        setPwdError("");
+        setValidation((draft) => ({ ...draft, pwd: true }));
+      }
+    }, [email, pwd]);
+    const handleLogin = () => {
+      if (validation.email && validation.pwd) {
+        try {
+          postPwdIter({ email }).then(async (iter) => {
+            const pwdEncrypted = encrypt_default(iter.salt, pwd, iter.iter);
+            setPwd("");
+            const user = await postLogin({ email, pwdEncrypted });
+          });
+        } catch (err) {
+          setError(err);
+        }
+      } else {
+        setError({
+          message: `\uC785\uB825\uAC12\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.
+email: ${validation.email ? "valid" : "invalid"}
+password: ${validation.pwd ? "valid" : "invalid"}`
+        });
+      }
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: LoginPage_default.section, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("img", { className: LoginPage_default.logo, src: "/images/site-logo.png", alt: "View My StartUp Logo" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("form", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("label", { htmlFor: "email", children: [
+            "\uC774\uBA54\uC77C",
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+              "input",
+              {
+                id: "email",
+                name: "email",
+                placeholder: "\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                type: "email",
+                autoComplete: "on",
+                required: true,
+                className: !email || EMAIL_REGEX.test(email) ? LoginPage_default.alert : "",
+                value: email,
+                onChange: (e) => setEmail(e.target.value)
+              }
+            )
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { id: "email-error", className: LoginPage_default.error, children: emailError }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("label", { htmlFor: "password", children: [
+            "\uBE44\uBC00\uBC88\uD638",
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: LoginPage_default.pwd_container, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                "input",
+                {
+                  id: "password",
+                  name: "password",
+                  placeholder: "\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                  type: pwdVisibility ? "text" : "password",
+                  required: true,
+                  value: pwd,
+                  onKeyDown: (e) => {
+                    if (e.key === "Process") return;
+                    if (e.code === "Enter") {
+                      e.preventDefault();
+                      handleLogin();
+                    }
+                  },
+                  onChange: (e) => setPwd(e.target.value),
+                  className: !pwd || pwd.length < PWD_MIN_LENGTH ? LoginPage_default.alert : ""
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { type: "button", onClick: () => setPwdVisibility(!pwdVisibility), children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                "img",
+                {
+                  src: pwdVisibility ? "/images/btn_visibility_on_24px.svg" : "/images/btn_visibility_off_24px.svg",
+                  alt: "Button visibility on and off"
+                }
+              ) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { id: "pwd-error", className: LoginPage_default.error, children: pwdError }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+            "button",
+            {
+              id: "button-login",
+              className: LoginPage_default.button,
+              type: "button",
+              disabled: !(validation.email && validation.pwd),
+              onClick: handleLogin,
+              children: "\uB85C\uADF8\uC778"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: LoginPage_default.oauth, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: "\uAC04\uD3B8 \uB85C\uADF8\uC778\uD558\uAE30" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: LoginPage_default.oauth_images, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "https://www.google.com/", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("img", { src: "/images/oauth-Google.png", alt: "\uAD6C\uAE00\uB85C \uB85C\uADF8\uC778\uD558\uAE30", className: LoginPage_default.img_oauth }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "https://www.kakaocorp.com/page/", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("img", { src: "/images/oauth-Kakao.png", alt: "\uCE74\uCE74\uC624\uB85C \uB85C\uADF8\uC778\uD558\uAE30", className: LoginPage_default.img_oauth }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: LoginPage_default.check_description, children: [
+          "\uD310\uB2E4\uB9C8\uCF13\uC774 \uCC98\uC74C\uC774\uC2E0\uAC00\uC694? ",
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Link, { to: "/signup", children: "\uD68C\uC6D0\uAC00\uC785" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PopUp_default2, { error, popUpText: error?.message, setError })
+    ] });
+  }
+  var LoginPage_default2 = LoginPage;
 
   // src/pages/SignupPage.jsx
   init_react_shim();
+  var import_react7 = __toESM(require_react(), 1);
+  var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
+  var EMAIL_REGEX2 = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
+  var PWD_MIN_LENGTH2 = 6;
+  var NICKNAME_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]*$/;
   function SignupPage() {
-    return "\uD68C\uC6D0 \uAC00\uC785 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    const [email, setEmail] = (0, import_react7.useState)("");
+    const [emailError, setEmailError] = (0, import_react7.useState)("");
+    const [nickname, setNickname] = (0, import_react7.useState)("");
+    const [nicknameError, setNicknameError] = (0, import_react7.useState)("");
+    const [pwd, setPwd] = (0, import_react7.useState)("");
+    const [pwdError, setPwdError] = (0, import_react7.useState)("");
+    const [pwdCfm, setPwdCfm] = (0, import_react7.useState)("");
+    const [pwdCfmError, setPwdCfmError] = (0, import_react7.useState)("");
+    const [pwdVisibility, setPwdVisibility] = (0, import_react7.useState)(false);
+    const [pwdCfmVisibility, setPwdCfmVisibility] = (0, import_react7.useState)(false);
+    const [validation, setValidation] = (0, import_react7.useState)({ email: false, nickname: false, pwd: false, pwdCfm: false });
+    const [error, setError] = (0, import_react7.useState)(null);
+    const setUer = useSetUser();
+    (0, import_react7.useEffect)(() => {
+      if (!email) {
+        setEmailError("\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, email: false }));
+      } else if (EMAIL_REGEX2.test(email)) {
+        setEmailError("");
+        setValidation((draft) => ({ ...draft, email: true }));
+      } else {
+        setEmailError("\uC798\uBABB\uB41C \uC774\uBA54\uC77C \uD615\uC2DD\uC785\uB2C8\uB2E4.");
+        setValidation((draft) => ({ ...draft, email: false }));
+      }
+      if (!nickname) {
+        setNicknameError("\uB2C9\uB124\uC784\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, nickname: false }));
+      } else if (NICKNAME_REGEX.test(nickname)) {
+        setNicknameError("");
+        setValidation((draft) => ({ ...draft, nickname: true }));
+      } else {
+        setNicknameError("\uC798\uBABB\uB41C \uB2C9\uB124\uC784 \uD615\uC2DD\uC785\uB2C8\uB2E4.");
+        setValidation((draft) => ({ ...draft, nickname: false }));
+      }
+      if (!pwd) {
+        setPwdError("\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, pwd: false }));
+      } else if (pwd.length < PWD_MIN_LENGTH2) {
+        setPwdError(`\uBE44\uBC00\uBC88\uD638\uB294 ${PWD_MIN_LENGTH2}\uC790 \uC774\uC0C1\uC774\uC5B4\uC57C \uD569\uB2C8\uB2E4.`);
+        setValidation((draft) => ({ ...draft, pwd: false }));
+      } else {
+        setPwdError("");
+        setValidation((draft) => ({ ...draft, pwd: true }));
+      }
+      if (!pwdCfm) {
+        setPwdCfmError("\uC704\uC758 \uBE44\uBC00\uBC88\uD638\uB97C \uB2E4\uC2DC \uD55C\uBC88 \uB354 \uC785\uB825\uD574\uC8FC\uC138\uC694.");
+        setValidation((draft) => ({ ...draft, pwdCfm: false }));
+      } else if (pwdCfm !== pwd) {
+        setPwdCfmError("\uBE44\uBC00\uBC88\uD638\uAC00 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+        setValidation((draft) => ({ ...draft, pwdCfm: false }));
+      } else {
+        setPwdCfmError("");
+        setValidation((draft) => ({ ...draft, pwdCfm: true }));
+      }
+    }, [email, nickname, pwd, pwdCfm]);
+    const handleSignup = async () => {
+      if (validation.email && validation.nickname && validation.pwd && validation.pwdCfm) {
+        try {
+          const salt = generateRandomHexString();
+          const pwdEncrypted = encrypt_default(salt, pwd, ITER_FULL);
+          setPwd("");
+          setPwdCfm("confirmed");
+          const result = await postSignup({ email, nickname, salt, pwdEncrypted, pwdCfm });
+          if (result) {
+            setUer(result);
+            localStorage.setItem("userUuid", result.id);
+            localStorage.setItem("nickname", result.nickname);
+            localStorage.setItem("sessionPwd", result.sessionPwd);
+            localStorage.setItem("sessionCreatedAt", result.createdAt);
+          }
+        } catch (err) {
+          setError(err);
+        }
+      } else {
+        setError({
+          message: `\uC785\uB825\uAC12\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.
+email: ${validation.email ? "valid" : "invalid"}
+nickname: ${validation.nickname ? "valid" : "invalid"}
+password: ${validation.pwd ? "valid" : "invalid"}
+password confirm: ${validation.pwdCfm ? "valid" : "invalid"}`
+        });
+      }
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: LoginPage_default.section, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { className: LoginPage_default.logo, src: "/images/site-logo.png", alt: "View My StartUp Logo" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("form", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { htmlFor: "email", children: [
+            "\uC774\uBA54\uC77C",
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+              "input",
+              {
+                id: "email",
+                name: "email",
+                placeholder: "\uC774\uBA54\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                type: "email",
+                autoComplete: "on",
+                required: true,
+                className: !email || EMAIL_REGEX2.test(email) ? LoginPage_default.alert : "",
+                value: email,
+                onChange: (e) => setEmail(e.target.value)
+              }
+            )
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { id: "email-error", className: LoginPage_default.error, children: emailError }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { htmlFor: "nickname", children: [
+            "\uB2C9\uB124\uC784",
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+              "input",
+              {
+                id: "nickname",
+                name: "nickname",
+                placeholder: "\uB2C9\uB124\uC784\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                type: "text",
+                autoComplete: "on",
+                required: true,
+                className: !nickname || NICKNAME_REGEX.test(nickname) ? LoginPage_default.alert : "",
+                value: nickname,
+                onChange: (e) => setNickname(e.target.value)
+              }
+            )
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { id: "nickname-error", className: LoginPage_default.error, children: nicknameError }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { htmlFor: "password", children: [
+            "\uBE44\uBC00\uBC88\uD638",
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.pwd_container, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                "input",
+                {
+                  id: "password",
+                  name: "password",
+                  placeholder: "\uBE44\uBC00\uBC88\uD638\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                  type: pwdVisibility ? "text" : "password",
+                  required: true,
+                  className: !pwd || pwd.length < PWD_MIN_LENGTH2 ? LoginPage_default.alert : "",
+                  value: pwd,
+                  onChange: (e) => setPwd(e.target.value)
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", onClick: () => setPwdVisibility(!pwdVisibility), children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/btn_visibility_off_24px.svg", alt: "Button visibility off" }) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { id: "pwd-error", className: LoginPage_default.error, children: pwdError }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { htmlFor: "password-confirm", children: [
+            "\uBE44\uBC00\uBC88\uD638 \uD655\uC778",
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.pwd_container, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                "input",
+                {
+                  id: "password-confirm",
+                  name: "password-confirm",
+                  placeholder: "\uBE44\uBC00\uBC88\uD638\uB97C \uB2E4\uC2DC \uD55C \uBC88 \uC785\uB825\uD574\uC8FC\uC138\uC694",
+                  type: pwdCfmVisibility ? "text" : "password",
+                  required: true,
+                  className: !pwdCfm || pwdCfm !== pwd ? LoginPage_default.alert : "",
+                  value: pwdCfm,
+                  onKeyDown: (e) => {
+                    if (e.key === "Process") return;
+                    if (e.code === "Enter") {
+                      e.preventDefault();
+                      handleSignup();
+                    }
+                  },
+                  onChange: (e) => setPwdCfm(e.target.value)
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", onClick: () => setPwdCfmVisibility(!pwdCfmVisibility), children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/btn_visibility_off_24px.svg", alt: "Button visibility off" }) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { id: "pwd-cfm-error", className: LoginPage_default.error, children: pwdCfmError }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            "button",
+            {
+              id: "button-signup",
+              className: LoginPage_default.button,
+              type: "button",
+              disabled: !(validation.email && validation.nickname && validation.pwd && validation.pwdCfm),
+              onClick: handleSignup,
+              children: "\uD68C\uC6D0\uAC00\uC785"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.oauth, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\uAC04\uD3B8 \uAC00\uC785\uD558\uAE30" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.oauth_images, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "https://www.google.com/", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Google.png", alt: "\uAD6C\uAE00\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "https://www.kakaocorp.com/page/", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Kakao.png", alt: "\uCE74\uCE74\uC624\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.check_description, children: [
+          "\uC774\uBBF8 \uD68C\uC6D0\uC774\uC2E0\uAC00\uC694? ",
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "/login", children: "\uB85C\uADF8\uC778" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(PopUp_default2, { error, popUpText: error?.message, setError })
+    ] });
   }
   var SignupPage_default = SignupPage;
 
   // src/pages/NotFoundPage.jsx
   init_react_shim();
+  var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
   function NotFoundPage() {
-    return "\uC874\uC7AC\uD558\uC9C0 \uC54A\uB294 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4.";
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h1", { children: "\uC874\uC7AC\uD558\uC9C0 \uC54A\uB294 \uD398\uC774\uC9C0\uC785\uB2C8\uB2E4." });
   }
   var NotFoundPage_default = NotFoundPage;
 
-  // src/Main.jsx
-  var import_jsx_runtime6 = __toESM(require_jsx_runtime(), 1);
+  // src/app/Main.jsx
+  var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
   function Main() {
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(App_default, {}), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(LandingPage_default, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { path: "login", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(LoginPage_default, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { path: "signup", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(SignupPage_default, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Route, { path: "user/:userId", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Route, { path: "companies", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(CompanyListPage_default2, {}) }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { path: ":companyId", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(CompanyDetailPage_default, {}) })
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(UserProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(App_default, {}), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(LandingPage_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "login", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(LoginPage_default2, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "signup", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SignupPage_default, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "user/:userId", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "companies", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(CompanyListPage_default2, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: ":companyId", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(CompanyDetailPage_default2, {}) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          Route,
-          {
-            path: "comparison-status",
-            element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ComparisonStatusPage_default, {})
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          Route,
-          {
-            path: "investment-status",
-            element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(InvestmentStatusPage_default, {})
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Route, { path: "my-comparison", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(MyComparisonPage_default, {}) }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { path: "result", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ComparisonResultPage_default, {}) })
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "comparison-status", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ComparisonStatusPage_default, {}) }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "investment-status", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(InvestmentStatusPage_default, {}) }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "my-comparison", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(MyComparisonPage_default, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "result", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ComparisonResultPage_default, {}) })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Route, { path: "*", element: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(NotFoundPage_default, {}) })
-    ] }) }) });
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "*", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(NotFoundPage_default, {}) })
+    ] }) }) }) });
   }
   var Main_default = Main;
 
   // src/index.jsx
-  var import_jsx_runtime7 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
   var root = import_client.default.createRoot(document.getElementById("root"));
-  root.render(/* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Main_default, {}));
+  root.render(/* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Main_default, {}));
 })();
 /*! Bundled license information:
 

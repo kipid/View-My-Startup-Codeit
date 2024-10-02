@@ -1,13 +1,14 @@
 import { Outlet } from 'react-router-dom';
-import GNB from '../components/GNB';
+import GNB from '../components/GNB.jsx';
+import styles from './App.module.css';
 
 function App() {
 	return (
 		<>
 			<GNB />
-			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+			<main className={styles.main}>
 				<Outlet />
-			</div>
+			</main>
 		</>
 	);
 }

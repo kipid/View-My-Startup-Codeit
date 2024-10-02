@@ -41,13 +41,18 @@
 			border: 1px solid var(--gray-700);
 		}
 
-		& img {
+		& button {
 			position: absolute;
 			width: 24px;
 			left: 12px;
 			top: 12px;
 			bottom: 12px;
 			cursor: pointer;
+
+			& img {
+				position: absolute;
+				inset: 0;
+			}
 		}
 	}
 

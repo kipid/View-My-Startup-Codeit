@@ -13,41 +13,34 @@ function CompanyListPage() {
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [pageSize, setPageSize] = useState(20);
 	const [isPending, errorLoadingCompanies, loadCompaniesAsync, setError] = useAsync(getCompanies);
-	const [showPopUp, setShowPopUp] = useState(false);
-
-	const popUp = error => {
-		if (error) {
-			setShowPopUp(true);
-		}
-	};
 
 	const onSearch = useCallback(
-		async k => {
+		async keyw => {
 			try {
 				setPageNum(1);
-				const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, k });
+				const result = await loadCompaniesAsync({ skip: 0, take: pageSize, sort, keyword: keyw });
 				if (!result) {
 					return;
 				}
 				setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
 				setCompanies(result.list);
 			} catch (err) {
-				if (err) {
-					popUp(err);
-				}
-				console.error(err);
+				setError(err);
 			}
 		},
-		[pageSize, sort, loadCompaniesAsync],
+		[pageSize, sort, loadCompaniesAsync, setError],
 	);
 
-	const handleSearch = useCallback(async (e, k) => {
-		if (isPending || e.key === 'Process') return;
-		if (e.code === 'Enter') {
-			e.preventDefault();
-			onSearch(k);
-		}
-	}, []);
+	const handleSearch = useCallback(
+		async (e, keyw) => {
+			if (isPending || e.key === 'Process') return;
+			if (e.code === 'Enter') {
+				e.preventDefault();
+				onSearch(keyw);
+			}
+		},
+		[isPending, onSearch],
+	);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -59,16 +52,13 @@ function CompanyListPage() {
 				setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
 				setCompanies(result.list);
 			} catch (err) {
-				if (err) {
-					popUp(err);
-				}
-				console.error(err);
+				setError(err);
 			}
 		}
 		fetchData();
 
 		return () => {};
-	}, [pageNum, pageSize, sort]);
+	}, [pageNum, pageSize, sort, loadCompaniesAsync, setError]);
 
 	return (
 		<>
@@ -85,7 +75,9 @@ function CompanyListPage() {
 								handleSearch(e, keyword);
 							}}
 						/>
-						<img src="/images/ic_search.png" alt="Search" onClick={() => onSearch(keyword)} />
+						<button type="button" onClick={() => onSearch(keyword)}>
+							<img src="/images/ic_search.png" alt="Search" />
+						</button>
 					</div>
 					<select value={sort} onChange={e => setSort(e.target.value)}>
 						<option value="recent">최신순</option>

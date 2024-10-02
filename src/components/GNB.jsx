@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 import styles from './GNB.module.css';
-import siteLogo from '../assets/site-logo.png';
+import { useUser, useSetUser } from '../context/UserProvider';
 
 function getLinkStyle({ isActive }) {
 	return {
@@ -9,11 +10,25 @@ function getLinkStyle({ isActive }) {
 }
 
 function Nav() {
+	const user = useUser();
+	const setUser = useSetUser();
+	useEffect(() => {
+		const userUuid = localStorage.getItem('userUuid');
+		if (userUuid) {
+			const nickname = localStorage.getItem('nickname');
+			const sessionPwd = localStorage.getItem('sessionPwd');
+			const sessionCreatedAt = localStorage.getItem('sessionCreatedAt');
+			if (nickname && sessionPwd && sessionCreatedAt) {
+				setUser({ id: userUuid, nickname, sessionPwd, createdAt: sessionCreatedAt });
+			}
+		}
+	}, [setUser]);
+
 	return (
 		<header className={styles.gnb}>
 			<div className={styles.gnbContainer}>
-				<Link to="/">
-					<img className={styles.siteLogo} src={siteLogo} alt="logo" />
+				<Link to="/" className={styles.logoContainer}>
+					<img className={styles.siteLogo} src="/images/site-logo.png" alt="logo" />
 				</Link>
 				<div className={styles.navMenus}>
 					<NavLink className={styles.navLinkStyle} to="/user/:userId/companies" style={getLinkStyle}>
@@ -30,6 +45,15 @@ function Nav() {
 					</NavLink>
 				</div>
 			</div>
+			{user ? (
+				<Link to="/profile">
+					<div className={styles.login}>{user.nickname}</div>
+				</Link>
+			) : (
+				<Link to="/login">
+					<div className={styles.login}>로그인</div>
+				</Link>
+			)}
 		</header>
 	);
 }
