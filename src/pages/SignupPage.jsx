@@ -203,8 +203,9 @@ function SignupPage() {
 							target="_blank"
 							href="#login"
 							onClick={() => {
+								const state = generateRandomHexString();
 								window.open(
-									`https://accounts.google.com/o/oauth2/v2/auth?cliend_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('')}&response_type=token&scope=${encodeURIComponent(`https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`)}&state=${state}&prompt=consent`,
+									`https://accounts.google.com/o/oauth2/v2/auth?cliend_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent(`https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`)}&state=${state}&prompt=consent`,
 								);
 								return false;
 							}}
