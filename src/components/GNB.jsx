@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 import styles from './GNB.module.css';
-import { useUser } from '../context/UserProvider';
+import { useUser, useSetUser } from '../context/UserProvider';
 
 function getLinkStyle({ isActive }) {
 	return {
@@ -10,6 +11,18 @@ function getLinkStyle({ isActive }) {
 
 function Nav() {
 	const user = useUser();
+	const setUser = useSetUser();
+	useEffect(() => {
+		const userUuid = localStorage.getItem('userUuid');
+		if (userUuid) {
+			const nickname = localStorage.getItem('nickname');
+			const sessionPwd = localStorage.getItem('sessionPwd');
+			const sessionCreatedAt = localStorage.getItem('sessionCreatedAt');
+			if (nickname && sessionPwd && sessionCreatedAt) {
+				setUser({ id: userUuid, nickname, sessionPwd, createdAt: sessionCreatedAt });
+			}
+		}
+	}, [setUser]);
 
 	return (
 		<header className={styles.gnb}>
