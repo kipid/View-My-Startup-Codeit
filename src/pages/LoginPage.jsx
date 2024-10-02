@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postLogin, postPwdIter } from '../apis/loginSignupService';
-import encrypt from '../apis/encrypt';
+import { postLogin, postPwdIter } from '../apis/loginSignupService.js';
+import encrypt from '../apis/encrypt.js';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -42,14 +42,20 @@ function LoginPage() {
 	}, [email, pwd]);
 
 	const handleLogin = () => {
-		try {
-			postPwdIter({ email }).then(async iter => {
-				const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
-				setPwd('');
-				const user = await postLogin({ email, pwdEncrypted });
+		if (validation.email && validation.pwd) {
+			try {
+				postPwdIter({ email }).then(async iter => {
+					const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
+					setPwd('');
+					const user = await postLogin({ email, pwdEncrypted });
+				});
+			} catch (err) {
+				setError(err);
+			}
+		} else {
+			setError({
+				message: `입력값이 유효하지 않습니다.\nemail: ${validation.email ? 'valid' : 'invalid'}\npassword: ${validation.pwd ? 'valid' : 'invalid'}`,
 			});
-		} catch (err) {
-			setError(err);
 		}
 	};
 
@@ -57,7 +63,7 @@ function LoginPage() {
 		<>
 			<section className={styles.section}>
 				<Link to="/">
-					<img className={styles.logo} src="/images/Property-1=lg.png" alt="판다마켓 logo" />
+					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
 				</Link>
 				<form>
 					<label htmlFor="email">
@@ -74,7 +80,7 @@ function LoginPage() {
 							onChange={e => setEmail(e.target.value)}
 						/>
 					</label>
-					<div id="email-error" className={styles.email_error}>
+					<div id="email-error" className={styles.error}>
 						{emailError}
 					</div>
 					<label htmlFor="password">
@@ -105,10 +111,16 @@ function LoginPage() {
 							</button>
 						</div>
 					</label>
-					<div id="pwd-error" className={styles.pwd_error}>
+					<div id="pwd-error" className={styles.error}>
 						{pwdError}
 					</div>
-					<button id="button-login" type="button" disabled={!(validation.email && validation.pwd)} onClick={handleLogin}>
+					<button
+						id="button-login"
+						className={styles.button}
+						type="button"
+						disabled={!(validation.email && validation.pwd)}
+						onClick={handleLogin}
+					>
 						로그인
 					</button>
 				</form>
