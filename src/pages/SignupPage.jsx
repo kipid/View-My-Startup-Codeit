@@ -199,12 +199,22 @@ function SignupPage() {
 				<div className={styles.oauth}>
 					<span>간편 가입하기</span>
 					<div className={styles.oauth_images}>
-						<Link to="https://www.google.com/">
+						<a
+							target="_blank"
+							href="#login"
+							onClick={() => {
+								window.open(
+									`https://accounts.google.com/o/oauth2/v2/auth?cliend_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('')}&response_type=token&scope=${encodeURIComponent(`https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`)}&state=${state}&prompt=consent`,
+								);
+								return false;
+							}}
+							rel="noreferrer"
+						>
 							<img src="/images/oauth-Google.png" alt="구글로 가입하기" className={styles.img_oauth} />
-						</Link>
-						<Link to="https://www.kakaocorp.com/page/">
+						</a>
+						<a target="_blank" href="https://www.kakaocorp.com/page/" rel="noreferrer">
 							<img src="/images/oauth-Kakao.png" alt="카카오로 가입하기" className={styles.img_oauth} />
-						</Link>
+						</a>
 					</div>
 				</div>
 				<div className={styles.check_description}>
