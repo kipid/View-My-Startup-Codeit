@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination.jsx';
 import style from './CompanyDetailPage.module.css';
 import logo from '../assets/codeit_logo.svg';
+import noImage from '../assets/no_image.png';
 import { COMPANY, INVESTMENT } from '../shared/mock/mock.js';
 
 const name = '코드잇';
@@ -62,7 +63,7 @@ function CompanyDetailPage() {
 			<div id={style.companyDetail}>
 				<div id={style.companyDetailHeader}>
 					<div>
-						<img src={logo} alt="companyLogo" />
+						<img src={companyDetail.logo ?? noImage} alt="companyLogo" />
 						<div>
 							<p id={style.companyName}>{companyDetail.name}</p>
 							<p id={style.companyCategory}>{companyDetail.category}</p>
