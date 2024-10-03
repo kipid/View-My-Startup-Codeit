@@ -1,0 +1,42 @@
+#dropdownWrapper {
+	position: relative;
+
+	button {
+		background-color: inherit;
+		border: 0;
+	}
+
+	#dropdown {
+		position: absolute;
+		z-index: 999;
+		right: 12px;
+		top: 12px;
+
+		li {
+			width: 144px;
+			height: 40px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			cursor: pointer;
+			border: 1px solid #747474;
+			border-bottom: 0;
+			background-color: inherit;
+
+			color: #d8d8d8;
+			font-size: 14px;
+			font-weight: 400;
+
+			&:first-child {
+				border-radius: 10px 10px 0 0;
+			}
+
+			&:last-child {
+				border-bottom: 1px solid #747474;
+				border-radius: 0 0 10px 10px;
+			}
+		}
+	}
+}

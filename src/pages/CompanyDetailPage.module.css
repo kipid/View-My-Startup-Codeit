@@ -138,7 +138,16 @@
 					height: 64px;
 
 					td:last-child {
+						height: 100%;
 						text-align: left;
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: space-between;
+						align-content: center;
+
+						p {
+							margin-left: 10px;
+						}
 					}
 				}
 			}

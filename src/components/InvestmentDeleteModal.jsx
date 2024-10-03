@@ -2,7 +2,7 @@ import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
 
-function InvestmentDeleteModal({ companyDetail, show = false }) {
+function InvestmentDeleteModal({ investmentDetail, show = false }) {
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
 
