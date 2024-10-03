@@ -7,6 +7,7 @@ import Modal from '../components/Modal.jsx';
 import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
 import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
+import TouchInvestment from '../components/TouchInvestment.jsx';
 
 const pageSize = 5;
 
@@ -15,9 +16,9 @@ function CompanyDetailPage() {
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [totalAmount, setTotalAmount] = useState(0);
-	const isModalOn = true;
+	const isModalOn = false;
 	const isUpdate = false;
-	const isDelete = true;
+	const isDelete = false;
 
 	useEffect(() => {
 		const startIdx = pageSize * (pageNum - 1);
@@ -37,8 +38,8 @@ function CompanyDetailPage() {
 		<div id={style.companyDetailPage}>
 			{isModalOn && (
 				<Modal>
-					<InvestmentUpdateModal companyDetail={companyDetail} show={isUpdate} />
-					<InvestmentDeleteModal companyDetail={companyDetail} show={isDelete} />
+					<InvestmentUpdateModal investmentDetail="" show={isUpdate} />
+					<InvestmentDeleteModal investmentDetail="" show={isDelete} />
 				</Modal>
 			)}
 
@@ -98,7 +99,10 @@ function CompanyDetailPage() {
 										<td>{item.name}</td>
 										<td>{idx + 1 + (pageNum - 1) * pageSize}위</td>
 										<td>{item.amount}원</td>
-										<td>{item.comment}</td>
+										<td>
+											<p>{item.comment}</p>
+											<TouchInvestment />
+										</td>
 									</tr>
 								);
 							})}

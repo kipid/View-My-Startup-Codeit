@@ -2,9 +2,11 @@ import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
 
-function InvestmentUpdateModal({ companyDetail, show = false }) {
+function InvestmentUpdateModal({ investmentDetail, show = false }) {
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
+
+	const logo = ''; // TODO investmentDetail로부터 coompanyId를 받아서 logo를 가져올것.
 
 	return (
 		<div id={style.InvestmentUpdateModal}>
@@ -19,7 +21,7 @@ function InvestmentUpdateModal({ companyDetail, show = false }) {
 				<div id={style.info}>
 					<p>투자 기업 정보</p>
 					<div>
-						<img src={companyDetail.logo ?? noImage} alt="companyLogo" />
+						<img src={logo ?? noImage} alt="companyLogo" />
 						<p>코드잇</p>
 						<p>에듀테크</p>
 					</div>
