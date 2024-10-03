@@ -77,7 +77,7 @@ function Pagination({ pageNum, setPageNum, pageNumMax }) {
 	return (
 		<div
 			className={styles.pagination}
-			onClick={function (event) {
+			onClick={event => {
 				const pages = event.currentTarget.querySelectorAll('div');
 				const { target } = event;
 				const targetN = Number(target.innerText);
@@ -98,63 +98,6 @@ function Pagination({ pageNum, setPageNum, pageNumMax }) {
 		>
 			<div>&lt;</div>
 			{paginationBody}
-			{/* {// pageNum <= 1 ? (
-			// 	<>
-			// 		<div className={styles.selected}>1</div>
-			// 		{pageNumMax >= 2 && <div>2</div>}
-			// 		{pageNumMax >= 3 && <div>3</div>}
-			// 		{pageNumMax >= 4 && <div>4</div>}
-			// 		{pageNumMax >= 5 && <div>5</div>}
-			// 	</>
-			// ) : pageNum <= pageNumMax && pageNum === 2 ? (
-			// 	<>
-			// 		<div>1</div>
-			// 		<div className={styles.selected}>2</div>
-			// 		{pageNumMax >= 3 && <div>3</div>}
-			// 		{pageNumMax >= 4 && <div>4</div>}
-			// 		{pageNumMax >= 5 && <div>5</div>}
-			// 	</>
-			// ) : pageNum <= pageNumMax && pageNum === 3 ? (
-			// 	<>
-			// 		<div>1</div>
-			// 		<div>2</div>
-			// 		<div className={styles.selected}>3</div>
-			// 		{pageNumMax >= 4 && <div>4</div>}
-			// 		{pageNumMax >= 5 && <div>5</div>}
-			// 	</>
-			// ) : pageNum < pageNumMax - 2 && pageNum > 3 ? (
-			// 	<>
-			// 		<div>{pageNum - 2}</div>
-			// 		<div>{pageNum - 1}</div>
-			// 		<div className={styles.selected}>{pageNum}</div>
-			// 		<div>{pageNum + 1}</div>
-			// 		<div>{pageNum + 2}</div>
-			// 	</>
-			// ) : pageNum === pageNumMax - 2 ? (
-			// 	<>
-			// 		<div>{pageNum - 2}</div>
-			// 		<div>{pageNum - 1}</div>
-			// 		<div className={styles.selected}>{pageNum}</div>
-			// 		<div>{pageNum + 1}</div>
-			// 		<div>{pageNum + 2}</div>
-			// 	</>
-			// ) : pageNum === pageNumMax - 1 ? (
-			// 	<>
-			// 		<div>{pageNum - 3}</div>
-			// 		<div>{pageNum - 2}</div>
-			// 		<div>{pageNum - 1}</div>
-			// 		<div className={styles.selected}>{pageNum}</div>
-			// 		<div>{pageNum + 1}</div>
-			// 	</>
-			// ) : (
-			// 	<>
-			// 		<div>{pageNumMax - 4}</div>
-			// 		<div>{pageNumMax - 3}</div>
-			// 		<div>{pageNumMax - 2}</div>
-			// 		<div>{pageNumMax - 1}</div>
-			// 		<div className={styles.selected}>{pageNumMax}</div>
-			// 	</>
-			// )} */}
 			<div>&gt;</div>
 		</div>
 	);

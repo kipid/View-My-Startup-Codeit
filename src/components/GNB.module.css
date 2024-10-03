@@ -2,9 +2,11 @@
 	position: sticky;
 	top: 0;
 	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
 	height: 60px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	background-color: var(--gray-100);
 	border-bottom: 1px solid var(--gray-400);
@@ -13,6 +15,21 @@
 
 	@media (max-width: 744px) {
 		height: 56px;
+	}
+}
+
+.login {
+	display: inline-block;
+	width: max-content;
+	padding: var(--6px) var(--12px);
+	margin-right: var(--12px);
+	font-size: var(--14px);
+	background-color: var(--prime-blue);
+	color: var(--gray-900);
+	border-radius: var(--5px);
+
+	@media (max-width: 744px) {
+		padding: var(--6px);
 	}
 }
 
@@ -30,7 +47,15 @@
 
 	@media (max-width: 744px) {
 		margin-left: 16px;
-		gap: 24px;
+		gap: 10px;
+	}
+}
+
+.logoContainer {
+	flex-shrink: 0;
+
+	@media (max-width: 744px) {
+		margin-left: -8px;
 	}
 }
 
@@ -47,6 +72,10 @@
 .navMenus {
 	display: flex;
 	gap: 34px;
+
+	@media (max-width: 744px) {
+		gap: 8px;
+	}
 }
 
 .navLinkStyle {
