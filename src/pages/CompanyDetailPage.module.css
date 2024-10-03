@@ -145,3 +145,91 @@
 		}
 	}
 }
+
+#InvestmentUpdateModal {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	#modalHeader {
+		display: flex;
+		justify-content: space-between;
+		align-content: center;
+		height: 32px;
+
+		p {
+			display: flex;
+			align-content: center;
+			flex-wrap: wrap;
+		}
+
+		button {
+			background-color: inherit;
+			border: none;
+		}
+	}
+
+	#modalBody {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+
+		> div {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			height: 85px;
+
+			&#info {
+				height: 77px;
+
+				div {
+					display: flex;
+
+					img {
+						height: 40px;
+						object-fit: contain;
+					}
+
+					p {
+						margin: 0 8px 0 12px;
+						display: flex;
+						align-content: center;
+						flex-wrap: wrap;
+						font-size: 18px;
+						font-weight: 500;
+						color: white;
+
+						&:last-child {
+							margin: 0;
+							font-size: 16px;
+							font-weight: 400;
+							color: #747474;
+						}
+					}
+				}
+			}
+			&#comment {
+				height: 145px;
+
+				> textarea {
+					height: 108px;
+				}
+			}
+
+			> p {
+				font-size: 18px;
+				font-weight: 700;
+				color: white;
+			}
+
+			> input,
+			> textarea {
+				padding: 16px 20px;
+				border-radius: 10px;
+				border: 1px solid #747474;
+				background-color: inherit;
+			}
+		}
+	}
+}

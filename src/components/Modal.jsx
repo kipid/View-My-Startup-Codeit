@@ -2,9 +2,9 @@ import styles from './Modal.module.css';
 
 function Modal({ children }) {
 	return (
-		<div className={styles.modalContainer}>
-			<div className={styles.modalWrapper}>
-				<div className={styles.modalContents}>{children}</div>
+		<div id={styles.modalContainer}>
+			<div id={styles.modalWrapper}>
+				<div id={styles.modalContents}>{children}</div>
 			</div>
 		</div>
 	);
