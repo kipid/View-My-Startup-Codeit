@@ -4,92 +4,11 @@ import style from './CompanyDetailPage.module.css';
 import noImage from '../assets/no_image.png';
 import { COMPANY, INVESTMENT } from '../shared/mock/mock.js';
 import Modal from '../components/Modal.jsx';
-import icDelete from '../assets/ic_delete.png';
 import getScaledNumber from '../shared/utils/getScaledNumber.js';
+import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
+import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
 
 const pageSize = 5;
-
-function InvestmentUpdateModal({ companyDetail, show = false }) {
-	return (
-		<div id={style.InvestmentUpdateModal}>
-			<div id={style.modalHeader}>
-				<p>투자 정보 수정</p>
-				<button type="button">
-					<img src={icDelete} alt="modalOff" />
-				</button>
-			</div>
-
-			<form id={style.modalBody}>
-				<div id={style.info}>
-					<p>투자 기업 정보</p>
-					<div>
-						<img src={companyDetail.logo ?? noImage} alt="companyLogo" />
-						<p>코드잇</p>
-						<p>에듀테크</p>
-					</div>
-				</div>
-				<div id="name">
-					<p>투자자 이름</p>
-					<input type="text" placeholder="투자자 이름을 입력해 주세요" />
-				</div>
-				<div id="amount">
-					<p>투자 금액</p>
-					<input type="text" placeholder="투자 금액을 입력해 주세요" />
-				</div>
-				<div id={style.comment}>
-					<p>투자 코멘트</p>
-					<textarea placeholder="투자에 대한 코멘트를 입력해 주세요" />
-				</div>
-				<div id="password">
-					<p>비밀번호</p>
-					<input type="password" placeholder="비밀번호를 입력해 주세요" />
-				</div>
-				<div id="passwordCheck">
-					<p>비밀번호 확인</p>
-					<input type="password" placeholder="비밀번호를 다시 한 번 입력해 주세요" />
-				</div>
-			</form>
-
-			<div
-				id="modalFooter"
-				style={{ padding: '0 27.5px', display: 'flex', justifyContent: 'space-between', gap: 16, height: 48 }}
-			>
-				<button
-					type="button"
-					style={{
-						width: 183,
-						borderRadius: 50,
-						padding: '13px 48px',
-						backgroundColor: 'inherit',
-						border: '1px solid #eb5230',
-						color: '#eb5230',
-						fontSize: 18,
-						fontWeight: 600,
-						textAlign: 'center',
-					}}
-				>
-					취소
-				</button>
-				<button
-					type="button"
-					style={{
-						width: 183,
-						borderRadius: 50,
-						padding: '13px 48px',
-						backgroundColor: '#eb5230',
-						border: '1px solid #eb5230',
-						color: 'white',
-						fontSize: 18,
-						fontWeight: 600,
-						textAlign: 'center',
-					}}
-				>
-					투자하기
-				</button>
-			</div>
-		</div>
-	);
-}
 
 function CompanyDetailPage() {
 	const [list, setList] = useState([]);
@@ -97,7 +16,8 @@ function CompanyDetailPage() {
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [totalAmount, setTotalAmount] = useState(0);
 	const isModalOn = true;
-	const isUpdate = true;
+	const isUpdate = false;
+	const isDelete = true;
 
 	useEffect(() => {
 		const startIdx = pageSize * (pageNum - 1);
@@ -118,6 +38,7 @@ function CompanyDetailPage() {
 			{isModalOn && (
 				<Modal>
 					<InvestmentUpdateModal companyDetail={companyDetail} show={isUpdate} />
+					<InvestmentDeleteModal companyDetail={companyDetail} show={isDelete} />
 				</Modal>
 			)}
 
