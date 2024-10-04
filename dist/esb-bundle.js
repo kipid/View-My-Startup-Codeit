@@ -7305,7 +7305,7 @@
 
   // src/index.jsx
   init_react_shim();
-  var import_react9 = __toESM(require_react(), 1);
+  var import_react8 = __toESM(require_react(), 1);
   var import_client = __toESM(require_client(), 1);
 
   // src/app/Main.jsx
@@ -8858,9 +8858,6 @@
     return matchPath(path.pathname, nextPath) != null || matchPath(path.pathname, currentPath) != null;
   }
 
-  // src/app/Main.jsx
-  var import_react8 = __toESM(require_react(), 1);
-
   // src/app/App.jsx
   init_react_shim();
 
@@ -8930,7 +8927,7 @@
     }, [setUser]);
     return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { className: GNB_default.gnb, children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: GNB_default.gnbContainer, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: GNB_default.siteLogo, src: "/images/site-logo.png", alt: "logo" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Link, { to: "/", className: GNB_default.logoContainer, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { className: GNB_default.siteLogo, src: "/images/site-logo.png", alt: "logo" }) }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: GNB_default.navMenus, children: [
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/companies", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uC804\uCCB4 \uAE30\uC5C5 \uB9AC\uC2A4\uD2B8" }) }),
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(NavLink, { className: GNB_default.navLinkStyle, to: "/user/:userId/my-comparison", style: getLinkStyle, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: GNB_default.menu, children: "\uB098\uC758 \uAE30\uC5C5 \uBE44\uAD50" }) }),
@@ -8943,11 +8940,9 @@
   }
   var GNB_default2 = Nav;
 
-  // src/components/Pagination.module.css
-  var Pagination_default = {
-    main: "Pagination_main",
-    pagination: "Pagination_pagination",
-    selected: "Pagination_selected"
+  // src/app/App.module.css
+  var App_default = {
+    main: "App_main"
   };
 
   // src/app/App.jsx
@@ -8955,10 +8950,10 @@
   function App() {
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(GNB_default2, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("main", { className: Pagination_default.main, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Outlet, {}) })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("main", { className: App_default.main, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Outlet, {}) })
     ] });
   }
-  var App_default = App;
+  var App_default2 = App;
 
   // src/pages/LandingPage.jsx
   init_react_shim();
@@ -8974,6 +8969,14 @@
 
   // src/components/Pagination.jsx
   init_react_shim();
+
+  // src/components/Pagination.module.css
+  var Pagination_default = {
+    pagination: "Pagination_pagination",
+    selected: "Pagination_selected"
+  };
+
+  // src/components/Pagination.jsx
   var import_jsx_runtime5 = __toESM(require_jsx_runtime(), 1);
   function Pagination({ pageNum, setPageNum, pageNumMax }) {
     let paginationBody;
@@ -12544,8 +12547,23 @@ password confirm: ${validation.pwdCfm ? "valid" : "invalid"}`
         /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.oauth, children: [
           /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\uAC04\uD3B8 \uAC00\uC785\uD558\uAE30" }),
           /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.oauth_images, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "https://www.google.com/", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Google.png", alt: "\uAD6C\uAE00\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Link, { to: "https://www.kakaocorp.com/page/", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Kakao.png", alt: "\uCE74\uCE74\uC624\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth }) })
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+              "a",
+              {
+                target: "_blank",
+                href: "#login",
+                onClick: () => {
+                  const state = generateRandomHexString();
+                  window.open(
+                    `https://accounts.google.com/o/oauth2/v2/auth?cliend_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent("https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google")}&response_type=token&scope=${encodeURIComponent(`https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`)}&state=${state}&prompt=consent`
+                  );
+                  return false;
+                },
+                rel: "noreferrer",
+                children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Google.png", alt: "\uAD6C\uAE00\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth })
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("a", { target: "_blank", href: "https://www.kakaocorp.com/page/", rel: "noreferrer", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: "/images/oauth-Kakao.png", alt: "\uCE74\uCE74\uC624\uB85C \uAC00\uC785\uD558\uAE30", className: LoginPage_default.img_oauth }) })
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: LoginPage_default.check_description, children: [
@@ -12569,7 +12587,7 @@ password confirm: ${validation.pwdCfm ? "valid" : "invalid"}`
   // src/app/Main.jsx
   var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
   function Main() {
-    return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(UserProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(App_default, {}), children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(UserProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Routes, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Route, { path: "/", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(App_default2, {}), children: [
       /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { index: true, element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(LandingPage_default, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "login", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(LoginPage_default2, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Route, { path: "signup", element: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SignupPage_default, {}) }),

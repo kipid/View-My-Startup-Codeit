@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postSignup } from '../apis/loginSignupService.js';
+import { postCheck, postSignup } from '../apis/loginSignupService.js';
 import encrypt, { generateRandomHexString, ITER_FULL } from '../apis/encrypt.js';
-import { useSetUser } from '../context/UserProvider';
+import { useSetUser, useUser } from '../context/UserProvider';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
+const NAME_REGEX = /^[\w\-_.ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
 const NICKNAME_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]*$/;
 
 function SignupPage() {
 	const [email, setEmail] = useState('');
 	const [emailError, setEmailError] = useState('');
+	const [name, setName] = useState('');
+	const [nameError, setNameError] = useState('');
 	const [nickname, setNickname] = useState('');
 	const [nicknameError, setNicknameError] = useState('');
 	const [pwd, setPwd] = useState('');
@@ -21,9 +24,10 @@ function SignupPage() {
 	const [pwdCfmError, setPwdCfmError] = useState('');
 	const [pwdVisibility, setPwdVisibility] = useState(false);
 	const [pwdCfmVisibility, setPwdCfmVisibility] = useState(false);
-	const [validation, setValidation] = useState({ email: false, nickname: false, pwd: false, pwdCfm: false });
+	const [validation, setValidation] = useState({ email: false, name: false, nickname: false, pwd: false, pwdCfm: false });
 	const [error, setError] = useState(null);
-	const setUer = useSetUser();
+	const user = useUser();
+	const setUser = useSetUser();
 
 	useEffect(() => {
 		if (!email) {
@@ -35,6 +39,17 @@ function SignupPage() {
 		} else {
 			setEmailError('잘못된 이메일 형식입니다.');
 			setValidation(draft => ({ ...draft, email: false }));
+		}
+
+		if (!name) {
+			setNameError('이름을 입력해주세요.');
+			setValidation(draft => ({ ...draft, name: false }));
+		} else if (NAME_REGEX.test(name)) {
+			setNameError('');
+			setValidation(draft => ({ ...draft, name: true }));
+		} else {
+			setNameError('잘못된 이름 형식입니다.');
+			setValidation(draft => ({ ...draft, name: false }));
 		}
 
 		if (!nickname) {
@@ -69,35 +84,50 @@ function SignupPage() {
 			setPwdCfmError('');
 			setValidation(draft => ({ ...draft, pwdCfm: true }));
 		}
-	}, [email, nickname, pwd, pwdCfm]);
+	}, [email, name, nickname, pwd, pwdCfm]);
 
 	const handleSignup = async () => {
 		if (validation.email && validation.nickname && validation.pwd && validation.pwdCfm) {
 			try {
+				const check = await postCheck({ email, nickname });
+				if (!(check.email && check.nickname)) {
+					setError({
+						message: [
+							!check.email ? `Email ${email} 은 이미 등록되어 있습니다.` : '',
+							<br key="br0" />,
+							!check.nickname ? `닉네임 ${nickname} 은 이미 사용 중 입니다.` : '',
+						],
+					});
+					return;
+				}
 				const salt = generateRandomHexString();
 				const pwdEncrypted = encrypt(salt, pwd, ITER_FULL);
 				setPwd('');
 				setPwdCfm('confirmed');
-				const result = await postSignup({ email, nickname, salt, pwdEncrypted, pwdCfm });
+				const result = await postSignup({ email, name, nickname, salt, pwdEncrypted });
 				if (result) {
-					setUer(result);
-					localStorage.setItem('userUuid', result.id);
+					setUser(result);
+					localStorage.setItem('userUuid', result.userUuid);
 					localStorage.setItem('nickname', result.nickname);
 					localStorage.setItem('sessionPwd', result.sessionPwd);
-					localStorage.setItem('sessionCreatedAt', result.createdAt);
+					localStorage.setItem('createdAt', result.createdAt);
+					return;
 				}
+				setUser(null);
+				setError({ message: '계정 생성에 실패했습니다. 다시 시도해 주세요.' });
 			} catch (err) {
 				setError(err);
 			}
 		} else {
 			setError({
-				message: `입력값이 유효하지 않습니다.\nemail: ${validation.email ? 'valid' : 'invalid'}\nnickname: ${validation.nickname ? 'valid' : 'invalid'}\npassword: ${validation.pwd ? 'valid' : 'invalid'}\npassword confirm: ${validation.pwdCfm ? 'valid' : 'invalid'}`,
+				message: `입력값이 유효하지 않습니다.\nemail: ${validation.email ? 'valid' : 'invalid'}\nname: ${validation.name ? 'valid' : 'invalid'}\nnickname: ${validation.nickname ? 'valid' : 'invalid'}\npassword: ${validation.pwd ? 'valid' : 'invalid'}\npassword confirm: ${validation.pwdCfm ? 'valid' : 'invalid'}`,
 			});
 		}
 	};
 
 	return (
 		<>
+			{user && <Navigate to={`/user/${user.userUuid}/companies`} />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
@@ -119,6 +149,23 @@ function SignupPage() {
 					</label>
 					<div id="email-error" className={styles.error}>
 						{emailError}
+					</div>
+					<label htmlFor="name">
+						이름
+						<input
+							id="name"
+							name="name"
+							placeholder="닉네임을 입력해주세요"
+							type="text"
+							autoComplete="on"
+							required
+							className={!name || NAME_REGEX.test(name) ? styles.alert : ''}
+							value={name}
+							onChange={e => setName(e.target.value)}
+						/>
+					</label>
+					<div id="name-error" className={styles.error}>
+						{nicknameError}
 					</div>
 					<label htmlFor="nickname">
 						닉네임

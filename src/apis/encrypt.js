@@ -177,48 +177,47 @@ const hash13 = str => {
 	h >>>= 0;
 	return pad(h.toString(16), 8);
 };
-const encrypt = (salt, pwd0, iter) => {
-	const pwd = salt + pwd0;
-	let h1 = hash1(pwd);
-	let h2 = hash2(pwd);
-	let h3 = hash3(pwd);
-	let h4 = hash4(pwd);
-	let h5 = hash5(pwd);
-	let h6 = hash6(pwd);
-	let h7 = hash7(pwd);
-	let h8 = hash8(pwd);
-	let h9 = hash9(pwd);
-	let h10 = hash10(pwd);
-	let h11 = hash11(pwd);
-	let h12 = hash12(pwd);
-	let h13 = hash13(pwd);
-	let tmp1;
-	let tmp2;
-	let tmp3;
-	let tmp4;
-	let tmp5;
-	let tmp6;
-	let tmp7;
-	let tmp8;
-	let tmp9;
-	let tmp10;
-	let tmp11;
-	let tmp12;
-	let tmp13;
-	for (let i = 0; i < iter; i += 1) {
-		tmp1 = h13 + h12 + h11 + h10 + h9 + salt + h8 + h7 + h6 + h5 + h4 + h3 + h2 + h1;
-		tmp2 = h1 + h3 + salt + h2;
-		tmp3 = salt + h2 + h8 + h1 + h3;
-		tmp4 = h7 + salt + h5;
-		tmp5 = h4 + salt + h8;
-		tmp6 = h10 + h13 + salt + h6;
-		tmp7 = h6 + h1 + h9 + salt;
-		tmp8 = h9 + salt + h10;
-		tmp9 = h7 + salt + h12;
-		tmp10 = h11 + salt + h5;
-		tmp11 = h4 + salt + h13 + h2;
-		tmp12 = h11 + salt + h6;
-		tmp13 = h4 + h12 + salt + h8;
+const encrypt0 = (salt, h, iter) => {
+	let i = 0;
+	let h1 = h.substring(i, i + 8);
+	i += 8;
+	let h2 = h.substring(i, i + 8);
+	i += 8;
+	let h3 = h.substring(i, i + 8);
+	i += 8;
+	let h4 = h.substring(i, i + 8);
+	i += 8;
+	let h5 = h.substring(i, i + 8);
+	i += 8;
+	let h6 = h.substring(i, i + 8);
+	i += 8;
+	let h7 = h.substring(i, i + 8);
+	i += 8;
+	let h8 = h.substring(i, i + 8);
+	i += 8;
+	let h9 = h.substring(i, i + 8);
+	i += 8;
+	let h10 = h.substring(i, i + 8);
+	i += 8;
+	let h11 = h.substring(i, i + 8);
+	i += 8;
+	let h12 = h.substring(i, i + 8);
+	i += 8;
+	let h13 = h.substring(i, i + 8);
+	for (let k = 0; k < iter; k += 1) {
+		const tmp1 = h13 + h12 + h11 + h10 + h9 + salt + h8 + h7 + h6 + h5 + h4 + h3 + h2 + h1;
+		const tmp2 = h1 + h3 + salt + h2;
+		const tmp3 = salt + h2 + h8 + h1 + h3;
+		const tmp4 = h7 + salt + h5;
+		const tmp5 = h4 + salt + h8;
+		const tmp6 = h10 + h13 + salt + h6;
+		const tmp7 = h6 + h1 + h9 + salt;
+		const tmp8 = h9 + salt + h10;
+		const tmp9 = h7 + salt + h12;
+		const tmp10 = h11 + salt + h5;
+		const tmp11 = h4 + salt + h13 + h2;
+		const tmp12 = h11 + salt + h6;
+		const tmp13 = h4 + h12 + salt + h8;
 		h1 = hash1(tmp1);
 		h2 = hash2(tmp2);
 		h3 = hash3(tmp3);
@@ -235,7 +234,32 @@ const encrypt = (salt, pwd0, iter) => {
 	}
 	return h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8 + h9 + h10 + h11 + h12 + h13;
 };
-
+const encrypt = (salt, pwd0, iter) => {
+	const pwd = salt + pwd0;
+	return encrypt0(
+		salt,
+		hash1(pwd) +
+			hash2(pwd) +
+			hash3(pwd) +
+			hash4(pwd) +
+			hash5(pwd) +
+			hash6(pwd) +
+			hash7(pwd) +
+			hash8(pwd) +
+			hash9(pwd) +
+			hash10(pwd) +
+			hash11(pwd) +
+			hash12(pwd) +
+			hash13(pwd),
+		iter,
+	);
+};
+export const encryptRest = (salt, pwd0, iter) => {
+	return encrypt0(salt, pwd0, ITER_FULL - iter);
+};
+export const encryptSSNRest = (salt, pwd0, iter) => {
+	return encrypt0(salt, pwd0, ITER_SSN_FULL - iter);
+};
 export function generateRandomHexString(length = 32) {
 	const characters = '0123456789abcdef';
 	let result = '';
