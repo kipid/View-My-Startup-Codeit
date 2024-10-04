@@ -6,6 +6,7 @@ import eyeOff from '../assets/ic_eye_off.png';
 
 function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
 	const [isPWshow, setIsPWshow] = useState(false);
+	const [pw, setPw] = useState('');
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
@@ -26,7 +27,15 @@ function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
 			<form id={style.modalBody}>
 				<div id={style.password}>
 					<label htmlFor="password">비밀번호</label>
-					<input id="password" type={isPWshow ? '' : 'password'} placeholder="비밀번호를 입력해 주세요" />
+					<input
+						id="password"
+						type={isPWshow ? '' : 'password'}
+						placeholder="비밀번호를 입력해 주세요"
+						value={pw}
+						onChange={e => {
+							setPw(e.target.value);
+						}}
+					/>
 					<img id={style.eye} src={isPWshow ? eyeOn : eyeOff} alt="비밀번호 표시" onClick={togglePWshow} />
 				</div>
 			</form>

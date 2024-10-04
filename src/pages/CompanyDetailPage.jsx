@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination.jsx';
 import style from './CompanyDetailPage.module.css';
 import noImage from '../assets/no_image.png';
-import { COMPANY, INVESTMENT } from '../shared/mock/mock.js';
+import { COMPANY } from '../shared/mock/mock.js';
 import Modal from '../components/Modal.jsx';
 import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
@@ -24,6 +24,7 @@ function CompanyDetailPage() {
 	const [totalAmount, setTotalAmount] = useState(0);
 	const [btnControls, setBtnControls] = useState(initialBtnControls);
 	const [modalData, setModalData] = useState({});
+	const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 	const handleUpdate = detail => {
 		setModalData({ ...detail });
@@ -38,24 +39,33 @@ function CompanyDetailPage() {
 	};
 
 	useEffect(() => {
+		// NOTE useEffect를 async 하지 않고 비동기 처리하기 위한 함수
 		const fetchData = async () => {
 			const data = await getInvestments({ page: pageNum, pageSize });
 			const total = await getInvestmentsTotalAmount();
 
-			setList(data.list);
+			setList([...data.list]);
 			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
 			setTotalAmount(total);
 			setBtnControls(initialBtnControls);
 		};
 		fetchData();
-	}, [pageNum]);
+	}, [pageNum, refreshTrigger]);
 	const companyDetail = COMPANY[1];
 
 	return (
 		<div id={style.companyDetailPage}>
 			{btnControls.isModalOn && (
 				<Modal>
-					<InvestmentUpdateModal investmentDetail={modalData} onClose={handleModalClose} show={btnControls.isUpdate} />
+					<InvestmentUpdateModal
+						investmentDetail={modalData}
+						onClose={handleModalClose}
+						onUpdate={() => {
+							handleModalClose();
+							setRefreshTrigger(prev => prev + 1);
+						}}
+						show={btnControls.isUpdate}
+					/>
 					<InvestmentDeleteModal investmentDetail={modalData} onClose={handleModalClose} show={btnControls.isDelete} />
 				</Modal>
 			)}
@@ -100,7 +110,7 @@ function CompanyDetailPage() {
 
 				<div id={style.investmentBody}>
 					<table>
-						<caption>총 {totalAmount}원</caption>
+						<caption>총 {getScaledNumber(totalAmount)}원</caption>
 						<thead>
 							<tr>
 								<th>투자자 이름</th>
