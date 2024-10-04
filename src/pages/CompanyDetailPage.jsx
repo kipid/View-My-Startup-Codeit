@@ -8,6 +8,7 @@ import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
 import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
 import TouchInvestment from '../components/TouchInvestment.jsx';
+import { getInvestments, getInvestmentsTotalAmount } from '../shared/apis/investmentApis.js';
 
 const pageSize = 5;
 const initialBtnControls = {
@@ -37,17 +38,16 @@ function CompanyDetailPage() {
 	};
 
 	useEffect(() => {
-		const startIdx = pageSize * (pageNum - 1);
-		const data = INVESTMENT.slice(startIdx, startIdx + pageSize);
-		const count = INVESTMENT.length;
-		const total = INVESTMENT.reduce((acc, cur) => {
-			return Number(cur.amount) + acc;
-		}, 0);
+		const fetchData = async () => {
+			const data = await getInvestments({ page: pageNum, pageSize });
+			const total = await getInvestmentsTotalAmount();
 
-		setList(data);
-		setPageNumMax(Math.ceil(count / pageSize) ?? 1);
-		setTotalAmount(total);
-		setBtnControls(initialBtnControls);
+			setList(data.list);
+			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
+			setTotalAmount(total);
+			setBtnControls(initialBtnControls);
+		};
+		fetchData();
 	}, [pageNum]);
 	const companyDetail = COMPANY[1];
 

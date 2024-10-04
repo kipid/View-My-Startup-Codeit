@@ -123,6 +123,7 @@ button.modal {
 			border: 1px solid #747474;
 			background-color: inherit;
 			color: white;
+			font-family: inherit;
 		}
 
 		#eye {
