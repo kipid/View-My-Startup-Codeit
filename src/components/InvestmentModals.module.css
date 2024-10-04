@@ -71,6 +71,7 @@ button.modal {
 		flex-direction: column;
 		gap: 16px;
 		height: 85px;
+		position: relative;
 
 		&#info {
 			height: 77px;
@@ -109,7 +110,7 @@ button.modal {
 			}
 		}
 
-		> p {
+		> label {
 			font-size: 18px;
 			font-weight: 700;
 			color: white;
@@ -121,6 +122,15 @@ button.modal {
 			border-radius: 10px;
 			border: 1px solid #747474;
 			background-color: inherit;
+			color: white;
+		}
+
+		#eye {
+			width: 24px;
+			height: 24px;
+			position: absolute;
+			right: 18px;
+			bottom: 0;
 		}
 	}
 }

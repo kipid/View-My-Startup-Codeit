@@ -10,15 +10,31 @@ import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
 import TouchInvestment from '../components/TouchInvestment.jsx';
 
 const pageSize = 5;
+const initialBtnControls = {
+	isModalOn: false,
+	isUpdate: false,
+	isDelete: false,
+};
 
 function CompanyDetailPage() {
 	const [list, setList] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
 	const [totalAmount, setTotalAmount] = useState(0);
-	const isModalOn = false;
-	const isUpdate = false;
-	const isDelete = false;
+	const [btnControls, setBtnControls] = useState(initialBtnControls);
+	const [modalData, setModalData] = useState({});
+
+	const handleUpdate = detail => {
+		setModalData({ ...detail });
+		setBtnControls({ ...initialBtnControls, isModalOn: true, isUpdate: true });
+	};
+	const handleDelete = detail => {
+		setModalData({ ...detail });
+		setBtnControls({ ...initialBtnControls, isModalOn: true, isDelete: true });
+	};
+	const handleModalClose = () => {
+		setBtnControls({ ...initialBtnControls });
+	};
 
 	useEffect(() => {
 		const startIdx = pageSize * (pageNum - 1);
@@ -31,15 +47,16 @@ function CompanyDetailPage() {
 		setList(data);
 		setPageNumMax(Math.ceil(count / pageSize) ?? 1);
 		setTotalAmount(total);
+		setBtnControls(initialBtnControls);
 	}, [pageNum]);
 	const companyDetail = COMPANY[1];
 
 	return (
 		<div id={style.companyDetailPage}>
-			{isModalOn && (
+			{btnControls.isModalOn && (
 				<Modal>
-					<InvestmentUpdateModal investmentDetail="" show={isUpdate} />
-					<InvestmentDeleteModal investmentDetail="" show={isDelete} />
+					<InvestmentUpdateModal investmentDetail={modalData} onClose={handleModalClose} show={btnControls.isUpdate} />
+					<InvestmentDeleteModal investmentDetail={modalData} onClose={handleModalClose} show={btnControls.isDelete} />
 				</Modal>
 			)}
 
@@ -93,19 +110,17 @@ function CompanyDetailPage() {
 							</tr>
 						</thead>
 						<tbody>
-							{list.map((item, idx) => {
-								return (
-									<tr key={item.id}>
-										<td>{item.name}</td>
-										<td>{idx + 1 + (pageNum - 1) * pageSize}위</td>
-										<td>{item.amount}원</td>
-										<td>
-											<p>{item.comment}</p>
-											<TouchInvestment />
-										</td>
-									</tr>
-								);
-							})}
+							{list.map((item, idx) => (
+								<tr key={item.id || idx}>
+									<td>{item.name}</td>
+									<td>{idx + 1 + (pageNum - 1) * pageSize}위</td>
+									<td>{getScaledNumber(item.amount)}원</td>
+									<td>
+										<p>{item.comment} </p>
+										<TouchInvestment investmentDetail={item} onUpdate={handleUpdate} onDelete={handleDelete} />
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 
