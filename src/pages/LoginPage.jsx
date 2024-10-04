@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
 import { postLogin, postPwdIter } from '../apis/loginSignupService.js';
 import encrypt from '../apis/encrypt.js';
+import { useSetUser, useUser } from '../context/UserProvider';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -16,6 +17,8 @@ function LoginPage() {
 	const [pwdVisibility, setPwdVisibility] = useState(false);
 	const [validation, setValidation] = useState({ email: false, pwd: false });
 	const [error, setError] = useState(null);
+	const user = useUser();
+	const setUser = useSetUser();
 
 	useEffect(() => {
 		if (!email) {
@@ -45,22 +48,41 @@ function LoginPage() {
 		if (validation.email && validation.pwd) {
 			try {
 				postPwdIter({ email }).then(async iter => {
+					console.log('iter', iter); // TODO: Del
 					const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
 					setPwd('');
-					const user = await postLogin({ email, pwdEncrypted });
+					const result = await postLogin({ email, pwdEncrypted });
+					console.log('result', result); // TODO: Del
+					if (result) {
+						setUser(result);
+						localStorage.setItem('userUuid', result.userUuid);
+						localStorage.setItem('nickname', result.nickname);
+						localStorage.setItem('sessionPwd', result.sessionPwd);
+						localStorage.setItem('createdAt', result.createdAt);
+						return;
+					}
+					setUser(null);
+					setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
 				});
 			} catch (err) {
 				setError(err);
 			}
 		} else {
 			setError({
-				message: `입력값이 유효하지 않습니다.\nemail: ${validation.email ? 'valid' : 'invalid'}\npassword: ${validation.pwd ? 'valid' : 'invalid'}`,
+				message: [
+					`입력값이 유효하지 않습니다.`,
+					<br key="br0" />,
+					`email: ${validation.email ? 'valid' : 'invalid'}`,
+					<br key="br1" />,
+					`password: ${validation.pwd ? 'valid' : 'invalid'}`,
+				],
 			});
 		}
 	};
 
 	return (
 		<>
+			{user && <Navigate to={`/user/${user.userUuid}/companies`} />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
