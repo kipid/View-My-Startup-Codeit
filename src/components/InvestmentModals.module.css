@@ -121,6 +121,7 @@ button.modal {
 			border-radius: 10px;
 			border: 1px solid #747474;
 			background-color: inherit;
+			color: white;
 		}
 	}
 }

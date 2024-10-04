@@ -2,7 +2,7 @@ import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
 
-function InvestmentDeleteModal({ investmentDetail, show = false }) {
+function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
 
@@ -10,7 +10,7 @@ function InvestmentDeleteModal({ investmentDetail, show = false }) {
 		<div id={style.InvestmentDeleteModal}>
 			<div id={style.modalHeader}>
 				<p>삭제 권한 인증</p>
-				<button type="button">
+				<button type="button" onClick={onClose}>
 					<img src={icDelete} alt="modalOff" />
 				</button>
 			</div>
