@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postCheck, postSignup } from '../apis/loginSignupService.js';
-import encrypt, { generateRandomHexString, ITER_FULL } from '../apis/encrypt.js';
+import { postCheck, postSignup } from '../shared/apis/loginSignupService.js';
+import encrypt, { generateRandomHexString, ITER_FULL } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
-const NAME_REGEX = /^[\w\-_.ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+const NAME_REGEX = /^[\w\-_.ㄱ-ㅎㅏ-ㅣ가-힣\s]+$/;
 const NICKNAME_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]*$/;
 
 function SignupPage() {

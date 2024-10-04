@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postLogin, postPwdIter } from '../apis/loginSignupService.js';
-import encrypt from '../apis/encrypt.js';
+import { postLogin, postPwdIter } from '../shared/apis/loginSignupService.js';
+import encrypt from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
