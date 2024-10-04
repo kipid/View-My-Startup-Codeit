@@ -131,11 +131,13 @@ function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
 }
 
 // 모달 종료 시 selectedCompanies 데이터 props로 전달 구현 추가 예정
-function SelectComparisonModal({ onClose }) {
+function SelectComparisonModal({ comparisons, onClose }) {
+  const alreadySelectedIds = comparisons.map((company) => company.id);
   const [pageNum, setPageNum] = useState(1);
   const [pageNumMax, setPageNumMax] = useState(5);
   const [search, setSearch] = useState("");
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
+  const [selectedCompanies, setSelectedCompanies] =
+    useState(alreadySelectedIds);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleKeyUp = (e) => {
@@ -171,6 +173,13 @@ function SelectComparisonModal({ onClose }) {
   const endIndex = Math.min(startIndex + companiesPerPage, searchTotal);
   const currentPage = searchedCompanies.slice(startIndex, endIndex);
 
+  const handleClick = () => {
+    const myComparisons = companies.filter((company) =>
+      selectedCompanies.includes(company.id)
+    );
+    onClose(myComparisons);
+  };
+
   useEffect(() => {
     setPageNum(1);
     setPageNumMax(Math.ceil(searchTotal / companiesPerPage));
@@ -184,7 +193,7 @@ function SelectComparisonModal({ onClose }) {
           className={styles.closeIcon}
           src={closeIcon}
           alt="닫기"
-          onClick={onClose}
+          onClick={handleClick}
         />
       </div>
       <input

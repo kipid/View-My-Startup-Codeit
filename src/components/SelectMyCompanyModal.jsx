@@ -139,9 +139,6 @@ function SelectMyCompanyModal({ onClose }) {
       )
     : companies;
   const searchTotal = searchedCompanies.length;
-  console.log(searchedCompanies);
-  console.log(search);
-  console.log(searchTotal);
 
   const handleSelect = (item, isSelected) => {
     if (isSelected) {
@@ -171,6 +168,13 @@ function SelectMyCompanyModal({ onClose }) {
   const endIndex = Math.min(startIndex + companiesPerPage, searchTotal);
   const currentPage = searchedCompanies.slice(startIndex, endIndex);
 
+  const handleClick = () => {
+    const myCompany = companies.find(
+      (company) => company.id === selectedCompany
+    );
+    onClose(myCompany);
+  };
+
   useEffect(() => {
     setPageNum(1);
     setPageNumMax(Math.ceil(searchTotal / companiesPerPage));
@@ -184,7 +188,7 @@ function SelectMyCompanyModal({ onClose }) {
           className={styles.closeIcon}
           src={closeIcon}
           alt="닫기"
-          onClick={onClose}
+          onClick={handleClick}
         />
       </div>
       <input
