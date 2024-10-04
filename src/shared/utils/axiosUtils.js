@@ -39,16 +39,16 @@ export async function axiosGet(url, params) {
 	return axiosData({ url, method: HTTP_METHODS.GET, params });
 }
 
-export async function axiosPost(url, body) {
-	return axiosData({ url, method: HTTP_METHODS.POST, body });
+export async function axiosPost(url, data) {
+	return axiosData({ url, method: HTTP_METHODS.POST, data });
 }
 
-export async function axiosPatch(url, body) {
-	return axiosData({ url, method: HTTP_METHODS.PATCH, body });
+export async function axiosPatch(url, data) {
+	return axiosData({ url, method: HTTP_METHODS.PATCH, data });
 }
 
-export async function axiosPut(url, body) {
-	return axiosData({ url, method: HTTP_METHODS.PUT, body });
+export async function axiosPut(url, data) {
+	return axiosData({ url, method: HTTP_METHODS.PUT, data });
 }
 
 export async function axiosDelete(url) {
