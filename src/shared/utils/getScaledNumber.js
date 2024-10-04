@@ -8,7 +8,7 @@ const getScaledNumber = number => {
 		rest /= scaler;
 		scale += 1;
 	}
-	const scaled = `${rest.toFixed(2)}${dic[scale]}`;
+	const scaled = `${parseFloat(rest.toFixed(2))}${dic[scale]}`;
 
 	return scaled;
 };
