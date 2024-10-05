@@ -18,7 +18,7 @@ function ComparisonStatusPage() {
 		setPageNum(1);
 		setSort('accumulInvestByVMSDesc');
 		const fetch = async () => {
-			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
+			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'watcherAndComparison' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 			console.log(companiesData.list);
 			setCompanies(companiesData.list.sort((a, b) => b.accumulInvest - a.accumulInvest));
@@ -29,18 +29,18 @@ function ComparisonStatusPage() {
 	useEffect(() => {
 		let sortFn = (a, b) => a - b;
 		switch (sort) {
-			case 'accumulInvestAsc':
-				sortFn = (a, b) => a.accumulInvest - b.accumulInvest;
+			case 'comparisonAsc':
+				sortFn = (a, b) => a._count.comparisons - b._count.comparisons;
 				break;
-			case 'accumulInvestDesc':
-				sortFn = (a, b) => b.accumulInvest - a.accumulInvest;
+			case 'comparisonDesc':
+				sortFn = (a, b) => b._count.comparisons - a._count.comparisons;
 				break;
-			case 'accumulInvestByVMSAsc':
-				sortFn = (a, b) => a - b;
+			case 'watcherAsc':
+				sortFn = (a, b) => a._count.watcherList - b._count.watcherList;
 				break;
-			case 'accumulInvestByVMSDesc':
+			case 'watcherDesc':
 			default:
-				sortFn = (a, b) => a - b;
+				sortFn = (a, b) => a._count.watcherList - b._count.watcherList;
 				break;
 		}
 		setCompanies([...companies.sort(sortFn)]);
@@ -51,10 +51,10 @@ function ComparisonStatusPage() {
 			<div className={styles.heads}>
 				<h2>비교 현황</h2>
 				<select value={sort} onChange={e => setSort(e.target.value)}>
-					<option value="accumulInvestByVMSDesc">나의 기업 선택 높은순</option>
-					<option value="accumulInvestByVMSAsc">나의 기업 선택 낮은순</option>
-					<option value="accumulInvestDesc">비교 기업 선택 높은순</option>
-					<option value="accumulInvestAsc">비교 기업 선택 낮은순</option>
+					<option value="watcherDesc">나의 기업 선택 높은순</option>
+					<option value="watcherAsc">나의 기업 선택 낮은순</option>
+					<option value="comparisonDesc">비교 기업 선택 높은순</option>
+					<option value="comparisonAsc">비교 기업 선택 낮은순</option>
 				</select>
 			</div>
 			<div className={styles.tableContainer}>
@@ -77,8 +77,8 @@ function ComparisonStatusPage() {
 										<td>{company.name}</td>
 										<td>{company.description}</td>
 										<td>{company.category}</td>
-										<td>{company.accumulInvestByVMS}</td>
-										<td>{getScaledNumber(company.accumulInvest)}</td>
+										<td>{company._count.watcherList}</td>
+										<td>{company._count.comparisons}</td>
 									</tr>
 								);
 							})}
