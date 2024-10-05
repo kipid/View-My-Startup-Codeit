@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination';
 import { getCompanies } from '../shared/apis/companiesService';
 import useAsync from '../shared/hooks/useAsync';
 import PopUp from '../components/PopUp';
+import getScaledNumber from '../shared/utils/getScaledNumber';
 
 function InvestmentStatusPage() {
 	const [sort, setSort] = useState('accumulInvestByVMSDesc');
@@ -19,10 +20,34 @@ function InvestmentStatusPage() {
 		const fetch = async () => {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
-			setCompanies(companiesData.list);
+			console.log(companiesData.list);
+			const companiesList = companiesData.list.map(company => {
+				return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + invest.amount, 0) };
+			});
+			setCompanies(companiesList.sort((a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS));
 		};
 		fetch();
-	}, [pageSize, pageNum, sort, getCompaniesAsync]);
+	}, []);
+
+	useEffect(() => {
+		let sortFn = (a, b) => a - b;
+		switch (sort) {
+			case 'accumulInvestAsc':
+				sortFn = (a, b) => a.accumulInvest - b.accumulInvest;
+				break;
+			case 'accumulInvestDesc':
+				sortFn = (a, b) => b.accumulInvest - a.accumulInvest;
+				break;
+			case 'accumulInvestByVMSAsc':
+				sortFn = (a, b) => a.accumulInvestByVMS - b.accumulInvestByVMS;
+				break;
+			case 'accumulInvestByVMSDesc':
+			default:
+				sortFn = (a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS;
+				break;
+		}
+		setCompanies([...companies.sort(sortFn)]);
+	}, [sort]);
 
 	return (
 		<>
@@ -35,48 +60,34 @@ function InvestmentStatusPage() {
 					<option value="accumulInvestAsc">실제 누적 투자 금액 낮은순</option>
 				</select>
 			</div>
-			<table>
-				<tbody>
-					<colgroup>
-						<col width="5%" />
-					</colgroup>
-					<colgroup>
-						<col width="15%" />
-					</colgroup>
-					<colgroup>
-						<col width="30%" />
-					</colgroup>
-					<colgroup>
-						<col width="10%" />
-					</colgroup>
-					<colgroup>
-						<col width="20%" />
-					</colgroup>
-					<colgroup>
-						<col width="20%" />
-					</colgroup>
-					<th>
-						<td>순위</td>
-						<td>기업 명</td>
-						<td>기업 소개</td>
-						<td>카테고리</td>
-						<td>View My Startup 투자 금액</td>
-						<td>실제 누적 투자 금액</td>
-					</th>
-					{companies.map(company => {
-						return (
-							<tr key={company.id}>
-								<td>x위</td>
-								<td>company.name</td>
-								<td>company.description</td>
-								<td>company.category</td>
-								<td>company.accumulInvestByVMS</td>
-								<td>company.accumulInvest</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
+			<div className={styles.tableContainer}>
+				<table>
+					<tbody>
+						<tr>
+							<th>순위</th>
+							<th>기업 명</th>
+							<th>기업 소개</th>
+							<th>카테고리</th>
+							<th>View My Startup 투자 금액</th>
+							<th>실제 누적 투자 금액</th>
+						</tr>
+						{companies
+							.filter((company, i) => i >= pageSize * (pageNum - 1) && i < pageSize * pageNum)
+							.map((company, i) => {
+								return (
+									<tr key={company.id}>
+										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
+										<td>{company.name}</td>
+										<td>{company.description}</td>
+										<td>{company.category}</td>
+										<td>{getScaledNumber(company.accumulInvestByVMS)}</td>
+										<td>{getScaledNumber(company.accumulInvest)}</td>
+									</tr>
+								);
+							})}
+					</tbody>
+				</table>
+			</div>
 			<Pagination pageNum={pageNum} setPageNum={setPageNum} pageNumMax={pageNumMax} />
 			<PopUp error={error} popUpText={error?.message} setError={setError} />
 		</>
