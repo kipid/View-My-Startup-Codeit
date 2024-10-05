@@ -11,7 +11,7 @@ function CompanyListPage() {
 	const [companies, setCompanies] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
-	const [pageSize, setPageSize] = useState(20);
+	const [pageSize, setPageSize] = useState(10);
 	const [isPending, errorLoadingCompanies, loadCompaniesAsync, setError] = useAsync(getCompanies);
 
 	const onSearch = useCallback(
