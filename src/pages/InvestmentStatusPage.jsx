@@ -3,6 +3,7 @@ import styles from './InvestmentStatusPage.module.css';
 import Pagination from '../components/Pagination';
 import { getCompanies } from '../shared/apis/companiesService';
 import useAsync from '../shared/hooks/useAsync';
+import PopUp from '../components/PopUp';
 
 function InvestmentStatusPage() {
 	const [sort, setSort] = useState('accumulInvestByVMSDesc');
@@ -13,10 +14,14 @@ function InvestmentStatusPage() {
 	const [isPending, error, getCompaniesAsync, setError] = useAsync(getCompanies);
 
 	useEffect(() => {
+		setPageNum(1);
+		setSort('accumulInvestByVMSDesc');
 		const fetch = async () => {
-			const companiesData = await getCompaniesAsync({ skip: pageSize * (pageNum - 1), take: pageSize, sort });
+			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
+			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 			setCompanies(companiesData.list);
 		};
+		fetch();
 	}, [pageSize, pageNum, sort, getCompaniesAsync]);
 
 	return (
@@ -73,6 +78,7 @@ function InvestmentStatusPage() {
 				</tbody>
 			</table>
 			<Pagination pageNum={pageNum} setPageNum={setPageNum} pageNumMax={pageNumMax} />
+			<PopUp error={error} popUpText={error?.message} setError={setError} />
 		</>
 	);
 }
