@@ -1,7 +1,7 @@
 import instance from './instance.js';
 
 export async function getInvestments(params = { page: 0, pageSize: 10, orderBy: 'bigger' }) {
-	const investments = await instance.get(`/investments`, params);
+	const investments = await instance.get(`/investments`, { params });
 
 	return investments;
 }
