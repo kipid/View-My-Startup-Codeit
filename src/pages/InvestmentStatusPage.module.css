@@ -1,0 +1,15 @@
+.heads {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	& h2 {
+		margin-bottom: var(--16px);
+	}
+}
+
+table {
+	min-width: 700px;
+	max-width: 1200px;
+	width: 100%;
+}
