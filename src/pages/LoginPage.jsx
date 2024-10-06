@@ -48,11 +48,9 @@ function LoginPage() {
 		if (validation.email && validation.pwd) {
 			try {
 				postPwdIter({ email }).then(async iter => {
-					console.log('iter', iter); // TODO: Del
 					const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
 					setPwd('');
 					const result = await postLogin({ email, pwdEncrypted });
-					console.log('result', result); // TODO: Del
 					if (result) {
 						setUser(result);
 						localStorage.setItem('userUuid', result.userUuid);
