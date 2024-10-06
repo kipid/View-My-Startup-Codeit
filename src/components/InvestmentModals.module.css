@@ -1,0 +1,137 @@
+button.modal {
+	width: 183px;
+	border-radius: 50px;
+	padding: 13px 48px;
+	background-color: #eb5230;
+	border: 1px solid #eb5230;
+	color: white;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: center;
+
+	&.cancel {
+		background-color: inherit;
+		color: #eb5230;
+	}
+}
+
+#InvestmentUpdateModal {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	#modalFooter {
+		margin-top: 24px;
+		padding: 0 27.5px;
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+		height: 48px;
+	}
+}
+
+#InvestmentDeleteModal {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	#modalFooter {
+		margin-top: 32px;
+		display: flex;
+		justify-content: center;
+		height: 48px;
+	}
+}
+
+#modalHeader {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	height: 32px;
+
+	p {
+		display: flex;
+		align-content: center;
+		flex-wrap: wrap;
+	}
+
+	button {
+		background-color: inherit;
+		border: none;
+	}
+}
+
+#modalBody {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+
+	> div {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		height: 85px;
+		position: relative;
+
+		&#info {
+			height: 77px;
+
+			div {
+				display: flex;
+
+				img {
+					height: 40px;
+					object-fit: contain;
+				}
+
+				p {
+					margin: 0 8px 0 12px;
+					display: flex;
+					align-content: center;
+					flex-wrap: wrap;
+					font-size: 18px;
+					font-weight: 500;
+					color: white;
+
+					&:last-child {
+						margin: 0;
+						font-size: 16px;
+						font-weight: 400;
+						color: #747474;
+					}
+				}
+			}
+		}
+		&#comment {
+			height: 145px;
+
+			> textarea {
+				height: 108px;
+			}
+		}
+
+		> label {
+			font-size: 18px;
+			font-weight: 700;
+			color: white;
+		}
+
+		> input,
+		> textarea {
+			padding: 16px 20px;
+			border-radius: 10px;
+			border: 1px solid #747474;
+			background-color: inherit;
+			color: white;
+			font-family: inherit;
+		}
+
+		#eye {
+			width: 24px;
+			height: 24px;
+			position: absolute;
+			right: 18px;
+			bottom: 0;
+		}
+	}
+}

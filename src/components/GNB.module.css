@@ -1,0 +1,87 @@
+.gnb {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	height: 60px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--gray-100);
+	border-bottom: 1px solid var(--gray-400);
+	z-index: 999;
+	font-size: var(--16px);
+
+	@media (max-width: 744px) {
+		height: 56px;
+	}
+}
+
+.login {
+	display: inline-block;
+	width: max-content;
+	padding: var(--6px) var(--12px);
+	margin-right: var(--12px);
+	font-size: var(--14px);
+	background-color: var(--prime-blue);
+	color: var(--gray-900);
+	border-radius: var(--5px);
+
+	@media (max-width: 744px) {
+		padding: var(--6px);
+	}
+}
+
+.gnbContainer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 1200px;
+	gap: 57px;
+
+	@media (max-width: 1200px) {
+		margin-left: 24px;
+		gap: 41px;
+	}
+
+	@media (max-width: 744px) {
+		margin-left: 16px;
+		gap: 10px;
+	}
+}
+
+.logoContainer {
+	flex-shrink: 0;
+
+	@media (max-width: 744px) {
+		margin-left: -8px;
+	}
+}
+
+.siteLogo {
+	width: 112px;
+	height: 40px;
+
+	@media (max-width: 744px) {
+		width: 64px;
+		height: 23px;
+	}
+}
+
+.navMenus {
+	display: flex;
+	gap: 34px;
+
+	@media (max-width: 744px) {
+		gap: 8px;
+	}
+}
+
+.navLinkStyle {
+	text-decoration: none;
+}
+
+.menu:hover {
+	color: white;
+}
