@@ -21,6 +21,38 @@
 	}
 }
 
+.profileElements {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.profileElement {
+	padding: 1em;
+	margin: 0;
+
+	& h3 {
+		font-size: var(--18px);
+		font-weight: bold;
+	}
+
+	& p {
+		font-size: var(--16px);
+		margin: 0;
+		padding: 1em 0;
+	}
+}
+
+.logout {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: max-content;
+	padding: .5em 1em;
+	background-color: var(--prime-orange);
+	color: var(--gray-900);
+}
 
 form {
 	width: 100%;
