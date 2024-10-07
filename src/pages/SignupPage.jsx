@@ -127,7 +127,7 @@ function SignupPage() {
 
 	return (
 		<>
-			{user && <Navigate to={`/user/${user.userUuid}/companies`} />}
+			{user && !error && <Navigate to={`/user/${user.userUuid}/companies`} />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
@@ -155,7 +155,7 @@ function SignupPage() {
 						<input
 							id="name"
 							name="name"
-							placeholder="닉네임을 입력해주세요"
+							placeholder="이름을 입력해주세요"
 							type="text"
 							autoComplete="on"
 							required
