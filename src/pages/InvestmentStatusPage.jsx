@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './InvestmentStatusPage.module.css';
 import Pagination from '../components/Pagination';
 import { getCompanies } from '../shared/apis/companiesService';
@@ -61,7 +62,7 @@ function InvestmentStatusPage() {
 				</select>
 			</div>
 			<div className={styles.tableContainer}>
-				<table>
+				<table className={styles.table}>
 					<tbody>
 						<tr>
 							<th>순위</th>
@@ -78,8 +79,10 @@ function InvestmentStatusPage() {
 									<tr key={company.id}>
 										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
 										<td>
-											<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
-											&nbsp; {company.name}
+											<Link to={`/companies/${company.id}`} style={{ textDecoration: 'none', color: 'var(--prime-blue)' }}>
+												<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+												&nbsp; {company.name}
+											</Link>
 										</td>
 										<td>{company.description}</td>
 										<td>{company.category}</td>
