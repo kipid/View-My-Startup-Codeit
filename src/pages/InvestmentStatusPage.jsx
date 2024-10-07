@@ -61,7 +61,7 @@ function InvestmentStatusPage() {
 				</select>
 			</div>
 			<div className={styles.tableContainer}>
-				<table>
+				<table className={styles.table}>
 					<tbody>
 						<tr>
 							<th>순위</th>
