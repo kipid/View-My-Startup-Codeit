@@ -127,7 +127,7 @@ function SignupPage() {
 
 	return (
 		<>
-			{user && !error && <Navigate to={`/user/${user.userUuid}/companies`} />}
+			{user && !error && <Navigate to="/companies" />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />

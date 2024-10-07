@@ -5,7 +5,7 @@ import noLogo from '../assets/no-logo.png';
 function CompanyList({ companies, pageNum, pageSize }) {
 	return (
 		<div className={styles.tableContainer}>
-			<table>
+			<table className={styles.table}>
 				<tbody>
 					<tr>
 						<th>순위</th>
