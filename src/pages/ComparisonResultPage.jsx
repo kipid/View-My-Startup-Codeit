@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { COMPANY } from '../shared/mock/mock.js';
 import styles from './ComparisonResultPage.module.css';
 import Modal from '../components/Modal.jsx';
 import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
+import { getCompanies } from '../shared/apis/companiesService.js';
+import useAsync from '../shared/hooks/useAsync.js';
+import noLogo from '../assets/no-logo.png';
+import getScaledNumber from '../shared/utils/getScaledNumber.js';
 
 function ComparisonResultPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const companies = COMPANY; // FIXME 임시 mock 데이터
+	const [isPending, errorLoadingCompanies, loadCompaniesAsync, setError] = useAsync(getCompanies);
+
+	const companies = COMPANY.slice(0, 5); // FIXME 임시 mock 데이터
 	const myCompany = companies[1]; // FIXME 임시 나의 기업
 
 	const investmentModalHandler = () => {
@@ -37,7 +43,35 @@ function ComparisonResultPage() {
 					</div>
 					<div className={styles.resultWrapper}>
 						<p className={styles.title}>비교 결과 확인하기</p>
-						<div> </div>
+						<div className={styles.tableContainer}>
+							<table>
+								<tbody>
+									<tr>
+										<th>기업 명</th>
+										<th>기업 소개</th>
+										<th>카테고리</th>
+										<th>누적 투자 금액</th>
+										<th>매출액</th>
+										<th>고용 인원</th>
+									</tr>
+									{companies.map((company, i) => {
+										return (
+											<tr key={company.id}>
+												<td>
+													<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+													&nbsp; {company.name}
+												</td>
+												<td>{company.description}</td>
+												<td>{company.category}</td>
+												<td>{getScaledNumber(company.accumulInvest)}원</td>
+												<td>{getScaledNumber(company.revenue)}원</td>
+												<td>{getScaledNumber(company.employees)}명</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<div className={styles.resultWrapper}>
 						<p className={styles.title}>기업 순위 확인하기</p>
