@@ -4,7 +4,7 @@ import Pagination from '../components/Pagination.jsx';
 import { getCompanies } from '../shared/apis/companiesService.js';
 import useAsync from '../shared/hooks/useAsync.js';
 import PopUp from '../components/PopUp.jsx';
-import CompanyList from '../components/CompanyList';
+import CompanyList from '../components/CompanyList.jsx';
 
 function CompanyListPage() {
 	const [keyword, setKeyword] = useState('');
