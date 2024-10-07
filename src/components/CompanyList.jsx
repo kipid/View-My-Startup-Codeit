@@ -1,5 +1,6 @@
 import getScaledNumber from '../shared/utils/getScaledNumber';
 import styles from './CompanyList.module.css';
+import noLogo from '../assets/no-logo.png';
 
 function CompanyList({ companies, pageNum, pageSize }) {
 	return (
@@ -20,8 +21,8 @@ function CompanyList({ companies, pageNum, pageSize }) {
 							<tr key={company.id}>
 								<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
 								<td>
-									{company.logo && <img src={company.logo} alt="Company Logo" />}
-									{company.name}
+									<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+									&nbsp; {company.name}
 								</td>
 								<td>{company.description}</td>
 								<td>{company.category}</td>
