@@ -19,6 +19,14 @@
 	}
 }
 
+.logo {
+	width: 2em;
+	height: 2em;
+	border-radius: 2em;
+	vertical-align: middle;
+	border: 2px solid var(--gray-700);
+}
+
 .tableContainer {
 	width: 100%;
 	overflow-x: auto;

@@ -5,6 +5,7 @@ import PopUp from '../components/PopUp';
 import useAsync from '../shared/hooks/useAsync';
 import getScaledNumber from '../shared/utils/getScaledNumber';
 import { getCompanies } from '../shared/apis/companiesService';
+import noLogo from '../assets/no-logo.png';
 
 function ComparisonStatusPage() {
 	const [sort, setSort] = useState('accumulInvestByVMSDesc');
@@ -74,7 +75,10 @@ function ComparisonStatusPage() {
 								return (
 									<tr key={company.id}>
 										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
-										<td>{company.name}</td>
+										<td>
+											<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+											&nbsp; {company.name}
+										</td>
 										<td>{company.description}</td>
 										<td>{company.category}</td>
 										<td>{company._count.watcherList}</td>
