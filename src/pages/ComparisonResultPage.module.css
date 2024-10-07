@@ -1,4 +1,4 @@
-.myComparisonPage {
+.comparisonResultPage {
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -26,25 +26,17 @@
 	font-weight: 700;
 }
 
-.subtitle {
-	font-size: var(--16px);
-	font-weight: 400;
-}
-
-.titles {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.myComanyHeader,
-.comparisonHeader {
+.myCompanyHeader {
 	width: 100%;
 	height: 40px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 40px;
+}
+
+.restartLink {
+	text-decoration: none;
 }
 
 .myCompanyWrapper {
@@ -60,34 +52,6 @@
 	@media (max-width: 744px) {
 		height: 180px;
 	}
-}
-
-.cancelMyCompany {
-	cursor: pointer;
-	position: absolute;
-	top: 16px;
-	right: 16px;
-	color: var(--gray-800);
-	text-decoration: underline;
-}
-
-.addMyCompanyIcon {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 16px;
-}
-
-.addButton {
-	cursor: pointer;
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-}
-
-.addIcon {
-	width: 32px;
-	height: 32px;
 }
 
 .companyInfo {
@@ -127,52 +91,7 @@
 	}
 }
 
-.comparisonWrapper {
-	width: 100%;
-	height: 300px;
-	background-color: var(--gray-200);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 16px;
-	flex-wrap: nowrap;
-	margin-bottom: 8px;
-
-	@media (max-width: 744px) {
-		flex-wrap: wrap;
-		height: auto;
-		padding: 8px;
-	}
-}
-
-.comparisonInfo {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 10px;
-	background-color: var(--gray-500);
-	border-radius: 8px;
-	width: 126px;
-	height: 187px;
-	position: relative;
-	padding-top: 32px;
-
-	@media (max-width: 744px) {
-		width: 104px;
-		height: 163px;
-	}
-}
-
-.minusLogo {
-	cursor: pointer;
-	margin: -24px 8px 0 0;
-	width: 24px;
-	position: absolute;
-	right: 0;
-}
-
-.restartButton,
-.addComparisonButton {
+.restartButton {
 	border-style: none;
 	cursor: pointer;
 	background-color: var(--prime-orange);
@@ -187,18 +106,7 @@
 	gap: 4px;
 }
 
-.restartIcon {
-	width: 24px;
-	height: 24px;
-}
-
-.noComparisonText {
-	font-size: var(--14px);
-	color: var(--gray-700);
-	text-align: center;
-}
-
-.compareButton {
+.investmentModalButton {
 	border-style: none;
 	cursor: pointer;
 	border-radius: 50px;
@@ -206,15 +114,6 @@
 	font-size: var(--16px);
 	width: 183px;
 	height: 48px;
-}
-
-.active {
 	background-color: var(--prime-orange);
-	color: var(--gray-900);
-}
-
-.inactive {
-	cursor: default;
-	background-color: var(--gray-400);
 	color: var(--gray-900);
 }

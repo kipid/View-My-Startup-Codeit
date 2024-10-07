@@ -41,6 +41,7 @@ export const COMPANY = [
 		accumulInvest: 5000000000,
 		revenue: 25700000000,
 		employees: 38,
+		logo: 'https://i.imgur.com/36DDu72.png',
 	},
 	{
 		id: 'c05b517a-09b1-4a29-9274-7bcbf1d75298',
@@ -51,6 +52,7 @@ export const COMPANY = [
 		accumulInvest: 3000000000,
 		revenue: 15200000000,
 		employees: 62,
+		logo: 'https://i.imgur.com/yhj9dQT.png',
 	},
 	{
 		id: 'ebf18e70-3baf-4b0c-87f3-0183c70b96f0',
@@ -61,6 +63,7 @@ export const COMPANY = [
 		accumulInvest: 7500000000,
 		revenue: 45800000000,
 		employees: 120,
+		logo: 'https://i.imgur.com/1vd5Gns.png',
 	},
 	{
 		id: 'd2a9ae15-75bc-49e1-88d6-2c0b5db9c25b',
@@ -71,6 +74,7 @@ export const COMPANY = [
 		accumulInvest: 9500000000,
 		revenue: 63100000000,
 		employees: 150,
+		logo: 'https://i.imgur.com/n6VT6yV.png',
 	},
 	{
 		id: '9b47cb18-47b4-45a1-9ab2-73c958fca285',
@@ -81,6 +85,7 @@ export const COMPANY = [
 		accumulInvest: 6000000000,
 		revenue: 32500000000,
 		employees: 55,
+		logo: 'https://i.imgur.com/Xeba4ol.png',
 	},
 	{
 		id: 'abc5e418-9d68-4b4b-85df-8a604d9815d2',
@@ -91,6 +96,7 @@ export const COMPANY = [
 		accumulInvest: 4000000000,
 		revenue: 22900000000,
 		employees: 45,
+		logo: 'https://i.imgur.com/fQtDVHy.png',
 	},
 	{
 		id: '0a1f8e8b-54c2-48e7-bd6b-c8d5e4e9f5a9',
@@ -101,6 +107,7 @@ export const COMPANY = [
 		accumulInvest: 2500000000,
 		revenue: 10200000000,
 		employees: 30,
+		logo: 'https://i.imgur.com/atS3wtK.png',
 	},
 	{
 		id: 'c19f6d5b-3249-4d4f-89f5-1b528b4ec124',
@@ -111,6 +118,7 @@ export const COMPANY = [
 		accumulInvest: 3500000000,
 		revenue: 17400000000,
 		employees: 45,
+		logo: 'https://i.imgur.com/OX5d29z.png',
 	},
 	{
 		id: '482bfc8c-ea59-4b89-bfb9-8485b158fd73',

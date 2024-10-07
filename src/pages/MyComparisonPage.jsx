@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
 import SelectMyCompanyModal from '../components/SelectMyCompanyModal';
 import SelectComparisonModal from '../components/SelectComparisonModal';
@@ -51,7 +52,7 @@ function MyComparisonPage() {
 				<div className={styles.myComanyHeader}>
 					<p className={styles.title}>나의 기업을 선택해 주세요!</p>
 					{myCompany && (
-						<button type="button" className={styles.restartButton} onClick={handleRestart}>
+						<button className={styles.restartButton} onClick={handleRestart} type="button">
 							<img className={styles.restartIcon} src={restartIcon} alt="초기화" />
 							전체 초기화
 						</button>
@@ -60,7 +61,7 @@ function MyComparisonPage() {
 				<div className={styles.myCompanyWrapper}>
 					{!myCompany ? (
 						<div className={styles.addMyCompanyIcon}>
-							<button type="button" className={styles.addButton} onClick={myCompanyModalHandler}>
+							<button className={styles.addButton} onClick={myCompanyModalHandler} type="button">
 								<img className={styles.addIcon} src={addIcon} alt="추가" />
 							</button>
 							<p className={styles.addMyCompanyText}>기업 추가</p>
@@ -91,10 +92,10 @@ function MyComparisonPage() {
 						<p className={styles.subtitle}>(최대 5개)</p>
 					</div>
 					<button
-						type="button"
 						className={`${styles.addComparisonButton} ${comparisons.length < 5 ? styles.active : styles.inactive}`}
 						onClick={comparisonModalHandler}
 						disabled={comparisons.length === 5}
+						type="button"
 					>
 						기업 추가하기
 					</button>
@@ -128,12 +129,14 @@ function MyComparisonPage() {
 						))
 					)}
 				</div>
-				<button
-					type="button"
-					className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
-				>
-					기업 비교하기
-				</button>
+				<Link to="/my-comparison/result">
+					<button
+						className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
+						type="button"
+					>
+						기업 비교하기
+					</button>
+				</Link>
 			</div>
 		</div>
 	);
