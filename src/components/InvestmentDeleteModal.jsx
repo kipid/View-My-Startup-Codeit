@@ -3,8 +3,9 @@ import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import eyeOn from '../assets/ic_eye_on.png';
 import eyeOff from '../assets/ic_eye_off.png';
+import { deleteInvestment, updateInvestment } from '../shared/apis/investmentApis.js';
 
-function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
+function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }) {
 	const [isPWshow, setIsPWshow] = useState(false);
 	const [pw, setPw] = useState('');
 
@@ -13,6 +14,16 @@ function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
 
 	const togglePWshow = () => {
 		setIsPWshow(!isPWshow);
+	};
+
+	const handleDelete = () => {
+		const deleteData = async () => {
+			const body = { password: pw };
+
+			const investment = await deleteInvestment(investmentId, body);
+		};
+		deleteData();
+		onDelete();
 	};
 
 	return (
@@ -41,7 +52,7 @@ function InvestmentDeleteModal({ investmentDetail, onClose, show = false }) {
 			</form>
 
 			<div id={style.modalFooter}>
-				<button type="button" className={style.modal}>
+				<button type="button" className={style.modal} onClick={handleDelete}>
 					삭제하기
 				</button>
 			</div>

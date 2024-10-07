@@ -9,7 +9,8 @@ const HTTP_METHODS = Object.freeze({
 	PUT: 'PUT',
 });
 
-const BASE_URL = `http://localhost:3100`;
+// const BASE_URL = `http://localhost:3000`;
+const BASE_URL = `https://view-my-startup-codeit-be.onrender.com`;
 
 const instance = axios.create({
 	baseURL: BASE_URL,
@@ -51,6 +52,6 @@ export async function axiosPut(url, data) {
 	return axiosData({ url, method: HTTP_METHODS.PUT, data });
 }
 
-export async function axiosDelete(url) {
-	return axiosData({ url, method: HTTP_METHODS.DELETE });
+export async function axiosDelete(url, data) {
+	return axiosData({ url, method: HTTP_METHODS.DELETE, data });
 }
