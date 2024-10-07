@@ -42,7 +42,7 @@ function ComparisonStatusPage() {
 				break;
 			case 'watcherDesc':
 			default:
-				sortFn = (a, b) => a._count.watcherList - b._count.watcherList;
+				sortFn = (a, b) => b._count.watcherList - a._count.watcherList;
 				break;
 		}
 		setCompanies([...companies.sort(sortFn)]);
