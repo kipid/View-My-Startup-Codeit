@@ -97,11 +97,11 @@ function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
 				<p className={styles.companyCategory}>{item.category}</p>
 			</div>
 			{isSelectedList ? (
-				<button type="button" className={styles.cancelSelectButton} onClick={() => onSelect(item, false)}>
+				<button className={styles.cancelSelectButton} onClick={() => onSelect(item, false)} type="button">
 					선택 해제
 				</button>
 			) : (
-				<button type="button" className={isSelected ? styles.clickedButton : styles.unclickedButton} onClick={handleClick}>
+				<button className={isSelected ? styles.clickedButton : styles.unclickedButton} onClick={handleClick} type="button">
 					{isSelected ? (
 						<div className={styles.clickedButtonContents}>
 							<img src={checkIcon} alt="선택 완료" className={styles.checkIcon} />

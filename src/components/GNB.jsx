@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 import styles from './GNB.module.css';
 import { useUser, useSetUser } from '../context/UserProvider';
+import VMSlogo from '../assets/logo_vms.png';
 
 function getLinkStyle({ isActive }) {
 	return {
@@ -28,19 +29,19 @@ function Nav() {
 		<header className={styles.gnb}>
 			<div className={styles.gnbContainer}>
 				<Link to="/" className={styles.logoContainer}>
-					<img className={styles.siteLogo} src="/images/site-logo.png" alt="logo" />
+					<img className={styles.siteLogo} src={VMSlogo} alt="logo" />
 				</Link>
 				<div className={styles.navMenus}>
-					<NavLink className={styles.navLinkStyle} to="/user/:userId/companies" style={getLinkStyle}>
+					<NavLink className={styles.navLinkStyle} to="/companies" style={getLinkStyle}>
 						<p className={styles.menu}>전체 기업 리스트</p>
 					</NavLink>
-					<NavLink className={styles.navLinkStyle} to="/user/:userId/my-comparison" style={getLinkStyle}>
+					<NavLink className={styles.navLinkStyle} to="/my-comparison" style={getLinkStyle}>
 						<p className={styles.menu}>나의 기업 비교</p>
 					</NavLink>
-					<NavLink className={styles.navLinkStyle} to="/user/:userId/comparison-status" style={getLinkStyle}>
+					<NavLink className={styles.navLinkStyle} to="/comparison-status" style={getLinkStyle}>
 						<p className={styles.menu}>비교 현황</p>
 					</NavLink>
-					<NavLink className={styles.navLinkStyle} to="/user/:userId/investment-status" style={getLinkStyle}>
+					<NavLink className={styles.navLinkStyle} to="/investment-status" style={getLinkStyle}>
 						<p className={styles.menu}>투자 현황</p>
 					</NavLink>
 				</div>

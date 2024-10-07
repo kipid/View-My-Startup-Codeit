@@ -96,7 +96,7 @@ function CompanySelectList({ item, onSelect, isSelected }) {
 				<p className={styles.companyName}>{item.name}</p>
 				<p className={styles.companyCategory}>{item.category}</p>
 			</div>
-			<button type="button" className={isSelected ? styles.clickedButton : styles.unclickedButton} onClick={handleClick}>
+			<button className={isSelected ? styles.clickedButton : styles.unclickedButton} onClick={handleClick} type="button">
 				{isSelected ? (
 					<div className={styles.clickedButtonContents}>
 						<img src={checkIcon} alt="선택 완료" className={styles.checkIcon} />
