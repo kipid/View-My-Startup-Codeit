@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination.jsx';
 import { getCompanies } from '../shared/apis/companiesService.js';
 import useAsync from '../shared/hooks/useAsync.js';
 import PopUp from '../components/PopUp.jsx';
+import CompanyList from '../components/CompanyList';
 
 function CompanyListPage() {
 	const [keyword, setKeyword] = useState('');
@@ -90,7 +91,7 @@ function CompanyListPage() {
 					</select>
 				</div>
 			</div>
-			{/* <CompanyList companies={companies} /> */}
+			<CompanyList companies={companies} pageNum={pageNum} pageSize={pageSize} />
 			<Pagination pageNum={pageNum} pageNumMax={pageNumMax} setPageNum={setPageNum} />
 			<PopUp error={errorLoadingCompanies} popUpText={errorLoadingCompanies?.message} setError={setError} />
 		</>

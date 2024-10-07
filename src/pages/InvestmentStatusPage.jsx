@@ -5,6 +5,7 @@ import { getCompanies } from '../shared/apis/companiesService';
 import useAsync from '../shared/hooks/useAsync';
 import PopUp from '../components/PopUp';
 import getScaledNumber from '../shared/utils/getScaledNumber';
+import noLogo from '../assets/no-logo.png';
 
 function InvestmentStatusPage() {
 	const [sort, setSort] = useState('accumulInvestByVMSDesc');
@@ -20,7 +21,6 @@ function InvestmentStatusPage() {
 		const fetch = async () => {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
-			console.log(companiesData.list);
 			const companiesList = companiesData.list.map(company => {
 				return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + invest.amount, 0) };
 			});
@@ -77,7 +77,10 @@ function InvestmentStatusPage() {
 								return (
 									<tr key={company.id}>
 										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
-										<td>{company.name}</td>
+										<td>
+											<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+											&nbsp; {company.name}
+										</td>
 										<td>{company.description}</td>
 										<td>{company.category}</td>
 										<td>{getScaledNumber(company.accumulInvestByVMS)}</td>
