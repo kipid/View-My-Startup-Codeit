@@ -22,6 +22,7 @@ function Main() {
 						<Route index element={<LandingPage />} />
 						<Route path="login" element={<LoginPage />} />
 						<Route path="signup" element={<SignupPage />} />
+						<Route path="profile" element={<Profile />} />
 						<Route path="companies">
 							<Route index element={<CompanyListPage />} />
 							<Route path=":companyId" element={<CompanyDetailPage />} />
