@@ -42,7 +42,7 @@ function ComparisonStatusPage() {
 				break;
 			case 'watcherDesc':
 			default:
-				sortFn = (a, b) => a._count.watcherList - b._count.watcherList;
+				sortFn = (a, b) => b._count.watcherList - a._count.watcherList;
 				break;
 		}
 		setCompanies([...companies.sort(sortFn)]);
@@ -77,7 +77,7 @@ function ComparisonStatusPage() {
 									<tr key={company.id}>
 										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
 										<td>
-											<Link to={`/companies/${company.id}`} style={{ textDecoration: 'none', color: 'var(--prime-blue)' }}>
+											<Link to={`/companies/${company.id}`}>
 												<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
 												&nbsp; {company.name}
 											</Link>

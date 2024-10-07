@@ -18,6 +18,15 @@
 	overflow-x: auto;
 	border-collapse: collapse;
 
+	a {
+		text-decoration: none;
+		color: var(--prime-blue);
+	}
+
+	a:visited {
+		color: rgb(0, 152, 152);
+	}
+
 	& tr {
 		background-color: var(--gray-200);
 		border-bottom: 1px solid var(--gray-600);

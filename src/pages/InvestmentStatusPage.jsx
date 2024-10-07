@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './InvestmentStatusPage.module.css';
-import Pagination from '../components/Pagination';
-import { getCompanies } from '../shared/apis/companiesService';
-import useAsync from '../shared/hooks/useAsync';
-import PopUp from '../components/PopUp';
-import getScaledNumber from '../shared/utils/getScaledNumber';
+import Pagination from '../components/Pagination.jsx';
+import { getCompanies } from '../shared/apis/companiesService.js';
+import useAsync from '../shared/hooks/useAsync.js';
+import PopUp from '../components/PopUp.jsx';
+import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import noLogo from '../assets/no-logo.png';
 
 function InvestmentStatusPage() {
@@ -79,7 +79,7 @@ function InvestmentStatusPage() {
 									<tr key={company.id}>
 										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
 										<td>
-											<Link to={`/companies/${company.id}`} style={{ textDecoration: 'none', color: 'var(--prime-blue)' }}>
+											<Link to={`/companies/${company.id}`}>
 												<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
 												&nbsp; {company.name}
 											</Link>
