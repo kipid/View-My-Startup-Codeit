@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Pagination from '../components/Pagination.jsx';
 import style from './CompanyDetailPage.module.css';
 import noImage from '../assets/no_image.png';
@@ -9,6 +10,7 @@ import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
 import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
 import TouchInvestment from '../components/TouchInvestment.jsx';
 import { getInvestments, getInvestmentsTotalAmount } from '../shared/apis/investmentApis.js';
+import { getCompanyWithId } from '../shared/apis/companiesService.js';
 
 const pageSize = 5;
 const initialBtnControls = {
@@ -18,6 +20,7 @@ const initialBtnControls = {
 };
 
 function CompanyDetailPage() {
+	const { companyId } = useParams();
 	const [list, setList] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(1);
@@ -25,6 +28,7 @@ function CompanyDetailPage() {
 	const [btnControls, setBtnControls] = useState(initialBtnControls);
 	const [modalData, setModalData] = useState({});
 	const [refreshTrigger, setRefreshTrigger] = useState(0);
+	const [companyDetail, setCompanyDetail] = useState(null);
 
 	const handleUpdate = detail => {
 		setModalData({ ...detail });
@@ -41,6 +45,7 @@ function CompanyDetailPage() {
 	useEffect(() => {
 		// NOTE useEffect를 async 하지 않고 비동기 처리하기 위한 함수
 		const fetchData = async () => {
+			const company = await getCompanyWithId(companyId);
 			const data = await getInvestments({ page: pageNum, pageSize });
 			const total = await getInvestmentsTotalAmount();
 
@@ -48,10 +53,10 @@ function CompanyDetailPage() {
 			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
 			setTotalAmount(total);
 			setBtnControls(initialBtnControls);
+			setCompanyDetail(company);
 		};
 		fetchData();
 	}, [pageNum, refreshTrigger]);
-	const companyDetail = COMPANY[1];
 
 	return (
 		<div id={style.companyDetailPage}>
@@ -66,17 +71,25 @@ function CompanyDetailPage() {
 						}}
 						show={btnControls.isUpdate}
 					/>
-					<InvestmentDeleteModal investmentDetail={modalData} onClose={handleModalClose} show={btnControls.isDelete} />
+					<InvestmentDeleteModal
+						investmentId={modalData?.id}
+						onClose={handleModalClose}
+						onDelete={() => {
+							handleModalClose();
+							setRefreshTrigger(prev => prev + 1);
+						}}
+						show={btnControls.isDelete}
+					/>
 				</Modal>
 			)}
 
 			<div id={style.companyDetail}>
 				<div id={style.companyDetailHeader}>
 					<div>
-						<img src={companyDetail.logo ?? noImage} alt="companyLogo" />
+						<img src={companyDetail?.logo ?? noImage} alt="companyLogo" />
 						<div>
-							<p id={style.companyName}>{companyDetail.name}</p>
-							<p id={style.companyCategory}>{companyDetail.category}</p>
+							<p id={style.companyName}>{companyDetail?.name}</p>
+							<p id={style.companyCategory}>{companyDetail?.category}</p>
 						</div>
 					</div>
 				</div>
@@ -84,21 +97,21 @@ function CompanyDetailPage() {
 				<div id={style.companyDetailInfo}>
 					<div>
 						<p>누적 투자 금액</p>
-						<p>{getScaledNumber(companyDetail.accumulInvest)} 원</p>
+						<p>{getScaledNumber(companyDetail?.accumulInvest)} 원</p>
 					</div>
 					<div>
 						<p>매출액</p>
-						<p>{getScaledNumber(companyDetail.revenue)} 원</p>
+						<p>{getScaledNumber(companyDetail?.revenue)} 원</p>
 					</div>
 					<div>
 						<p>고용 인원</p>
-						<p>{companyDetail.employees}명</p>
+						<p>{companyDetail?.employees}명</p>
 					</div>
 				</div>
 
 				<div id={style.companyDetailDesc}>
 					<p>기업 소개</p>
-					<pre>{companyDetail.description}</pre>
+					<pre>{companyDetail?.description}</pre>
 				</div>
 			</div>
 
