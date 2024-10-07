@@ -48,11 +48,12 @@
 			top: 12px;
 			bottom: 12px;
 			cursor: pointer;
+			background-color: inherit;
+		}
 
-			& img {
-				position: absolute;
-				inset: 0;
-			}
+		& img {
+			position: absolute;
+			inset: 0;
 		}
 	}
 

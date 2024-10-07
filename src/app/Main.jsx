@@ -11,6 +11,7 @@ import LoginPage from '../pages/LoginPage.jsx';
 import SignupPage from '../pages/SignupPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import { UserProvider, useSetUser } from '../context/UserProvider.jsx';
+import Profile from '../pages/Profile.jsx';
 
 function Main() {
 	return (

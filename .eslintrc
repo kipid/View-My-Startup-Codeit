@@ -2,7 +2,7 @@
 	"env": {
 		"browser": true,
 		"es6": true,
-		"node": true,
+		"node": true
 	},
 	"root": true,
 	"extends": [
@@ -14,7 +14,7 @@
 		"plugin:jsx-a11y/recommended",
 		"plugin:react-hooks/recommended",
 		"prettier",
-		"plugin:prettier/recommended",
+		"plugin:prettier/recommended"
 	],
 	"plugins": ["prettier"],
 	"rules": {
@@ -33,5 +33,6 @@
 		"jsx-a11y/no-noninteractive-element-interactions": "off",
 		"jsx-a11y/label-has-associated-control": [2, { "some": ["nesting", "id"] }],
 		"guard-for-in": "off",
-	},
+		"no-underscore-dangle": "off"
+	}
 }

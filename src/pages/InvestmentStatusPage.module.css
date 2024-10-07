@@ -1,0 +1,95 @@
+.heads {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	& h2 {
+		margin-bottom: var(--16px);
+	}
+
+	& select {
+		width: 15.3rem;
+		height: 48px;
+		font-size: var(--14px);
+		font-weight: 400;
+		border-radius: var(--10px);
+		background-color: var(--gray-100);
+		color: var(--gray-800);
+		border: 1px solid var(--gray-700);
+	}
+}
+
+.logo {
+	width: 2em;
+	height: 2em;
+	border-radius: 2em;
+	vertical-align: middle;
+	border: 2px solid var(--gray-700);
+}
+
+.tableContainer {
+	width: 100%;
+	overflow-x: auto;
+}
+
+table {
+	min-width: 700px;
+	max-width: 1200px;
+	width: 100%;
+	overflow-x: auto;
+	border-collapse: collapse;
+
+	& tr {
+		background-color: var(--gray-200);
+		border-bottom: 1px solid var(--gray-600);
+	}
+
+	& tr:first-child th {
+		padding: 1.3em 0;
+		text-align: center;
+		border-bottom: 2em solid var(--gray-100);
+	}
+
+	& td {
+		margin: .5em;
+	}
+
+	& tr td:nth-child(1) {
+		width: 5%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(2) {
+		width: 15%;
+		text-align: left;
+	}
+
+	& th:nth-child(2) {
+		text-align: center;
+	}
+
+	& tr td:nth-child(3) {
+		display: -webkit-box;
+		-webkit-line-clamp: 2; /* 표시할 줄 수 */
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: center;
+		width: 96%;
+	}
+
+	& tr td:nth-child(4) {
+		width: 10%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(5) {
+		width: 17%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(6) {
+		width: 15%;
+		text-align: center;
+	}
+}

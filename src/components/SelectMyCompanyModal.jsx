@@ -201,7 +201,7 @@ function SelectMyCompanyModal({ onClose }) {
 			{errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
 			<Pagination pageNum={pageNum} setPageNum={setPageNum} pageNumMax={pageNumMax} />
-			<div className={styles.blankSpace}> </div>
+			<div className={styles.blankSpace} />
 		</>
 	);
 }
