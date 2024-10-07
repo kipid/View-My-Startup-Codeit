@@ -21,17 +21,15 @@ function Main() {
 						<Route index element={<LandingPage />} />
 						<Route path="login" element={<LoginPage />} />
 						<Route path="signup" element={<SignupPage />} />
-						<Route path="user/:userId">
-							<Route path="companies">
-								<Route index element={<CompanyListPage />} />
-								<Route path=":companyId" element={<CompanyDetailPage />} />
-							</Route>
-							<Route path="comparison-status" element={<ComparisonStatusPage />} />
-							<Route path="investment-status" element={<InvestmentStatusPage />} />
-							<Route path="my-comparison">
-								<Route index element={<MyComparisonPage />} />
-								<Route path="result" element={<ComparisonResultPage />} />
-							</Route>
+						<Route path="companies">
+							<Route index element={<CompanyListPage />} />
+							<Route path=":companyId" element={<CompanyDetailPage />} />
+						</Route>
+						<Route path="comparison-status" element={<ComparisonStatusPage />} />
+						<Route path="investment-status" element={<InvestmentStatusPage />} />
+						<Route path="my-comparison">
+							<Route index element={<MyComparisonPage />} />
+							<Route path="result" element={<ComparisonResultPage />} />
 						</Route>
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>

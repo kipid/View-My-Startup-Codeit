@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
 import SelectMyCompanyModal from '../components/SelectMyCompanyModal';
 import SelectComparisonModal from '../components/SelectComparisonModal';
@@ -128,12 +129,14 @@ function MyComparisonPage() {
 						))
 					)}
 				</div>
-				<button
-					className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
-					type="button"
-				>
-					기업 비교하기
-				</button>
+				<Link to="/my-comparison/result">
+					<button
+						className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
+						type="button"
+					>
+						기업 비교하기
+					</button>
+				</Link>
 			</div>
 		</div>
 	);
