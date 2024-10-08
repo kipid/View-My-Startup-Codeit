@@ -83,7 +83,7 @@ Investment: <refer class="model-Investment"></refer>
 
 <div id="model-User"><div class="number none">User</div>
 
-```[.scrollable]
+```[.linenums]
 model User {
   id           String @id @default(uuid())
   email        String @unique // 이메일
@@ -126,7 +126,7 @@ CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
 
 <div id="model-UserSession"><div class="number none">UserSession</div>
 
-```[.scrollable]
+```[.linenums]
 model UserSession {
   user             User   @relation(fields: [userId], references: [id])
   userId           String
@@ -173,7 +173,7 @@ ALTER TABLE "UserSession" ADD CONSTRAINT "UserSession_userId_fkey" FOREIGN KEY (
 
 <div id="model-Company"><div class="number none">Company</div>
 
-```[.scrollable]
+```[.linenums]
 model Company {
   // TODO 가상 투자 금액 총계를 직접 저장할 것인가, 매번 계산할 것인가?
   // 당장은 FE 단에서 계산하고 있음.
@@ -221,7 +221,7 @@ CREATE UNIQUE INDEX "Company_name_key" ON "Company"("name");
 
 <div id="model-Watch"><div class="number none">Watch</div>
 
-```[.scrollable]
+```[.linenums]
 model Watch {
   id String @id @default(uuid())
 
@@ -254,7 +254,7 @@ ALTER TABLE "Watch" ADD CONSTRAINT "Watch_companyId_fkey" FOREIGN KEY ("companyI
 
 <div id="model-Comparison"><div class="number none">Comparison</div>
 
-```[.scrollable]
+```[.linenums]
 model Comparison {
   id String @id @default(uuid())
 
@@ -291,7 +291,7 @@ ALTER TABLE "Comparison" ADD CONSTRAINT "Comparison_companyId_fkey" FOREIGN KEY 
 
 <div id="model-Investment"><div class="number none">Investment</div>
 
-```[.scrollable]
+```[.linenums]
 model Investment {
   id       String @id @default(uuid())
   name     String
