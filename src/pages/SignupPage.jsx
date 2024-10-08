@@ -58,6 +58,9 @@ function SignupPage() {
 		} else if (NICKNAME_REGEX.test(nickname)) {
 			setNicknameError('');
 			setValidation(draft => ({ ...draft, nickname: true }));
+		} else if (nickname.length > 20) {
+			setNicknameError('닉네임은 20자 이하여야 합니다.');
+			setValidation(draft => ({ ...draft, nickname: false }));
 		} else {
 			setNicknameError('잘못된 닉네임 형식입니다.');
 			setValidation(draft => ({ ...draft, nickname: false }));
