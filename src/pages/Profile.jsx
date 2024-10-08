@@ -2,7 +2,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './LoginPage.module.css';
 import { useSetUser, useUser } from '../context/UserProvider.jsx';
-import { postLogout, postSsnAndCallback, getSsns, postLogoutFromAll } from '../shared/apis/loginSignupService.js';
+import { postLogout, postSsnAndCallback, postSsns, postLogoutFromAll } from '../shared/apis/loginSignupService.js';
 import PopUp from '../components/PopUp.jsx';
 
 function Profile() {
@@ -10,6 +10,45 @@ function Profile() {
 	const [error, setError] = useState(null);
 	const user = useUser();
 	const setUser = useSetUser();
+
+	const handleShowAllSessions = e => {
+		postSsnAndCallback(
+			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+				console.log('sessionEncrypted', sessionEncrypted); // TODO del
+				const ssns = await postSsns({ userId, createdAt, sessionEncrypted });
+				console.log('ssns', ssns); // TODO del
+				setSessions(ssns);
+			},
+			{},
+			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+		);
+	};
+
+	const handleLogout = e => {
+		postSsnAndCallback(
+			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+				const result = await postLogout({ userId, createdAt, sessionEncrypted });
+				setError(result);
+				localStorage.clear();
+				setUser(null);
+			},
+			{},
+			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+		);
+	};
+
+	const handleLogoutFromAll = e => {
+		postSsnAndCallback(
+			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+				const result = await postLogoutFromAll({ userId, createdAt, sessionEncrypted });
+				setError(result);
+				localStorage.clear();
+				setUser(null);
+			},
+			{},
+			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+		);
+	};
 
 	return (
 		<>
@@ -27,17 +66,7 @@ function Profile() {
 						<h3>닉네임</h3>
 						<p>{user?.nickname}</p>
 					</div>
-					<button
-						className={styles.getSsns}
-						type="button"
-						onClick={() => {
-							postSsnAndCallback({ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd }, async () => {
-								const ssns = await getSsns();
-								console.log('ssns', ssns); // TODO del
-								setSessions(ssns);
-							});
-						}}
-					>
+					<button className={styles.getSsns} type="button" onClick={handleShowAllSessions}>
 						모든 Session 불러오기
 					</button>
 					<table className={styles.table}>
@@ -63,32 +92,10 @@ function Profile() {
 						<p>{user?.createdAt}</p>
 					</div>
 				</div>
-				<button
-					className={styles.logout}
-					type="button"
-					onClick={() => {
-						localStorage.clear();
-						setUser(null);
-						postSsnAndCallback({ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd }, async () => {
-							const result = await postLogout({ userId: user.userUuid, createdAt: user.createdAt });
-							setError(result);
-						});
-					}}
-				>
+				<button className={styles.logout} type="button" onClick={handleLogout}>
 					로그아웃
 				</button>
-				<button
-					className={styles.logout}
-					type="button"
-					onClick={() => {
-						localStorage.clear();
-						setUser(null);
-						postSsnAndCallback({ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd }, async () => {
-							const result = await postLogoutFromAll({ userId: user.userUuid });
-							setError(result);
-						});
-					}}
-				>
+				<button className={styles.logout} type="button" onClick={handleLogoutFromAll}>
 					모든 곳으로부터 로그아웃
 				</button>
 				<PopUp error={error} setError={setError} popUpText={error?.message} />
