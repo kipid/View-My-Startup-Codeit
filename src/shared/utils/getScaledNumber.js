@@ -10,7 +10,7 @@ const getScaledNumber = number => {
 		rest /= scaler;
 		scale += 1;
 	}
-	console.log(number, rest);
+	console.log(number, rest); // TODO del
 	const scaled = `${parseFloat(rest?.toFixed(2))}${dic[scale]}`;
 
 	return scaled;
