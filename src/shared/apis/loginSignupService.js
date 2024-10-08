@@ -16,12 +16,13 @@ export async function getSsnIter(data = { userId: '', createdAt: 0 }) {
 	// return { iter: Number, sessionSalt: String }
 }
 
-export async function postSsnAndCallback(data, callback, ...args) {
+export async function postSsnAndCallback({ userId, createdAt, sessionPwd }, callback, ...args) {
 	// data = { userId: '', createdAt: 0, sessionPwd: 'abc' }
-	const iter = await getSsnIter(data);
-	docCookies.setItem('userId', data.userId, 1, '/', null);
-	docCookies.setItem('createdAt', data.createdAt, 1, '/', null);
-	docCookies.setItem('sessionEncrypted', encrypt(iter.sessionSalt, data.sessionPwd, iter.iter), 1, '/', null);
+	const iter = await getSsnIter({ userId, createdAt });
+	console.log('iter', iter); // TODO del
+	docCookies.setItem('userId', userId, 1, '/', null);
+	docCookies.setItem('createdAt', createdAt, 1, '/', null);
+	docCookies.setItem('sessionEncrypted', encrypt(iter.sessionSalt, sessionPwd, iter.iter), 1, '/', null);
 	callback(...args);
 }
 
