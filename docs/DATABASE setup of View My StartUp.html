@@ -57,9 +57,11 @@ img {
 
 ## Schema 모음.
 
-User: <refer class="model-User"></refer>
+User: <refer class="model-User"></refer> <refer class="model-UserSession"></refer>
 
 Company: <refer class="model-Company"></refer>
+
+Watch and Comparison: <refer class="model-Watch"></refer> <refer class="model-Comparison"></refer>
 
 Investment: <refer class="model-Investment"></refer>
 
@@ -71,17 +73,82 @@ Investment: <refer class="model-Investment"></refer>
 
 ```[.scrollable]
 model User {
-  id       String @id @default(uuid())
-  name     String // 유저 성명
-  nickname String // 서비스 내 표시할 별명
-  email    String // 이메일
+  id           String @id @default(uuid())
+  email        String @unique // 이메일
+  nickname     String @unique // 서비스 내 표시할 별명
+  name         String // 유저 성명
+  iter         Int    @default(10000) // Hash iteration, 매 인증성공시마다 1씩 감소
+  salt         String @db.Char(32) // Random string, length: 32
+  pwdEncrypted String @db.Char(104) // Encrypted password, length: 104
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   investments Investment[]
-  company     Company?
+  comparisons Comparison[]
+  watchList   Watch[]
+  UserSession UserSession[]
 }
+
+# PostgreSQL
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "nickname" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "iter" INTEGER NOT NULL DEFAULT 10000,
+    "salt" CHAR(32) NOT NULL,
+    "pwdEncrypted" CHAR(104) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
+```/
+
+</div>
+
+<div id="model-UserSession"><div class="number none">UserSession</div>
+
+```[.scrollable]
+model UserSession {
+  user             User   @relation(fields: [userId], references: [id])
+  userId           String
+  iter             Int    @default(1000) // Hash iteration. 성공시마다 1씩 감소.
+  // Session 을 검사할때마다 성공시 iter 를 하나씩 줄입니다. hash function 을 1000번 돌린 값으로 sessionEncrypted 와 맞춰보고 999번 돌린 값으로 받고 서버단에서 1번 더 hash 를 돌려서 값이 같은지 판단합니다. 성공하면 이번엔 client 단에서 998번 hash 를 돌린 값을 받고 서버단에서 2번 더 hash 를 돌린 뒤 sessionEncrypted 와 맞춰봅니다. 계속해서 iter 수를 줄여갑니다.
+  // 이렇게 하면 Network 중단에서 데이터를 가로챈 뒤 Session 을 훔쳐서 몰래 로그인 하는걸 방지할 수 있습니다.
+  // Hash 는 정방향으로는 순쉽간에 결과가 나오지만, 이 Hash 의 역함수를 구하는건 굉장히 어렵습니다. Rainbow table 로 모든 암호에 대해 마지막 sessionEncrypted 가 뭐가 나오는지 저장해놓고 역산할수는 있지만, 이 마저도 각 유저별로 랜덤한 다른 salt 를 첨가하는 것으로 막을 수 있습니다.
+  // 이 암호는 양자컴퓨터로도 못 푸는 것으로 알고 있습니다.
+  // 정확히 어떻게 동작하는건지 궁금하신 분은 이강수님 (kipacti@gmail.com) 에게 문의해 주세요.
+  sessionSalt      String @db.Char(32)
+  sessionEncrypted String @db.Char(104)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, createdAt])
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+# PostgreSQL
+CREATE TABLE "UserSession" (
+    "userId" TEXT NOT NULL,
+    "iter" INTEGER NOT NULL DEFAULT 1000,
+    "sessionSalt" CHAR(32) NOT NULL,
+    "sessionEncrypted" CHAR(104) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserSession_pkey" PRIMARY KEY ("userId","createdAt")
+);
+
+CREATE INDEX "UserSession_userId_createdAt_idx" ON "UserSession"("userId", "createdAt" DESC);
+
+ALTER TABLE "UserSession" ADD CONSTRAINT "UserSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 ```/
 
 </div>
@@ -94,23 +161,112 @@ model User {
 
 ```[.scrollable]
 model Company {
-  // TODO 가상 투자 금액 총계를 직접 저장할 것인가, 매번 계산할 것인가
-  id            String @id @default(uuid())
-  name          String @unique
+  // TODO 가상 투자 금액 총계를 직접 저장할 것인가, 매번 계산할 것인가?
+  // 당장은 FE 단에서 계산하고 있음.
+  id            String  @id @default(uuid())
+  name          String  @unique
   description   String
   category      String // 회사 카테고리. 입력단에서 검증해야함.
-  AccumulInvest BigInt // NOTE 누적 투자 금액(실제)
+  accumulInvest BigInt // NOTE 누적 투자 금액(실제)
   revenue       BigInt // NOTE 매출액
   employees     Int // NOTE 고용 인원수
-  selectedCount Int // NOTE 선택된 횟수
+  logo          String? // NOTE 로고 이미지
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   investments Investment[]
-  owner       User         @relation(fields: [ownerId], references: [id])
-  ownerId     String       @unique
+  comparisons Comparison[]
+  watcherList Watch[]
 }
+
+# PostgreSQL
+CREATE TABLE "Company" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "category" TEXT NOT NULL,
+    "accumulInvest" BIGINT NOT NULL,
+    "revenue" BIGINT NOT NULL,
+    "employees" INTEGER NOT NULL,
+    "logo" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "Company_name_key" ON "Company"("name");
+```/
+
+</div>
+
+
+
+## Watch and Comparison
+
+<div id="model-Watch"><div class="number none">Watch</div>
+
+```[.scrollable]
+model Watch {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyId String?
+}
+
+# PostgreSQL
+CREATE TABLE "Watch" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT,
+    "companyId" TEXT,
+
+    CONSTRAINT "Watch_pkey" PRIMARY KEY ("id")
+);
+
+ALTER TABLE "Watch" ADD CONSTRAINT "Watch_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE "Watch" ADD CONSTRAINT "Watch_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+```/
+
+</div>
+
+<div id="model-Comparison"><div class="number none">Comparison</div>
+
+```[.scrollable]
+model Comparison {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyId String?
+}
+
+# PostgreSQL
+CREATE TABLE "Comparison" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT,
+    "companyId" TEXT,
+
+    CONSTRAINT "Comparison_pkey" PRIMARY KEY ("id")
+);
+
+ALTER TABLE "Comparison" ADD CONSTRAINT "Comparison_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE "Comparison" ADD CONSTRAINT "Comparison_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 ```/
 
 </div>
@@ -125,20 +281,41 @@ model Company {
 model Investment {
   id       String @id @default(uuid())
   name     String
-  amount   Int
+  amount   BigInt
   comment  String
   password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String // NOTE 투자자
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String // NOTE 투자대상 기업
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String? // NOTE 투자자
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyId String? // NOTE 투자대상 기업
 
   @@index([userId, createdAt(sort: Desc)])
 }
+
+# PostgreSQL
+CREATE TABLE "Investment" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "amount" BIGINT NOT NULL,
+    "comment" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT,
+    "companyId" TEXT,
+
+    CONSTRAINT "Investment_pkey" PRIMARY KEY ("id")
+);
+
+CREATE INDEX "Investment_userId_createdAt_idx" ON "Investment"("userId", "createdAt" DESC);
+
+ALTER TABLE "Investment" ADD CONSTRAINT "Investment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE "Investment" ADD CONSTRAINT "Investment_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 ```/
 
 </div>
@@ -156,7 +333,7 @@ model Investment {
 <codeprint id="docuK-script">
 <script>
 (function(m, $, undefined) {
-m.printMode=false;
+m.printMode=true;
 m.ripplesDisabled=false;
 m.recoeveUserId="kipid";
 m.recoCats="[IT/Programming]--국비 지원 코딩/공부--Project-1";
