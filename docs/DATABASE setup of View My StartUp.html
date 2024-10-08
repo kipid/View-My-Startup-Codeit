@@ -27,6 +27,18 @@ img {
 <codeprint class="SEE">
 # DATABASE setup of View My StartUp
 
+db error 가 날 땐,
+
+```
+npx prisma migrate reset --force
+```/
+
+후 다시
+
+```
+npm install --production && npx prisma migrate deploy && npx prisma generate && npx prisma db seed
+```/
+
 
 
 ## PH
@@ -124,6 +136,7 @@ model UserSession {
   // Hash 는 정방향으로는 순쉽간에 결과가 나오지만, 이 Hash 의 역함수를 구하는건 굉장히 어렵습니다. Rainbow table 로 모든 암호에 대해 마지막 sessionEncrypted 가 뭐가 나오는지 저장해놓고 역산할수는 있지만, 이 마저도 각 유저별로 랜덤한 다른 salt 를 첨가하는 것으로 막을 수 있습니다.
   // 이 암호는 양자컴퓨터로도 못 푸는 것으로 알고 있습니다.
   // 정확히 어떻게 동작하는건지 궁금하신 분은 이강수님 (kipacti@gmail.com) 에게 문의해 주세요.
+  ip               String @db.Char(45) // IPv6 port 포함 max 값
   sessionSalt      String @db.Char(32)
   sessionEncrypted String @db.Char(104)
 
@@ -138,6 +151,7 @@ model UserSession {
 CREATE TABLE "UserSession" (
     "userId" TEXT NOT NULL,
     "iter" INTEGER NOT NULL DEFAULT 1000,
+    "ip" CHAR(45) NOT NULL,
     "sessionSalt" CHAR(32) NOT NULL,
     "sessionEncrypted" CHAR(104) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -12,40 +12,55 @@ function Profile() {
 	const setUser = useSetUser();
 
 	const handleShowAllSessions = e => {
-		postSsnAndCallback(
-			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
-				const ssns = await postSsns({ userId, createdAt, sessionEncrypted });
-				setSessions(ssns);
-			},
-			{},
-			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
-		);
+		try {
+			postSsnAndCallback(
+				async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+					const ssns = await postSsns({ userId, createdAt, sessionEncrypted });
+					setSessions(ssns);
+					if (ssns?.message) {
+						setError(ssns);
+					}
+				},
+				{},
+				{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+			);
+		} catch (err) {
+			setError(err);
+		}
 	};
 
 	const handleLogout = e => {
-		localStorage.clear();
-		postSsnAndCallback(
-			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
-				const result = await postLogout({ userId, createdAt, sessionEncrypted });
-				setError(result);
-				setUser(null);
-			},
-			{},
-			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
-		);
+		try {
+			localStorage.clear();
+			postSsnAndCallback(
+				async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+					const result = await postLogout({ userId, createdAt, sessionEncrypted });
+					setError(result);
+					setUser(null);
+				},
+				{},
+				{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+			);
+		} catch (err) {
+			setError(err);
+		}
 	};
 
 	const handleLogoutFromAll = e => {
-		localStorage.clear();
-		postSsnAndCallback(
-			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
-				const result = await postLogoutFromAll({ userId, createdAt, sessionEncrypted });
-				setError(result);
-				setUser(null);
-			},
-			{},
-			{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
-		);
+		try {
+			localStorage.clear();
+			postSsnAndCallback(
+				async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
+					const result = await postLogoutFromAll({ userId, createdAt, sessionEncrypted });
+					setError(result);
+					setUser(null);
+				},
+				{},
+				{ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd },
+			);
+		} catch (err) {
+			setError(err);
+		}
 	};
 
 	return (
@@ -74,20 +89,21 @@ function Profile() {
 								<th>Iteration</th>
 								<th>created at</th>
 							</tr>
-							{sessions.map(session => {
-								return (
-									<tr key={session.createdAt}>
-										<td>{session.ip}</td>
-										<td>{session.iter}</td>
-										<td>{new Date(session.createdAt).toLocaleString()}</td>
-									</tr>
-								);
-							})}
+							{sessions.constructor === Array &&
+								sessions.map(session => {
+									return (
+										<tr key={session.createdAt}>
+											<td>{session.ip}</td>
+											<td>{session.iter}</td>
+											<td>{new Date(session.createdAt).toLocaleString()}</td>
+										</tr>
+									);
+								})}
 						</tbody>
 					</table>
 					<div className={styles.profileElement}>
 						<h3>로그인 시간</h3>
-						<p>{user?.createdAt}</p>
+						<p>{new Date(user?.createdAt).toLocaleString()}</p>
 					</div>
 				</div>
 				<button className={styles.logout} type="button" onClick={handleLogout}>
