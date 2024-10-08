@@ -1,3 +1,5 @@
+import docCookies from './docCookies.js';
+import encrypt from './encrypt.js';
 import instance from './instance.js';
 
 export async function postPwdIter(data = { email: '' }) {
