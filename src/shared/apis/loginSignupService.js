@@ -1,4 +1,3 @@
-import docCookies from './docCookies.js';
 import encrypt from './encrypt.js';
 import instance from './instance.js';
 
@@ -8,42 +7,44 @@ export async function postPwdIter(data = { email: '' }) {
 	// return { iter: Number, salt: String }
 }
 
-export async function getSsnIter(data = { userId: '', createdAt: 0 }) {
-	docCookies.setItem('userId', data.userId, 1, '/', null);
-	docCookies.setItem('createdAt', data.createdAt, 1, '/', null);
-	const iter = await instance.get(`/account/session-iter`, data);
+export async function postSsnIter(data = { userId: '', createdAt: 0 }) {
+	const iter = await instance.post(`/account/session-iter`, data);
 	return iter.data;
 	// return { iter: Number, sessionSalt: String }
 }
 
-export async function postSsnAndCallback({ userId, createdAt, sessionPwd }, callback, ...args) {
-	// data = { userId: '', createdAt: 0, sessionPwd: 'abc' }
-	const iter = await getSsnIter({ userId, createdAt });
-	console.log('iter', iter); // TODO del
-	docCookies.setItem('userId', userId, 1, '/', null);
-	docCookies.setItem('createdAt', createdAt, 1, '/', null);
-	docCookies.setItem('sessionEncrypted', encrypt(iter.sessionSalt, sessionPwd, iter.iter), 1, '/', null);
-	callback(...args);
+export async function postSsnAndCallback(callback, args, { userId = '', createdAt = 0, sessionPwd = '' }) {
+	// data = { userId: '', createdAt: 0, sessionPwd: '' }
+	const iter = await postSsnIter({ userId, createdAt });
+	if (sessionPwd) {
+		const sessionEncrypted = encrypt(iter.sessionSalt, sessionPwd, iter.iter);
+		return callback({
+			userId,
+			createdAt,
+			sessionEncrypted,
+			...args,
+		});
+	}
 }
 
-export async function getSsns() {
-	const sessions = await instance.get('/account/sessions');
+export async function postSsns(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
+	const sessions = await instance.post('/account/sessions', data);
 	return sessions.data;
 }
 
-export async function postLogin(data = { email: 'anonymous@example.com', pwdEncrypted: '123456' }) {
+export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
 	const user = await instance.post(`/account/log-in`, data);
 	return user.data;
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
 
-export async function postLogout(data = { userId: 'abc', createdAt: 0, sessionEncrypted: 'abc' }) {
+export async function postLogout(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
 	const result = await instance.post(`/account/log-out`, data);
 	return result.data;
 	// return { message }
 }
 
-export async function postLogoutFromAll(data = { userId: 'abc' }) {
+export async function postLogoutFromAll(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
 	const result = await instance.post(`/account/log-out-from-all`, data);
 	return result.data;
 	// return { message }
@@ -57,11 +58,11 @@ export async function postCheck(data = { email: '', nickname: '' }) {
 
 export async function postSignup(
 	data = {
-		email: 'anonymous@example.com',
-		name: 'abc',
-		nickname: 'anonymous',
-		salt: 'abc',
-		pwdEncrypted: '123456',
+		email: '',
+		name: '',
+		nickname: '',
+		salt: '',
+		pwdEncrypted: '',
 	},
 ) {
 	const user = await instance.post(`/account/sign-up`, data);
