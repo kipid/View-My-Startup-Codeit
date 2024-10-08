@@ -14,9 +14,7 @@ function Profile() {
 	const handleShowAllSessions = e => {
 		postSsnAndCallback(
 			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
-				console.log('sessionEncrypted', sessionEncrypted); // TODO del
 				const ssns = await postSsns({ userId, createdAt, sessionEncrypted });
-				console.log('ssns', ssns); // TODO del
 				setSessions(ssns);
 			},
 			{},
