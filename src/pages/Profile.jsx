@@ -32,7 +32,9 @@ function Profile() {
 						type="button"
 						onClick={() => {
 							postSsnAndCallback({ userId: user.userUuid, createdAt: user.createdAt, sessionPwd: user.sessionPwd }, async () => {
-								setSessions(await getSsns());
+								const ssns = await getSsns();
+								console.log('ssns', ssns); // TODO del
+								setSessions(ssns);
 							});
 						}}
 					>
@@ -50,7 +52,7 @@ function Profile() {
 									<tr key={session.createdAt}>
 										<td>{session.ip}</td>
 										<td>{session.iter}</td>
-										<td>{session.createdAt}</td>
+										<td>{new Date(session.createdAt).toLocaleString()}</td>
 									</tr>
 								);
 							})}
