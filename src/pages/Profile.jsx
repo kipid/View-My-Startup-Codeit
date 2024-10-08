@@ -23,11 +23,11 @@ function Profile() {
 	};
 
 	const handleLogout = e => {
+		localStorage.clear();
 		postSsnAndCallback(
 			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
 				const result = await postLogout({ userId, createdAt, sessionEncrypted });
 				setError(result);
-				localStorage.clear();
 				setUser(null);
 			},
 			{},
@@ -36,11 +36,11 @@ function Profile() {
 	};
 
 	const handleLogoutFromAll = e => {
+		localStorage.clear();
 		postSsnAndCallback(
 			async ({ userId = '', createdAt = 0, sessionEncrypted = '' }) => {
 				const result = await postLogoutFromAll({ userId, createdAt, sessionEncrypted });
 				setError(result);
-				localStorage.clear();
 				setUser(null);
 			},
 			{},
