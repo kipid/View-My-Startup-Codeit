@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import Pagination from '../components/Pagination.jsx';
 import style from './CompanyDetailPage.module.css';
 import noImage from '../assets/no_image.png';
-import { COMPANY } from '../shared/mock/mock.js';
 import Modal from '../components/Modal.jsx';
 import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
@@ -46,8 +45,8 @@ function CompanyDetailPage() {
 		// NOTE useEffect를 async 하지 않고 비동기 처리하기 위한 함수
 		const fetchData = async () => {
 			const company = await getCompanyWithId(companyId);
-			const data = await getInvestments({ page: pageNum, pageSize });
-			const total = await getInvestmentsTotalAmount();
+			const data = await getInvestments({ page: pageNum, pageSize }, companyId);
+			const total = await getInvestmentsTotalAmount(companyId);
 
 			setList([...data.list]);
 			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
@@ -123,7 +122,7 @@ function CompanyDetailPage() {
 
 				<div id={style.investmentBody}>
 					<table>
-						<caption>총 {getScaledNumber(totalAmount)}원</caption>
+						<caption>총 {getScaledNumber(totalAmount) || 0}원</caption>
 						<thead>
 							<tr>
 								<th>투자자 이름</th>

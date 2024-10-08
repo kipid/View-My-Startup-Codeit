@@ -91,7 +91,7 @@ function SelectComparisonModal({ comparisons, onClose }) {
 		fetchData();
 
 		return () => {};
-	}, [companies, pageNum, pageSize, search, loadCompaniesAsync, setError]);
+	}, [pageNum, pageSize, search, loadCompaniesAsync, setError]);
 
 	return (
 		<>
