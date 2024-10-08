@@ -23,7 +23,7 @@ function InvestmentStatusPage() {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 			const companiesList = companiesData.list.map(company => {
-				return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + invest.amount, 0) };
+				return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + Number(invest.amount), 0) };
 			});
 			setCompanies(companiesList.sort((a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS));
 		};
