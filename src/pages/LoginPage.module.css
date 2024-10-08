@@ -26,6 +26,23 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+	gap: var(--16px);
+
+	& .table {
+		max-width: 100%;
+		width: 35em;
+
+		& th {
+			font-size: var(--16px);
+			font-weight: bold;
+			text-align: center;
+		}
+
+		& td {
+			font-size: var(--14px);
+			text-align: center;
+		}
+	}
 }
 
 .profileElement {

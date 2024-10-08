@@ -42,6 +42,12 @@ export async function postLogout(data = { userId: 'abc', createdAt: 0, sessionEn
 	// return { message }
 }
 
+export async function postLogoutFromAll(data = { userId: 'abc' }) {
+	const result = await instance.post(`/account/log-out-from-all`, data);
+	return result.data;
+	// return { message }
+}
+
 export async function postCheck(data = { email: '', nickname: '' }) {
 	const check = await instance.post('/account/check', data);
 	return check.data;
