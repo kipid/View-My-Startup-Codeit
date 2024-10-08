@@ -1,4 +1,4 @@
-import docCookies from './cookies.js';
+import docCookies from './docCookies.js';
 import encrypt from './encrypt.js';
 import instance from './instance.js';
 
@@ -9,8 +9,8 @@ export async function postPwdIter(data = { email: '' }) {
 }
 
 export async function getSsnIter(data = { userId: '', createdAt: 0 }) {
-	docCookies.setItem('userId', data.userId, 1, '/', null, true);
-	docCookies.setItem('createdAt', data.createdAt, 1, '/', null, true);
+	docCookies.setItem('userId', data.userId, 1, '/', null);
+	docCookies.setItem('createdAt', data.createdAt, 1, '/', null);
 	const iter = await instance.get(`/account/session-iter`, data);
 	return iter.data;
 	// return { iter: Number, sessionSalt: String }
@@ -19,9 +19,9 @@ export async function getSsnIter(data = { userId: '', createdAt: 0 }) {
 export async function postSsnAndCallback(data, callback, ...args) {
 	// data = { userId: '', createdAt: 0, sessionPwd: 'abc' }
 	const iter = await getSsnIter(data);
-	docCookies.setItem('userId', data.userId, 1, '/', null, true);
-	docCookies.setItem('createdAt', data.createdAt, 1, '/', null, true);
-	docCookies.setItem('sessionEncrypted', encrypt(iter.sessionSalt, data.sessionPwd, iter.iter), 1, '/', null, true);
+	docCookies.setItem('userId', data.userId, 1, '/', null);
+	docCookies.setItem('createdAt', data.createdAt, 1, '/', null);
+	docCookies.setItem('sessionEncrypted', encrypt(iter.sessionSalt, data.sessionPwd, iter.iter), 1, '/', null);
 	callback(...args);
 }
 

@@ -43,7 +43,7 @@ function MyComparisonPage() {
 
 	const handleRestart = () => {
 		setMyComany('');
-		setComparisons('');
+		setComparisons([]);
 	};
 
 	return (
@@ -51,7 +51,7 @@ function MyComparisonPage() {
 			<div className={styles.container}>
 				<div className={styles.myComanyHeader}>
 					<p className={styles.title}>나의 기업을 선택해 주세요!</p>
-					{myCompany && (
+					{myCompany && comparisons.length > 0 && (
 						<button className={styles.restartButton} onClick={handleRestart} type="button">
 							<img className={styles.restartIcon} src={restartIcon} alt="초기화" />
 							전체 초기화
@@ -86,53 +86,58 @@ function MyComparisonPage() {
 						</Modal>
 					)}
 				</div>
-				<div className={styles.comparisonHeader}>
-					<div className={styles.titles}>
-						<p className={styles.title}>어떤 기업이 궁금하세요?</p>
-						<p className={styles.subtitle}>(최대 5개)</p>
-					</div>
-					<button
-						className={`${styles.addComparisonButton} ${comparisons.length < 5 ? styles.active : styles.inactive}`}
-						onClick={comparisonModalHandler}
-						disabled={comparisons.length === 5}
-						type="button"
-					>
-						기업 추가하기
-					</button>
-					{isComparisonModalOpen && (
-						<Modal>
-							<SelectComparisonModal comparisons={comparisons} onClose={comparisonModalCloseHandler} />
-						</Modal>
-					)}
-				</div>
-				<div className={styles.comparisonWrapper}>
-					{comparisons.length === 0 ? (
-						<p className={styles.noComparisonText}>
-							아직 추가한 기업이 없어요, <br />
-							버튼을 눌러 기업을 추가해보세요!
-						</p>
-					) : (
-						comparisons.map(comparison => (
-							<div className={styles.comparisonInfo} key={comparison.id}>
-								<img
-									className={styles.minusLogo}
-									src={minusLogo}
-									alt="삭제"
-									onClick={() => handleDeleteComparison(comparison.id)}
-								/>
-								<img className={styles.companyLogo} src={comparison.logo ? comparison.logo : noLogo} alt="로고" />
-								<div className={styles.comanyInfoText}>
-									<p className={styles.companyName}>{comparison.name}</p>
-									<p className={styles.companyCategory}>{comparison.category}</p>
-								</div>
+				{myCompany && (
+					<>
+						<div className={styles.comparisonHeader}>
+							<div className={styles.titles}>
+								<p className={styles.title}>어떤 기업이 궁금하세요?</p>
+								<p className={styles.subtitle}>(최대 5개)</p>
 							</div>
-						))
-					)}
-				</div>
+							<button
+								className={`${styles.addComparisonButton} ${comparisons.length < 5 ? styles.active : styles.inactive}`}
+								onClick={comparisonModalHandler}
+								disabled={comparisons.length === 5}
+								type="button"
+							>
+								기업 추가하기
+							</button>
+							{isComparisonModalOpen && (
+								<Modal>
+									<SelectComparisonModal comparisons={comparisons} onClose={comparisonModalCloseHandler} />
+								</Modal>
+							)}
+						</div>
+						<div className={styles.comparisonWrapper}>
+							{comparisons.length === 0 ? (
+								<p className={styles.noComparisonText}>
+									아직 추가한 기업이 없어요, <br />
+									버튼을 눌러 기업을 추가해보세요!
+								</p>
+							) : (
+								comparisons.map(comparison => (
+									<div className={styles.comparisonInfo} key={comparison.id}>
+										<img
+											className={styles.minusLogo}
+											src={minusLogo}
+											alt="삭제"
+											onClick={() => handleDeleteComparison(comparison.id)}
+										/>
+										<img className={styles.companyLogo} src={comparison.logo ? comparison.logo : noLogo} alt="로고" />
+										<div className={styles.comanyInfoText}>
+											<p className={styles.companyName}>{comparison.name}</p>
+											<p className={styles.companyCategory}>{comparison.category}</p>
+										</div>
+									</div>
+								))
+							)}
+						</div>
+					</>
+				)}
 				<Link to="/my-comparison/result">
 					<button
 						className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
 						type="button"
+						disabled={!myCompany || comparisons.length === 0}
 					>
 						기업 비교하기
 					</button>

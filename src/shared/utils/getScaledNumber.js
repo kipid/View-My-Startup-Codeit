@@ -1,4 +1,6 @@
 const getScaledNumber = number => {
+	if (!number) return null;
+
 	const scaler = 10000;
 	let scale = 0;
 	let rest = number;
@@ -8,6 +10,7 @@ const getScaledNumber = number => {
 		rest /= scaler;
 		scale += 1;
 	}
+	console.log(number, rest);
 	const scaled = `${parseFloat(rest?.toFixed(2))}${dic[scale]}`;
 
 	return scaled;
