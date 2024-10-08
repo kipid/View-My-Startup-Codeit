@@ -1,13 +1,13 @@
 import { axiosDelete, axiosGet, axiosPatch } from '../utils/axiosUtils.js';
 
-export async function getInvestments(params = { page: 0, pageSize: 10, orderBy: 'bigger' }) {
-	const investments = await axiosGet(`/investments`, params);
+export async function getInvestments(params = { page: 0, pageSize: 10, orderBy: 'bigger' }, companyId = '') {
+	const investments = await axiosGet(`/investments/${companyId}`, params);
 
 	return investments;
 }
 
-export async function getInvestmentsTotalAmount() {
-	const totalAmount = await axiosGet(`/investments/total`);
+export async function getInvestmentsTotalAmount(companyId) {
+	const totalAmount = await axiosGet(`/investments/${companyId}/total`);
 
 	return totalAmount;
 }

@@ -4,7 +4,6 @@ import styles from './InvestmentStatusPage.module.css';
 import Pagination from '../components/Pagination';
 import PopUp from '../components/PopUp';
 import useAsync from '../shared/hooks/useAsync';
-import getScaledNumber from '../shared/utils/getScaledNumber';
 import { getCompanies } from '../shared/apis/companiesService';
 import noLogo from '../assets/no-logo.png';
 
@@ -22,8 +21,7 @@ function ComparisonStatusPage() {
 		const fetch = async () => {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'watcherAndComparison' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
-			console.log(companiesData.list);
-			setCompanies(companiesData.list.sort((a, b) => b.accumulInvest - a.accumulInvest));
+			setCompanies(companiesData.list.sort((a, b) => b._count.watcherList - a._count.watcherList));
 		};
 		fetch();
 	}, []);
