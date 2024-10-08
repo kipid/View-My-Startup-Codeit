@@ -1,0 +1,156 @@
+#companyDetailPage {
+	width: 1200px;
+
+	#companyDetail {
+		#companyDetailHeader {
+			height: 112px;
+			border-bottom: 1px solid #747474;
+			margin-top: 40px;
+
+			> div {
+				display: flex;
+				gap: 18px;
+				height: 80px;
+
+				> div {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+
+					#companyName {
+						font-size: 24px;
+						font-weight: 700;
+					}
+
+					#companyCategory {
+						font-size: 20px;
+						font-weight: 500;
+						color: #747474;
+					}
+				}
+			}
+		}
+
+		#companyDetailInfo {
+			margin: 36px 0;
+			display: flex;
+			justify-content: space-between;
+			height: 92px;
+
+			> div {
+				width: 384px;
+				border-radius: 10px;
+				background-color: #282828;
+				padding: 36px 24px;
+				display: flex;
+				justify-content: space-between;
+
+				> p:first-child {
+					font-size: 16px;
+					font-weight: 400;
+					color: #dbdbdb;
+				}
+
+				> p:last-child {
+					font-size: 16px;
+					font-weight: 600;
+					color: white;
+				}
+			}
+		}
+
+		#companyDetailDesc {
+			width: 1196px;
+			height: 287px;
+			border-radius: 10px;
+			padding: 24px;
+			background-color: #212121;
+			margin: 32px 0;
+
+			pre {
+				white-space: pre-wrap;
+				overflow: auto;
+				height: 204px;
+			}
+		}
+	}
+
+	#investments {
+		width: 100%;
+		height: 583px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+
+		#investmentsHeader {
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
+			height: 40px;
+
+			p {
+				display: flex;
+				align-content: center;
+				flex-wrap: wrap;
+				font-size: 20px;
+				font-weight: 700;
+			}
+
+			button {
+				padding: 8px 24px;
+				background-color: #eb5230;
+				border-radius: 50px;
+				color: white;
+				font-weight: 600;
+				font-size: 16px;
+				text-align: center;
+				border: none;
+			}
+		}
+
+		#investmentBody {
+			display: flex;
+			flex-direction: column;
+
+			table {
+				width: 100%;
+				height: 375px;
+				padding-top: 16px;
+
+				caption {
+					text-align: left;
+				}
+
+				thead > tr {
+					height: 39px;
+
+					th {
+						width: 95px;
+
+						&:last-child {
+							width: auto;
+						}
+					}
+				}
+
+				tbody > tr {
+					text-align: center;
+					height: 64px;
+
+					td:last-child {
+						height: 100%;
+						text-align: left;
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: space-between;
+						align-content: center;
+
+						p {
+							margin-left: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
