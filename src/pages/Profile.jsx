@@ -87,7 +87,7 @@ function Profile() {
 					</table>
 					<div className={styles.profileElement}>
 						<h3>로그인 시간</h3>
-						<p>{user?.createdAt}</p>
+						<p>{new Date(user?.createdAt).toLocaleString()}</p>
 					</div>
 				</div>
 				<button className={styles.logout} type="button" onClick={handleLogout}>
