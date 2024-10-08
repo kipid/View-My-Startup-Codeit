@@ -1,5 +1,6 @@
 import axios from 'axios';
 import isEmpty from './isEmpty.js';
+import HttpStatus from './HttpStatus.js';
 
 const HTTP_METHODS = Object.freeze({
 	GET: 'GET',
@@ -25,7 +26,7 @@ async function axiosData({ url, method, data = {}, params = {} }) {
 
 	const response = await instance({ method, url, data, params })
 		.then(res => {
-			if (res.status === 204 && isEmpty(res.data)) return res.status;
+			if (res.status === HttpStatus.NO_CONENT && isEmpty(res.data)) return res.status;
 
 			return res.data;
 		})
