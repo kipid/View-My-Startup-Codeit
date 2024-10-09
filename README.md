@@ -64,6 +64,8 @@ PORT=3100
 
 ## 파일 구조
 
+### BackEnd
+
 ```
 ├── .env
 ├── .eslintrc
@@ -146,9 +148,167 @@ PORT=3100
 
 
 
+### FrontEnd
+
+```
+├── .env
+├── .eslintrc
+├── .gitignore
+├── .nvmrc
+├── .prettierrc
+├── build
+│   ├── asset-manifest.json
+│   ├── favicon.ico
+│   ├── images
+│   │   ├── btn_visibility_off_24px.svg
+│   │   ├── btn_visibility_on_24px.svg
+│   │   ├── ic_search.png
+│   │   ├── oauth-Google.png
+│   │   ├── oauth-Kakao.png
+│   │   └── site-logo.png
+│   ├── index.html
+│   ├── static
+│   │   ├── css
+│   │   │   ├── main.0ba8d8a5.css
+│   │   │   └── main.0ba8d8a5.css.map
+│   │   ├── js
+│   │   │   ├── main.539f57b7.js
+│   │   │   ├── main.539f57b7.js.LICENSE.txt
+│   │   │   └── main.539f57b7.js.map
+│   │   └── media
+│   │       ├── no-logo.34e88e2cdd689ae2a214.png
+│   │       └── no_image.6afe5fe2bddf74aabf44.png
+│   └── _redirects
+├── build-all.bat
+├── build-all.sh
+├── dist
+│   ├── esb-bundle.css
+│   ├── esb-bundle.css.map
+│   ├── esb-bundle.js
+│   ├── esb-bundle.js.map
+│   ├── favicon.ico
+│   ├── images
+│   │   ├── btn_visibility_off_24px.svg
+│   │   ├── btn_visibility_on_24px.svg
+│   │   ├── ic_search.png
+│   │   ├── oauth-Google.png
+│   │   ├── oauth-Kakao.png
+│   │   └── site-logo.png
+│   ├── index.html
+│   ├── site-logo-TRDHGMH5.png
+│   └── _redirects
+├── docs
+│   ├── 2기-View-My-Startup-1팀.html
+│   ├── DATABASE setup of View My StartUp.html
+│   ├── ERD v2.svg
+│   ├── ERD.svg
+│   ├── FSD
+│   ├── View_My_StartUp_api.png
+│   ├── View_My_StartUp_guide.png
+│   └── View_My_StartUp_tables.png
+├── esbuild.config.js
+├── file-structs.js
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── images
+│   │   ├── btn_visibility_off_24px.svg
+│   │   ├── btn_visibility_on_24px.svg
+│   │   ├── ic_search.png
+│   │   ├── oauth-Google.png
+│   │   ├── oauth-Kakao.png
+│   │   └── site-logo.png
+│   └── index.html
+├── react-shim.js
+├── README.md
+└── src
+    ├── apis
+    ├── app
+    │   ├── App.jsx
+    │   ├── App.module.css
+    │   └── Main.jsx
+    ├── assets
+    │   ├── codeit_logo.svg
+    │   ├── ic_add.png
+    │   ├── ic_check.png
+    │   ├── ic_delete.png
+    │   ├── ic_eye_off.png
+    │   ├── ic_eye_on.png
+    │   ├── ic_kebab.png
+    │   ├── ic_minus.png
+    │   ├── ic_restart.png
+    │   ├── ic_search.png
+    │   ├── logo_vms.png
+    │   ├── no-logo.png
+    │   └── no_image.png
+    ├── components
+    │   ├── CompanyList.jsx
+    │   ├── CompanyList.module.css
+    │   ├── GNB.jsx
+    │   ├── GNB.module.css
+    │   ├── InvestmentDeleteModal.jsx
+    │   ├── InvestmentModals.module.css
+    │   ├── InvestmentUpdateModal.jsx
+    │   ├── Modal.jsx
+    │   ├── Modal.module.css
+    │   ├── Pagination.jsx
+    │   ├── Pagination.module.css
+    │   ├── PopUp.jsx
+    │   ├── PopUp.module.css
+    │   ├── SelectComparisonModal.jsx
+    │   ├── SelectModals.module.css
+    │   ├── SelectMyCompanyModal.jsx
+    │   ├── TouchInvestment.jsx
+    │   └── TouchInvestment.module.css
+    ├── context
+    │   └── UserProvider.jsx
+    ├── hooks
+    ├── index.jsx
+    ├── pages
+    │   ├── CompanyDetailPage.jsx
+    │   ├── CompanyDetailPage.module.css
+    │   ├── CompanyListPage.jsx
+    │   ├── CompanyListPage.module.css
+    │   ├── ComparisonResultPage.jsx
+    │   ├── ComparisonResultPage.module.css
+    │   ├── ComparisonStatusPage.jsx
+    │   ├── InvestmentStatusPage.jsx
+    │   ├── InvestmentStatusPage.module.css
+    │   ├── LandingPage.jsx
+    │   ├── LoginPage.jsx
+    │   ├── LoginPage.module.css
+    │   ├── MyComparisonPage.jsx
+    │   ├── MyComparisonPage.module.css
+    │   ├── NotFoundPage.jsx
+    │   ├── Profile.jsx
+    │   └── SignupPage.jsx
+    ├── root.css
+    └── shared
+        ├── apis
+        │   ├── companiesService.js
+        │   ├── encrypt.js
+        │   ├── instance.js
+        │   ├── investmentApis.js
+        │   └── loginSignupService.js
+        ├── hooks
+        │   └── useAsync.js
+        ├── mock
+        │   └── mock.js
+        └── utils
+            ├── axiosUtils.js
+            ├── getScaledNumber.js
+            ├── HttpStatus.js
+            └── isEmpty.js
+```
+
+
+
 ## 구현 홈페이지
 
-https://view-my-startup-by-team-1.netlify.app/
+FE: https://view-my-startup-by-team-1.netlify.app/
+
+BE: https://view-my-startup-codeit-be.onrender.com/
 
 
 
