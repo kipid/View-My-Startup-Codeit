@@ -108,7 +108,7 @@ function SignupPage() {
 				setPwd('');
 				setPwdCfm('confirmed');
 				const result = await postSignup({ email, name, nickname, salt, pwdEncrypted });
-				if (result) {
+				if (result?.userUuid) {
 					setUser(result);
 					localStorage.setItem('userUuid', result.userUuid);
 					localStorage.setItem('nickname', result.nickname);
