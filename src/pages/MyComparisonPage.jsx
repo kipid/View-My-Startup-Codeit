@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
 import SelectMyCompanyModal from '../components/SelectMyCompanyModal';
 import SelectComparisonModal from '../components/SelectComparisonModal';
@@ -8,12 +8,15 @@ import addIcon from '../assets/ic_add.png';
 import restartIcon from '../assets/ic_restart.png';
 import noLogo from '../assets/no-logo.png';
 import minusLogo from '../assets/ic_minus.png';
+import { useUser } from '../context/UserProvider';
+import { createComparison, createWatch } from '../shared/apis/companiesService';
 
 function MyComparisonPage() {
 	const [isMyCompanyModalOpen, setIsMyCompnayModalOpen] = useState(false);
 	const [isComparisonModalOpen, setIsComaprisonModalOpen] = useState(false);
 	const [myCompany, setMyComany] = useState('');
 	const [comparisons, setComparisons] = useState([]);
+	const navigate = useNavigate();
 
 	const myCompanyModalHandler = () => {
 		setIsMyCompnayModalOpen(true);
@@ -44,6 +47,35 @@ function MyComparisonPage() {
 	const handleRestart = () => {
 		setMyComany('');
 		setComparisons([]);
+	};
+
+	const userId = useUser()?.userUuid;
+	const handleCompareButton = async () => {
+		const selectedCompanyIds = comparisons.map(comparison => comparison.id);
+		const companyId = myCompany.id;
+
+		try {
+			const result = await createComparison({ selectedCompanyIds, userId });
+			if (result) {
+				sessionStorage.setItem('comparisonIds', JSON.stringify(selectedCompanyIds));
+			} else {
+				return null;
+			}
+		} catch (error) {
+			console.error('createComparison error:', error.response ? error.response.data : error.message);
+		}
+
+		try {
+			const result = await createWatch({ companyId, userId });
+			if (result) {
+				sessionStorage.setItem('myCompanyId', JSON.stringify(companyId));
+			} else {
+				return null;
+			}
+		} catch (error) {
+			console.error('createWatch error:', error.response ? error.response.data : error.message);
+		}
+		navigate('/my-comparison/result');
 	};
 
 	return (
@@ -133,15 +165,14 @@ function MyComparisonPage() {
 						</div>
 					</>
 				)}
-				<Link to="/my-comparison/result">
-					<button
-						className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
-						type="button"
-						disabled={!myCompany || comparisons.length === 0}
-					>
-						기업 비교하기
-					</button>
-				</Link>
+				<button
+					className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
+					type="button"
+					disabled={!myCompany || comparisons.length === 0}
+					onClick={handleCompareButton}
+				>
+					기업 비교하기
+				</button>
 			</div>
 		</div>
 	);
