@@ -8,6 +8,8 @@ import addIcon from '../assets/ic_add.png';
 import restartIcon from '../assets/ic_restart.png';
 import noLogo from '../assets/no-logo.png';
 import minusLogo from '../assets/ic_minus.png';
+import { useUser } from '../context/UserProvider';
+import { createComparison, createWatch } from '../shared/apis/companiesService';
 
 function MyComparisonPage() {
 	const [isMyCompanyModalOpen, setIsMyCompnayModalOpen] = useState(false);
@@ -44,6 +46,32 @@ function MyComparisonPage() {
 	const handleRestart = () => {
 		setMyComany('');
 		setComparisons([]);
+	};
+
+	const userId = useUser()?.userUuid;
+	const handleCompareButton = async () => {
+		try {
+			const selectedCompanyIds = comparisons.map(comparison => comparison.id);
+			const result = await createComparison({ selectedCompanyIds, userId });
+			if (result) {
+				console.log(result);
+			}
+		} catch (error) {
+			console.error('createComparison error:', error.response ? error.response.data : error.message);
+		}
+
+		try {
+			const myCompanyId = myCompany.id;
+			const result = await createWatch({ companyId: myCompanyId, userId });
+			if (!result) {
+				return null;
+			}
+			if (result) {
+				console.log(result);
+			}
+		} catch (error) {
+			console.error('createWatch error:', error.response ? error.response.data : error.message);
+		}
 	};
 
 	return (
@@ -138,6 +166,7 @@ function MyComparisonPage() {
 						className={`${styles.compareButton} ${myCompany && comparisons.length > 0 ? styles.active : styles.inactive}`}
 						type="button"
 						disabled={!myCompany || comparisons.length === 0}
+						onClick={handleCompareButton}
 					>
 						기업 비교하기
 					</button>
