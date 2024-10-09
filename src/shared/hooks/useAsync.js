@@ -11,7 +11,7 @@ function useAsync(asyncFunc) {
 				setPending(true);
 				return await asyncFunc(...args);
 			} catch (err) {
-				console.error(err); // TODO Del
+				// console.error(err); // TODO Del
 				setError(err);
 				return null; // undefined
 			} finally {
