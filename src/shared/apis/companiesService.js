@@ -9,3 +9,14 @@ export async function getCompanyWithId(id) {
 	const company = await instance.get(`/companies/${id}`);
 	return company.data;
 }
+
+// Comparison과 Watch 추가
+export async function createComparison(body) {
+	const comparison = await instance.post(`/comparisons/select`, body);
+	return comparison.data;
+}
+
+export async function createWatch(body) {
+	const watch = await instance.post(`/watches/select`, body);
+	return watch.data;
+}
