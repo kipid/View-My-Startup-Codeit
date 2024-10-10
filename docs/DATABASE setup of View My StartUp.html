@@ -347,12 +347,30 @@ ALTER TABLE "Investment" ADD CONSTRAINT "Investment_companyId_fkey" FOREIGN KEY 
 #### GET /companies/?skip=0&take=10&sort=recent&keyword=
 
 ```[.linenums]
+query = { keyword = '', skip = 0, take = 10, sort = 'recent', include = '' }
 
+return { list: companies with include, totalCount }
 ```/
 
 
 
 #### GET /companies/:id
+
+```
+id: Uuid (company id)
+
+return company
+```/
+
+
+
+### GET /companies/count
+
+```
+query = { keyword = '' }
+
+return { count: Number }
+```/
 
 
 
