@@ -66,9 +66,7 @@ PORT=3100
 
 ### BackEnd
 
-<div style="max-height: 500px; overflow-y: auto;">
-<pre>
-<code>
+```
 ├── .env
 ├── .eslintrc
 ├── .gitignore
@@ -146,17 +144,13 @@ PORT=3100
         ├── encrypt.js
         ├── error.js
         └── HttpStatus.js
-</code>
-</pre>
-</div>
+```
 
 
 
 ### FrontEnd
 
-<div style="max-height: 500px; overflow-y: auto;">
-<pre>
-<code>
+```
 ├── .env
 ├── .eslintrc
 ├── .gitignore
@@ -306,9 +300,7 @@ PORT=3100
             ├── getScaledNumber.js
             ├── HttpStatus.js
             └── isEmpty.js
-</code>
-</pre>
-</div>
+```
 
 
 
