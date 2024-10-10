@@ -9,7 +9,7 @@ import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import noLogo from '../assets/no-logo.png';
 
 function InvestmentStatusPage() {
-	const [sort, setSort] = useState('accumulInvestByVMSDesc');
+	const [sort, setSort] = useState(null);
 	const [companies, setCompanies] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
@@ -18,7 +18,6 @@ function InvestmentStatusPage() {
 
 	useEffect(() => {
 		setPageNum(1);
-		setSort('accumulInvestByVMSDesc');
 		const fetch = async () => {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
@@ -26,6 +25,7 @@ function InvestmentStatusPage() {
 				return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + Number(invest.amount), 0) };
 			});
 			setCompanies(companiesList.sort((a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS));
+			setSort('accumulInvestByVMSDesc');
 		};
 		fetch();
 	}, []);
@@ -47,7 +47,45 @@ function InvestmentStatusPage() {
 				sortFn = (a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS;
 				break;
 		}
-		setCompanies([...companies.sort(sortFn)]);
+		switch (sort) {
+			case 'accumulInvestAsc':
+			case 'accumulInvestDesc': {
+				let rank = 1;
+				let prevCompany = null;
+				let offset = 1;
+				const rankedCompanies = companies.sort(sortFn).map(company => {
+					if (prevCompany && prevCompany.accumulInvest !== company.accumulInvest) {
+						rank += offset;
+						offset = 1;
+					} else if (prevCompany) {
+						offset += 1;
+					}
+					prevCompany = company;
+					return { ...company, rank };
+				});
+				setCompanies(rankedCompanies);
+				break;
+			}
+			case 'accumulInvestByVMSAsc':
+			case 'accumulInvestByVMSDesc':
+			default: {
+				let rank = 1;
+				let prevCompany = null;
+				let offset = 1;
+				const rankedCompanies = companies.sort(sortFn).map(company => {
+					if (prevCompany && prevCompany.accumulInvestByVMS !== company.accumulInvestByVMS) {
+						rank += offset;
+						offset = 1;
+					} else if (prevCompany) {
+						offset += 1;
+					}
+					prevCompany = company;
+					return { ...company, rank };
+				});
+				setCompanies(rankedCompanies);
+				break;
+			}
+		}
 	}, [sort]);
 
 	return (
@@ -77,7 +115,7 @@ function InvestmentStatusPage() {
 							.map((company, i) => {
 								return (
 									<tr key={company.id}>
-										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
+										<td>{company.rank}위</td>
 										<td>
 											<Link to={`/companies/${company.id}`}>
 												<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
