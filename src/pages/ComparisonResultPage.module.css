@@ -19,6 +19,10 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 16px;
+
+	@media (max-width: 744px) {
+		width: 100%;
+	}
 }
 
 .title {
@@ -48,6 +52,7 @@
 	justify-content: center;
 	gap: 16px;
 	position: relative;
+	margin-bottom: 40px;
 
 	@media (max-width: 744px) {
 		height: 180px;
@@ -104,6 +109,177 @@
 	display: flex;
 	align-items: center;
 	gap: 4px;
+}
+
+.resultWrapper,
+.rankingWrapper {
+	width: 100%;
+}
+.subHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.selectOption {
+	width: 168px;
+	height: 48px;
+	font-size: var(--14px);
+	font-weight: 400;
+	border-radius: var(--10px);
+	background-color: var(--gray-100);
+	color: var(--gray-800);
+	border: 1px solid var(--gray-700);
+	padding: 0 10px 0 10px;
+}
+
+.tableContainer {
+	width: 100%;
+	overflow-x: auto;
+	margin: 16px 0 40px;
+}
+
+.logo {
+	width: 2em;
+	height: 2em;
+	border-radius: 2em;
+	vertical-align: middle;
+	border: none;
+}
+
+.resultTable {
+	min-width: 700px;
+	max-width: 1200px;
+	width: 100%;
+	overflow-x: auto;
+	border-collapse: collapse;
+	font-size: var(--14px);
+
+	& tr {
+		background-color: var(--gray-200);
+		border-bottom: 1px solid var(--gray-600);
+		color: var(--gray-900);
+	}
+
+	& tr:first-child th {
+		padding: 1.3em 0;
+		text-align: center;
+		border-bottom: 2em solid var(--gray-100);
+	}
+
+	& td {
+		margin: 0.5em;
+		color: var(--gray-800);
+	}
+
+	& tr td:nth-child(1) {
+		width: 18%;
+		text-align: left;
+	}
+
+	.companyNameCell {
+		padding-left: var(--24px);
+	}
+
+	& tr td:nth-child(2) {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: center;
+		width: 90%;
+	}
+
+	& tr td:nth-child(3) {
+		width: 13%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(4) {
+		width: 13%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(5) {
+		width: 13%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(6) {
+		width: 13%;
+		text-align: center;
+	}
+}
+
+.rankingTable {
+	min-width: 700px;
+	max-width: 1200px;
+	width: 100%;
+	overflow-x: auto;
+	border-collapse: collapse;
+	font-size: var(--14px);
+
+	& tr {
+		background-color: var(--gray-200);
+		border-bottom: 1px solid var(--gray-600);
+		color: var(--gray-900);
+	}
+
+	& tr:first-child th {
+		padding: 1.3em 0;
+		text-align: center;
+		border-bottom: 2em solid var(--gray-100);
+	}
+
+	& td {
+		margin: 0.5em;
+		color: var(--gray-800);
+	}
+
+	& tr td:nth-child(1) {
+		width: 5%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(2) {
+		width: 18%;
+		text-align: left;
+	}
+
+	.companyNameCell {
+		padding-left: var(--24px);
+	}
+
+	& tr td:nth-child(3) {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: center;
+		width: 90%;
+	}
+
+	& tr td:nth-child(4) {
+		width: 12%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(5) {
+		width: 12%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(6) {
+		width: 12%;
+		text-align: center;
+	}
+
+	& tr td:nth-child(7) {
+		width: 12%;
+		text-align: center;
+	}
 }
 
 .investmentModalButton {

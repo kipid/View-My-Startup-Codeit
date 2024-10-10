@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import getScaledNumber from '../shared/utils/getScaledNumber';
 import styles from './CompanyList.module.css';
 import noLogo from '../assets/no-logo.png';
@@ -20,7 +21,7 @@ function CompanyList({ companies, pageNum, pageSize }) {
 					{companies.map((company, i) => {
 						return (
 							<tr key={company.id}>
-								<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
+								<td>{company.rank}위</td>
 								<td>
 									<Link to={`/companies/${company.id}`}>
 										<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />

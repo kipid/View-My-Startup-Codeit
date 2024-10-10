@@ -35,7 +35,7 @@ function CompanyListPage() {
 	const handleSearch = useCallback(
 		async (e, keyw) => {
 			if (isPending || e.key === 'Process') return;
-			if (e.code === 'Enter') {
+			if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 				e.preventDefault();
 				onSearch(keyw);
 			}

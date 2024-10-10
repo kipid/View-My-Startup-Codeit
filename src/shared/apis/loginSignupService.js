@@ -30,6 +30,7 @@ export async function postSsnAndCallback(callback, args, { userId = '', createdA
 export async function postSsns(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
 	const sessions = await instance.post('/account/sessions', data);
 	return sessions.data;
+	// return [{ ip, iter, createdAt }, ...]
 }
 
 export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
