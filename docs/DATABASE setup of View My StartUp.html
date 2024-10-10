@@ -356,7 +356,7 @@ return { list: rankedCompanies-with-include, totalCount }
 
 #### GET /companies/:id
 
-```
+```[.linenums]
 id: Uuid (company id)
 
 return company
@@ -366,7 +366,7 @@ return company
 
 ### GET /companies/count
 
-```
+```[.linenums]
 query = { keyword = '' }
 
 return { count: Number }
@@ -374,25 +374,42 @@ return { count: Number }
 
 
 
-### POST /comparisons/select
+### /comparisons
 
-```
+#### POST /comparisons/select
 
+```[.linenums]
+data = { selectedCompanyIds, userId }
+
+selectedCompanyIds.map(async companyId => {
+	return await this.data.createComparison(companyId, userId);
+});
+
+return { list: results-of-comparisons, totalCount: results.length }
 ```/
 
 
 
-### GET /comparisons/select/:userId
+#### GET /comparisons/select/:userId
 
-```
+```[.linenums]
+userId: Uuid
 
+prisma.comparison.findMany({
+	where: { userId },
+	include: { company: true }, // company 정보 포함
+});
+
+return comparisons-with-including-company
 ```/
 
 
 
-### POST /watches/select
+### /watches
 
-```
+#### POST /watches/select
+
+```[.linenums]
 data = { companyId, userId }
 
 return watch
@@ -400,9 +417,9 @@ return watch
 
 
 
-### GET /watches/select/:userId
+#### GET /watches/select/:userId
 
-```
+```[.linenums]
 userId: Uuid
 
 return findFirst-watch-with-including-company
