@@ -349,7 +349,7 @@ ALTER TABLE "Investment" ADD CONSTRAINT "Investment_companyId_fkey" FOREIGN KEY 
 ```[.linenums]
 query = { keyword = '', skip = 0, take = 10, sort = 'recent', include = '' }
 
-return { list: companies with include, totalCount }
+return { list: rankedCompanies-with-include, totalCount }
 ```/
 
 
@@ -376,9 +376,37 @@ return { count: Number }
 
 ### POST /comparisons/select
 
+```
+
+```/
+
+
+
+### GET /comparisons/select/:userId
+
+```
+
+```/
+
 
 
 ### POST /watches/select
+
+```
+data = { companyId, userId }
+
+return watch
+```/
+
+
+
+### GET /watches/select/:userId
+
+```
+userId: Uuid
+
+return findFirst-watch-with-including-company
+```/
 
 
 
