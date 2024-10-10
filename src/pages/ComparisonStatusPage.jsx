@@ -8,7 +8,7 @@ import { getCompanies } from '../shared/apis/companiesService';
 import noLogo from '../assets/no-logo.png';
 
 function ComparisonStatusPage() {
-	const [sort, setSort] = useState('accumulInvestByVMSDesc');
+	const [sort, setSort] = useState(null);
 	const [companies, setCompanies] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
@@ -17,11 +17,11 @@ function ComparisonStatusPage() {
 
 	useEffect(() => {
 		setPageNum(1);
-		setSort('accumulInvestByVMSDesc');
 		const fetch = async () => {
 			const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'watcherAndComparison' });
 			setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 			setCompanies(companiesData.list.sort((a, b) => b._count.watcherList - a._count.watcherList));
+			setSort('accumulInvestByVMSDesc');
 		};
 		fetch();
 	}, []);
@@ -43,7 +43,45 @@ function ComparisonStatusPage() {
 				sortFn = (a, b) => b._count.watcherList - a._count.watcherList;
 				break;
 		}
-		setCompanies([...companies.sort(sortFn)]);
+		switch (sort) {
+			case 'comparisonAsc':
+			case 'comparisonDesc': {
+				let rank = 1;
+				let prevCompany = null;
+				let offset = 1;
+				const rankedCompanies = companies.sort(sortFn).map(company => {
+					if (prevCompany && prevCompany._count.comparisons !== company._count.comparisons) {
+						rank += offset;
+						offset = 1;
+					} else if (prevCompany) {
+						offset += 1;
+					}
+					prevCompany = company;
+					return { ...company, rank };
+				});
+				setCompanies(rankedCompanies);
+				break;
+			}
+			case 'watcherAsc':
+			case 'watcherDesc':
+			default: {
+				let rank = 1;
+				let prevCompany = null;
+				let offset = 1;
+				const rankedCompanies = companies.sort(sortFn).map(company => {
+					if (prevCompany && prevCompany._count.watcherList !== company._count.watcherList) {
+						rank += offset;
+						offset = 1;
+					} else if (prevCompany) {
+						offset += 1;
+					}
+					prevCompany = company;
+					return { ...company, rank };
+				});
+				setCompanies(rankedCompanies);
+				break;
+			}
+		}
 	}, [sort]);
 
 	return (
@@ -73,7 +111,7 @@ function ComparisonStatusPage() {
 							.map((company, i) => {
 								return (
 									<tr key={company.id}>
-										<td>{i + 1 + pageSize * (pageNum - 1)}위</td>
+										<td>{company.rank}위</td>
 										<td>
 											<Link to={`/companies/${company.id}`}>
 												<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
