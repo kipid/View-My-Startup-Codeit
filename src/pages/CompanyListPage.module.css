@@ -19,6 +19,7 @@
 	justify-content: flex-end;
 	align-items: center;
 	gap: var(--8px);
+	max-width: 100%;
 
 	& .keywordInputContainer {
 		position: relative;
@@ -27,6 +28,10 @@
 
 		@media (max-width: 1200px) {
 			width: 269px;
+		}
+
+		@media (max-width: 744px) {
+			width: 189px;
 		}
 
 		& input {
