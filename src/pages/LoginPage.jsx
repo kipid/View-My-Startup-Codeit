@@ -117,7 +117,7 @@ function LoginPage() {
 								value={pwd}
 								onKeyDown={e => {
 									if (e.key === 'Process') return;
-									if (e.code === 'Enter') {
+									if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 										e.preventDefault();
 										handleLogin();
 									}

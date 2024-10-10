@@ -221,7 +221,7 @@ function SignupPage() {
 								value={pwdCfm}
 								onKeyDown={e => {
 									if (e.key === 'Process') return;
-									if (e.code === 'Enter') {
+									if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 										e.preventDefault();
 										handleSignup();
 									}
