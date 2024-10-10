@@ -108,7 +108,7 @@ function SignupPage() {
 				setPwd('');
 				setPwdCfm('confirmed');
 				const result = await postSignup({ email, name, nickname, salt, pwdEncrypted });
-				if (result) {
+				if (result?.userUuid) {
 					setUser(result);
 					localStorage.setItem('userUuid', result.userUuid);
 					localStorage.setItem('nickname', result.nickname);
@@ -221,7 +221,7 @@ function SignupPage() {
 								value={pwdCfm}
 								onKeyDown={e => {
 									if (e.key === 'Process') return;
-									if (e.code === 'Enter') {
+									if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 										e.preventDefault();
 										handleSignup();
 									}

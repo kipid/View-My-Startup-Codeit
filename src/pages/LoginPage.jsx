@@ -47,21 +47,23 @@ function LoginPage() {
 	const handleLogin = () => {
 		if (validation.email && validation.pwd) {
 			try {
-				postPwdIter({ email }).then(async iter => {
-					const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
-					setPwd('');
-					const result = await postLogin({ email, pwdEncrypted });
-					if (result) {
-						setUser(result);
-						localStorage.setItem('userUuid', result.userUuid);
-						localStorage.setItem('nickname', result.nickname);
-						localStorage.setItem('sessionPwd', result.sessionPwd);
-						localStorage.setItem('createdAt', result.createdAt);
-						return;
-					}
-					setUser(null);
-					setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
-				});
+				postPwdIter({ email })
+					.then(async iter => {
+						const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
+						setPwd('');
+						const result = await postLogin({ email, pwdEncrypted });
+						if (result) {
+							setUser(result);
+							localStorage.setItem('userUuid', result.userUuid);
+							localStorage.setItem('nickname', result.nickname);
+							localStorage.setItem('sessionPwd', result.sessionPwd);
+							localStorage.setItem('createdAt', result.createdAt);
+							return;
+						}
+						setUser(null);
+						setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
+					})
+					.catch(err => setError(err));
 			} catch (err) {
 				setError(err);
 			}
@@ -115,7 +117,7 @@ function LoginPage() {
 								value={pwd}
 								onKeyDown={e => {
 									if (e.key === 'Process') return;
-									if (e.code === 'Enter') {
+									if (e.code === 'Enter' || e.code === 'NumpadEnter') {
 										e.preventDefault();
 										handleLogin();
 									}
