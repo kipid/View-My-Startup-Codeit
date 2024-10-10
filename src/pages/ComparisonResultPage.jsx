@@ -14,7 +14,7 @@ function MyCompanyBox({ companies, myCompanyId }) {
 	return (
 		<div className={styles.companyInfo}>
 			<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
-			<div className={styles.companyInfoText}>
+			<div className={styles.comanyInfoText}>
 				<p className={styles.companyName}>{myCompany.name}</p>
 				<p className={styles.companyCategory}>{myCompany.category}</p>
 			</div>
@@ -60,12 +60,19 @@ function ResultTable({ myCompanyId, comparisonIds, companies }) {
 
 function RankingTable({ myCompanyId, companies }) {
 	const myCompanyIndex = companies.findIndex(company => company.id === myCompanyId);
-	const getRankingList = () => {
-		const start = Math.max(0, myCompanyIndex - 2);
-		const end = Math.min(companies.length, myCompanyIndex + 3);
-		return companies.slice(start, end);
-	};
-	const rankingList = getRankingList();
+	let start = Math.max(0, myCompanyIndex - 2);
+	let end = Math.min(companies.length, myCompanyIndex + 3);
+
+	if (myCompanyIndex === 0) {
+		end = Math.min(5, companies.length);
+	} else if (myCompanyIndex === 1) {
+		start = 0;
+		end = Math.min(5, companies.length);
+	} else if (myCompanyIndex >= companies.length - 2) {
+		start = Math.max(0, companies.length - 5);
+	}
+
+	const rankingList = companies.slice(start, end);
 
 	return (
 		<table className={styles.rankingTable}>
@@ -80,9 +87,10 @@ function RankingTable({ myCompanyId, companies }) {
 					<th>고용 인원</th>
 				</tr>
 				{rankingList.map((company, index) => {
+					const rank = start + index + 1;
 					return (
 						<tr key={company.id}>
-							<td>{myCompanyIndex}위</td>
+							<td>{rank}위</td>
 							<td className={styles.companyNameCell}>
 								<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
 								&nbsp; {company.name}
