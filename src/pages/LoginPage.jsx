@@ -52,7 +52,9 @@ function LoginPage() {
 						const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
 						setPwd('');
 						const result = await postLogin({ email, pwdEncrypted });
-						if (result) {
+						if (result?.message) {
+							setError(result);
+						} else if (result) {
 							setUser(result);
 							localStorage.setItem('userUuid', result.userUuid);
 							localStorage.setItem('nickname', result.nickname);
@@ -61,7 +63,7 @@ function LoginPage() {
 							return;
 						}
 						setUser(null);
-						setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
+						// setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
 					})
 					.catch(err => setError(err));
 			} catch (err) {
