@@ -14,7 +14,7 @@ function MyCompanyBox({ companies, myCompanyId }) {
 	return (
 		<div className={styles.companyInfo}>
 			<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
-			<div className={styles.comanyInfoText}>
+			<div className={styles.companyInfoText}>
 				<p className={styles.companyName}>{myCompany.name}</p>
 				<p className={styles.companyCategory}>{myCompany.category}</p>
 			</div>
