@@ -29,13 +29,13 @@ img {
 
 db error 가 날 땐,
 
-```
+```[.linenums]
 npx prisma migrate reset --force
 ```/
 
 후 다시
 
-```
+```[.linenums]
 npm install --production && npx prisma migrate deploy && npx prisma generate && npx prisma db seed
 ```/
 
@@ -46,6 +46,10 @@ npm install --production && npx prisma migrate deploy && npx prisma generate && 
 <ul>
 <li>2024-09-26 : First posting.</li>
 </ul>
+
+
+
+## TOC
 
 
 
@@ -333,6 +337,192 @@ ALTER TABLE "Investment" ADD CONSTRAINT "Investment_companyId_fkey" FOREIGN KEY 
 ```/
 
 </div>
+
+
+
+## API
+
+### /companies
+
+#### GET /companies/?skip=0&take=10&sort=recent&keyword=
+
+```[.linenums]
+
+```/
+
+
+
+#### GET /companies/:id
+
+
+
+### POST /comparisons/select
+
+
+
+### POST /watches/select
+
+
+
+### /investments
+
+#### GET /investments/?page=0&pageSize=10&orderBy=bigger
+
+```[.linenums]
+params = { page: 0, pageSize: 10, orderBy: 'bigger' }
+
+return { list: [investments], totalCount }
+```/
+
+
+
+#### GET /investments/:companyId?page=0&pageSize=10&orderBy=bigger
+
+```[.linenums]
+params = { page: 0, pageSize: 10, orderBy: 'bigger' }
+companyId: Uuid
+
+return { list: [investments], totalCount }
+```/
+
+
+
+#### GET /investments/:companyId/total
+
+```[.linenums]
+companyId: Uuid
+
+return total: Number
+```/
+
+
+
+#### POST /investments/ (아직 미구현)
+
+```[.linenums]
+s.object({
+	id: s.optional(Uuid),
+	name: s.size(s.string(), 1, 10),
+	amount: s.min(s.number(), 0), // 억 단위
+	comment: s.size(s.string(), 1, 20),
+	// password: s.min(s.union([s.string(), s.number()]), 8),
+	password: s.string(),
+	userId: Uuid,
+	companyId: Uuid,
+});
+
+return investment
+```/
+
+
+
+#### PATCH /investments/:id
+
+```[.linenums]
+id: Uuid (investment id)
+data: partial(createInvestment)
+
+return investment
+```/
+
+
+
+#### DELETE /investments/:id
+
+```[.linenums]
+id: Uuid (investment id)
+{ password }
+
+return investment or status(204: NO_CONTENT)
+```/
+
+
+
+### /account
+
+#### POST /account/iter
+
+```[.linenums]
+data = { email }
+
+return { iter: Number, salt: String }
+```/
+
+
+
+#### POST /account/session-iter
+
+```[.linenums]
+data = { userId, createdAt }
+
+return { iter: Number, sessionSalt: String }
+```/
+
+
+
+#### POST /account/sessions
+
+```[.linenums]
+data = { userId, createdAt, sessionEncrypted }
+
+return [{ ip, iter, createdAt }, ...]
+```/
+
+
+
+#### POST /account/log-in
+
+```[.linenums]
+data = { email, pwdEncrypted }
+
+return { userUuid, nickname, sessionPwd, createdAt }
+```/
+
+
+
+#### POST /account/log-out
+
+```[.linenums]
+data = { userId, createdAt, sessionEncrypted }
+
+return { message }
+```/
+
+
+
+#### POST /account/log-out-from-all
+
+```[.linenums]
+data = { userId, createdAt, sessionEncrypted }
+
+return { message }
+```/
+
+
+
+#### POST /account/check
+
+```[.linenums]
+data = { email, nickname }
+
+return { email:true/false, nickname:true/false }
+```/
+
+
+
+#### POST /account/sign-up
+
+```[.linenums]
+data = {
+	email,
+	name,
+	nickname,
+	salt,
+	pwdEncrypted,
+}
+
+return { userUuid, nickname, sessionPwd, createdAt }
+```/
 
 
 
