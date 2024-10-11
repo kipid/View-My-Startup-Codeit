@@ -15,6 +15,19 @@
 	height: 32px;
 }
 
+.saveButton {
+	align-self: center;
+	border-style: none;
+	cursor: pointer;
+	border-radius: 50px;
+	font-weight: 600;
+	font-size: var(--16px);
+	width: 183px;
+	height: 48px;
+	background-color: var(--prime-orange);
+	color: var(--gray-900);
+}
+
 .searchInput {
 	height: 48px;
 	border: 1px solid var(--gray-700);
@@ -31,6 +44,54 @@
 .modalSubtitle {
 	font-size: var(--18px);
 	font-weight: 700;
+}
+
+.selectedCompanyWrapper {
+	width: 100%;
+	min-width: 448px;
+	height: 100%;
+	background-color: var(--gray-200);
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 5px;
+	flex-wrap: nowrap;
+	overflow-x: hidden;
+}
+
+.selectedCompanyInfo {
+	min-width: 90px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	width: 126px;
+	height: auto;
+	padding-bottom: 10px;
+
+	@media (max-width: 744px) {
+		height: auto;
+	}
+}
+
+.companyInfoText {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	white-space: wrap;
+	height: auto;
+}
+
+.deleteIcon {
+	cursor: pointer;
+	width: 24px;
+	border-radius: 5px;
+	background-color: var(--gray-600);
+	position: relative;
+	top: 20px;
+	z-index: 999;
+	margin-top: -20px;
 }
 
 .companyListWrapper {
@@ -50,6 +111,11 @@
 	border-radius: 50%;
 	width: 48px;
 	height: 48px;
+
+	@media (max-width: 744px) {
+		width: 40px;
+		height: 40px;
+	}
 }
 
 .companyName {
@@ -93,6 +159,15 @@
 	color: var(--gray-800);
 }
 
+.cancelSelectButton,
+.unclickedButton,
+.clickedButton {
+	@media (max-width: 744px) {
+		width: 80px;
+		height: 32px;
+	}
+}
+
 .clickedButtonContents {
 	display: flex;
 	align-items: center;
@@ -101,8 +176,8 @@
 }
 
 .checkIcon {
-	width: 24px;
-	height: 24px;
+	width: var(--24px);
+	height: var(--24px);
 }
 
 .error {

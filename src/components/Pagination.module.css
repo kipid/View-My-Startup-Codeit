@@ -1,33 +1,34 @@
 .pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--5px);
-  margin-top: var(--24px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--5px);
+	margin-top: var(--24px);
 
-  & div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: var(--18px);
-    font-weight: 400;
-    width: var(--48px);
-    height: var(--48px);
-    border-radius: var(--10px);
-    background-color: var(--gray-400);
-    color: var(--gray-700);
-  }
+	& div {
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: var(--18px);
+		font-weight: 400;
+		width: var(--48px);
+		height: var(--48px);
+		border-radius: var(--10px);
+		background-color: var(--gray-400);
+		color: var(--gray-700);
+	}
 
-  & div.selected {
-    background-color: var(--prime-orange);
-    color: var(--gray-900);
-  }
+	& div.selected {
+		background-color: var(--prime-orange);
+		color: var(--gray-900);
+	}
 
-  & div:first-child {
-    margin-right: var(--5px);
-  }
+	& div:first-child {
+		margin-right: var(--5px);
+	}
 
-  & div:last-child {
-    margin-left: var(--5px);
-  }
+	& div:last-child {
+		margin-left: var(--5px);
+	}
 }

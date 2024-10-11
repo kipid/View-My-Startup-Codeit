@@ -3,11 +3,12 @@ import Pagination from './Pagination.jsx';
 import closeIcon from '../assets/ic_delete.png';
 import noLogo from '../assets/no-logo.png';
 import checkIcon from '../assets/ic_check.png';
+import deleteIcon from '../assets/ic_minus.png';
 import styles from './SelectModals.module.css';
 import { getCompanies } from '../shared/apis/companiesService.js';
 import useAsync from '../shared/hooks/useAsync.js';
 
-function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
+function SearchList({ item, onSelect, isSelected, isSelectedList }) {
 	const handleClick = () => {
 		onSelect(item, !isSelected);
 	};
@@ -39,7 +40,7 @@ function CompanySelectList({ item, onSelect, isSelected, isSelectedList }) {
 	);
 }
 
-function SelectComparisonModal({ comparisons, onClose }) {
+function SelectComparisonModal({ myCompanyId, comparisons, onClose }) {
 	const [companies, setCompanies] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [pageNumMax, setPageNumMax] = useState(5);
@@ -74,6 +75,10 @@ function SelectComparisonModal({ comparisons, onClose }) {
 		onClose(selectedCompanies);
 	};
 
+	const handleUnselect = company => {
+		setSelectedCompanies(prev => prev.filter(unselect => unselect.id !== company.id));
+	};
+
 	useEffect(() => {
 		async function fetchData() {
 			try {
@@ -82,8 +87,8 @@ function SelectComparisonModal({ comparisons, onClose }) {
 					return;
 				}
 				setPageNumMax(Math.ceil(result.totalCount / pageSize) ?? 1);
-				setTotal(result.totalCount);
-				setCompanies(result.list);
+				setTotal(result.totalCount - 1); // '나의 기업' 제외
+				setCompanies(result.list.filter(company => company.id !== myCompanyId)); // pagination 문제 발생
 			} catch (err) {
 				setError(err);
 			}
@@ -99,14 +104,33 @@ function SelectComparisonModal({ comparisons, onClose }) {
 				<p className={styles.modalTitle}>비교할 기업 선택하기</p>
 				<img className={styles.closeIcon} src={closeIcon} alt="닫기" onClick={handleClick} />
 			</div>
-			<input className={styles.searchInput} placeholder="검색어를 입력해 주세요." onChange={handleKeyUp} />
 			<p className={styles.modalSubtitle}>선택한 기업 ({selectTotal})</p>
-			{selectedCompanies.map(company => (
-				<CompanySelectList key={company.id} item={company} onSelect={handleSelect} isSelected isSelectedList />
-			))}
+			{selectedCompanies.length > 0 && (
+				<div>
+					<div className={styles.selectedCompanyWrapper}>
+						{selectedCompanies.map(company => (
+							<div className={styles.selectedCompanyInfo} key={company.id}>
+								<img
+									className={styles.deleteIcon}
+									src={closeIcon}
+									alt="삭제"
+									value={company}
+									onClick={() => handleUnselect(company)}
+								/>
+								<img className={styles.companyLogo} src={company.logo ? company.logo : noLogo} alt="로고" />
+								<div className={styles.companyInfoText}>
+									<p className={styles.companyName}>{company.name}</p>
+									<p className={styles.companyCategory}>{company.category}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
+			<input className={styles.searchInput} placeholder="검색어를 입력해 주세요." onChange={handleKeyUp} />
 			<p className={styles.modalSubtitle}>검색 결과 ({total})</p>
 			{companies.map(company => (
-				<CompanySelectList
+				<SearchList
 					key={company.id}
 					item={company}
 					onSelect={handleSelect}
@@ -116,7 +140,9 @@ function SelectComparisonModal({ comparisons, onClose }) {
 			))}
 			{errorMessage && <p className={styles.error}>{errorMessage}</p>}
 			<Pagination pageNum={pageNum} setPageNum={setPageNum} pageNumMax={pageNumMax} />
-			<div className={styles.blankSpace} />
+			<button type="button" className={styles.saveButton} onClick={handleClick} disabled={selectedCompanies.length === 0}>
+				저장하기
+			</button>
 		</>
 	);
 }
