@@ -49,12 +49,15 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 		if (pw.length !== 0 && pw === pwCheck) newValidation.isPasswordOk = true;
 
 		setValidation(newValidation);
+
+		if (!newValidation.isAmountOk || !newValidation.isPasswordOk) return false;
+
+		return true;
 	};
 
 	const handlePost = () => {
-		validate();
-		// NOTE validation Check
-		if (!validation.isAmountOk || !validation.isPasswordOk) return null;
+		// // NOTE validation Check
+		if (!validate()) return null;
 
 		const postData = async () => {
 			const body = { ...detail, amount: Number(detail.amount), password: pw, userId: user.userUuid, companyId: companyDetail.id };
