@@ -19,12 +19,15 @@
 }
 
 .login {
+	cursor: pointer;
 	display: inline-block;
-	width: max-content;
-	padding: var(--6px) var(--12px);
+	width: auto;
+	white-space: nowrap;
+	padding: var(--6px) var(--14px);
 	margin-right: var(--12px);
 	font-size: var(--14px);
-	background-color: var(--prime-blue);
+	font-weight: 600;
+	background-color: var(--gray-700);
 	color: var(--gray-900);
 	border-radius: var(--5px);
 

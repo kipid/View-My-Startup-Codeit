@@ -5,6 +5,8 @@ import PopUp from '../components/PopUp.jsx';
 import { postLogin, postPwdIter } from '../shared/apis/loginSignupService.js';
 import encrypt from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider';
+import eyeOnIcon from '../assets/ic_eye_on.png';
+import eyeOffIcon from '../assets/ic_eye_off.png';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -91,6 +93,11 @@ function LoginPage() {
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
 				</Link>
+				<p>
+					로그인하고 나의 스타트업에
+					<br />
+					투자를 시작하세요!
+				</p>
 				<form>
 					<label htmlFor="email">
 						이메일
@@ -130,10 +137,7 @@ function LoginPage() {
 								className={!pwd || pwd.length < PWD_MIN_LENGTH ? styles.alert : ''}
 							/>
 							<button type="button" onClick={() => setPwdVisibility(!pwdVisibility)}>
-								<img
-									src={pwdVisibility ? '/images/btn_visibility_on_24px.svg' : '/images/btn_visibility_off_24px.svg'}
-									alt="Button visibility on and off"
-								/>
+								<img src={pwdVisibility ? eyeOnIcon : eyeOffIcon} alt="Button visibility on and off" />
 							</button>
 						</div>
 					</label>
@@ -151,7 +155,7 @@ function LoginPage() {
 					</button>
 				</form>
 				<div className={styles.oauth}>
-					<span>간편 로그인하기</span>
+					<div className={styles.dividingLine}>또는</div>
 					<div className={styles.oauth_images}>
 						<Link to="https://www.google.com/">
 							<img src="/images/oauth-Google.png" alt="구글로 로그인하기" className={styles.img_oauth} />
@@ -162,7 +166,10 @@ function LoginPage() {
 					</div>
 				</div>
 				<div className={styles.check_description}>
-					판다마켓이 처음이신가요? <Link to="/signup">회원가입</Link>
+					<span>아직 View My Startup 회원이 아니신가요?</span>
+					<Link to="/signup">
+						<span>회원가입</span>
+					</Link>
 				</div>
 			</section>
 			<PopUp error={error} popUpText={error?.message} setError={setError} />
