@@ -43,6 +43,31 @@ button.modal {
 	}
 }
 
+#InvestmentCompleteModal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+
+	div:first-child {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+
+		button {
+			cursor: pointer;
+			background-color: inherit;
+			border: none;
+		}
+	}
+
+	p {
+		font-size: 15px;
+		text-align: center;
+		margin-bottom: 24px;
+	}
+}
+
 #modalHeader {
 	display: flex;
 	justify-content: space-between;
