@@ -127,8 +127,11 @@
 					th {
 						width: 95px;
 
-						&:last-child {
+						&:nth-child(4) {
 							width: auto;
+						}
+						&:last-child {
+							width: 36px;
 						}
 					}
 				}
@@ -137,17 +140,14 @@
 					text-align: center;
 					height: 64px;
 
-					td:last-child {
+					td:nth-child(4) {
 						height: 100%;
 						text-align: left;
 						display: flex;
 						flex-wrap: wrap;
 						justify-content: space-between;
 						align-content: center;
-
-						p {
-							margin-left: 10px;
-						}
+						margin-left: 10px;
 					}
 				}
 			}
