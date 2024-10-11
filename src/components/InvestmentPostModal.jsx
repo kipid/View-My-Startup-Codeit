@@ -4,18 +4,30 @@ import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
 import eyeOn from '../assets/ic_eye_on.png';
 import eyeOff from '../assets/ic_eye_off.png';
-import { updateInvestment } from '../shared/apis/investmentApis.js';
+import { postInvestment } from '../shared/apis/investmentApis.js';
+import { useUser } from '../context/UserProvider.jsx';
 
+const initialDetail = {
+	name: '',
+	amount: '',
+	comment: '',
+	password: '',
+	userId: '',
+	companyId: '',
+};
 const initialValidation = {
 	isAmountOk: false,
 	isPasswordOk: false,
 	isFirst: true,
 };
 
-function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpdate, show = false }) {
+function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
+	const user = useUser();
 	const [isPWshow, setIsPWshow] = useState(false);
-	const [detail, setDetail] = useState(investmentDetail);
+	const [isPWCheckshow, setIsPWCheckshow] = useState(false);
+	const [detail, setDetail] = useState(initialDetail);
 	const [pw, setPw] = useState('');
+	const [pwCheck, setPwCheck] = useState('');
 	const [validation, setValidation] = useState(initialValidation);
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
@@ -24,31 +36,30 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 	const togglePWshow = () => {
 		setIsPWshow(!isPWshow);
 	};
+	const togglePWCheckshow = () => {
+		setIsPWCheckshow(!isPWCheckshow);
+	};
 	const validate = () => {
 		const newValidation = { ...initialValidation, isFirst: false };
 
 		if (!isNaN(Number(detail.amount)) && detail.amount.length !== 0) newValidation.isAmountOk = true;
-		if (pw.length !== 0) newValidation.isPasswordOk = true;
+		if (pw.length !== 0 && pw === pwCheck) newValidation.isPasswordOk = true;
 
 		setValidation(newValidation);
 	};
 
-	const handleUpdate = () => {
+	const handlePost = () => {
 		validate();
 		// NOTE validation Check
 		if (!validation.isAmountOk || !validation.isPasswordOk) return null;
 
-		const { id } = investmentDetail;
+		const postData = async () => {
+			const body = { ...detail, amount: Number(detail.amount), password: pw, userId: user.userUuid, companyId: companyDetail.id };
 
-		const updateData = async () => {
-			const body = { ...detail, amount: Number(detail.amount), password: pw };
-			delete body.createdAt;
-			delete body.updatedAt;
-
-			const investment = await updateInvestment(id, body);
+			const investment = await postInvestment(body);
 		};
-		updateData();
-		onUpdate();
+		postData();
+		onPost();
 	};
 
 	return (
@@ -116,7 +127,9 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 				<div id={style.password}>
 					<label htmlFor="password">
 						비밀번호{' '}
-						{!validation.isFirst && !validation.isPasswordOk && <span className={style.errorMsg}>비밀번호를 입력해주세요.</span>}
+						{!validation.isFirst && !validation.isPasswordOk && (
+							<span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>
+						)}
 					</label>
 					<input
 						id="password"
@@ -129,18 +142,37 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 					/>
 					<img id={style.eye} src={isPWshow ? eyeOn : eyeOff} alt="비밀번호 표시" onClick={togglePWshow} />
 				</div>
+
+				<div id={style.password}>
+					<label htmlFor="passwordCheck">
+						비밀번호 확인{' '}
+						{!validation.isFirst && !validation.isPasswordOk && (
+							<span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>
+						)}
+					</label>
+					<input
+						id="passwordCheck"
+						type={isPWCheckshow ? '' : 'password'}
+						placeholder="비밀번호를 다시 한 번 입력해 주세요"
+						value={pwCheck}
+						onChange={e => {
+							setPwCheck(e.target.value);
+						}}
+					/>
+					<img id={style.eye} src={isPWCheckshow ? eyeOn : eyeOff} alt="비밀번호 표시" onClick={togglePWCheckshow} />
+				</div>
 			</form>
 
 			<div id={style.modalFooter}>
 				<button type="button" className={`${style.modal} ${style.cancel}`} onClick={onClose}>
 					취소
 				</button>
-				<button type="button" className={style.modal} onClick={handleUpdate}>
-					수정하기
+				<button type="button" className={style.modal} onClick={handlePost}>
+					투자하기
 				</button>
 			</div>
 		</div>
 	);
 }
 
-export default InvestmentUpdateModal;
+export default InvestmentPostModal;

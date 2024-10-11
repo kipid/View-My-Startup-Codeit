@@ -126,6 +126,12 @@ button.modal {
 			font-family: inherit;
 		}
 
+		> input::placeholder,
+		> textarea::placeholder {
+			color: #747474;
+			font-size: 16px;
+		}
+
 		#eye {
 			width: 24px;
 			height: 24px;
@@ -133,5 +139,11 @@ button.modal {
 			right: 18px;
 			bottom: 0;
 		}
+	}
+
+	span.errorMsg {
+		margin-left: 10px;
+		color: var(--red-error);
+		font-size: 16px;
 	}
 }

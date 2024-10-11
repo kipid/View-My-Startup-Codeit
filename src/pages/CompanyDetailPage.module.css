@@ -153,4 +153,10 @@
 			}
 		}
 	}
+
+	#modalWrapper {
+		> div {
+			align-items: center;
+		}
+	}
 }

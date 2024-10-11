@@ -10,10 +10,12 @@ import InvestmentDeleteModal from '../components/InvestmentDeleteModal.jsx';
 import TouchInvestment from '../components/TouchInvestment.jsx';
 import { getInvestments, getInvestmentsTotalAmount } from '../shared/apis/investmentApis.js';
 import { getCompanyWithId } from '../shared/apis/companiesService.js';
+import InvestmentPostModal from '../components/InvestmentPostModal.jsx';
 
 const pageSize = 5;
 const initialBtnControls = {
 	isModalOn: false,
+	isPost: false,
 	isUpdate: false,
 	isDelete: false,
 };
@@ -29,6 +31,9 @@ function CompanyDetailPage() {
 	const [refreshTrigger, setRefreshTrigger] = useState(0);
 	const [companyDetail, setCompanyDetail] = useState(null);
 
+	const handlePost = detail => {
+		setBtnControls({ ...initialBtnControls, isModalOn: true, isPost: true });
+	};
 	const handleUpdate = detail => {
 		setModalData({ ...detail });
 		setBtnControls({ ...initialBtnControls, isModalOn: true, isUpdate: true });
@@ -60,26 +65,38 @@ function CompanyDetailPage() {
 	return (
 		<div id={style.companyDetailPage}>
 			{btnControls.isModalOn && (
-				<Modal>
-					<InvestmentUpdateModal
-						investmentDetail={modalData}
-						onClose={handleModalClose}
-						onUpdate={() => {
-							handleModalClose();
-							setRefreshTrigger(prev => prev + 1);
-						}}
-						show={btnControls.isUpdate}
-					/>
-					<InvestmentDeleteModal
-						investmentId={modalData?.id}
-						onClose={handleModalClose}
-						onDelete={() => {
-							handleModalClose();
-							setRefreshTrigger(prev => prev + 1);
-						}}
-						show={btnControls.isDelete}
-					/>
-				</Modal>
+				<div id={style.modalWrapper}>
+					<Modal>
+						<InvestmentPostModal
+							companyDetail={companyDetail}
+							onClose={handleModalClose}
+							onPost={() => {
+								handleModalClose();
+								setRefreshTrigger(prev => prev + 1);
+							}}
+							show={btnControls.isPost}
+						/>
+						<InvestmentUpdateModal
+							investmentDetail={modalData}
+							companyDetail={companyDetail}
+							onClose={handleModalClose}
+							onUpdate={() => {
+								handleModalClose();
+								setRefreshTrigger(prev => prev + 1);
+							}}
+							show={btnControls.isUpdate}
+						/>
+						<InvestmentDeleteModal
+							investmentId={modalData?.id}
+							onClose={handleModalClose}
+							onDelete={() => {
+								handleModalClose();
+								setRefreshTrigger(prev => prev + 1);
+							}}
+							show={btnControls.isDelete}
+						/>
+					</Modal>
+				</div>
 			)}
 
 			<div id={style.companyDetail}>
@@ -117,7 +134,9 @@ function CompanyDetailPage() {
 			<div id={style.investments}>
 				<div id={style.investmentsHeader}>
 					<p>View My Startup에서 받은 투자</p>
-					<button type="button">기업투자하기</button>
+					<button type="button" onClick={handlePost}>
+						기업투자하기
+					</button>
 				</div>
 
 				<div id={style.investmentBody}>
