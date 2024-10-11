@@ -165,7 +165,9 @@ function CompanyDetailPage() {
 							))}
 						</tbody>
 					</table>
+				</div>
 
+				<div>
 					<Pagination pageNum={pageNum} pageNumMax={pageNumMax} setPageNum={setPageNum} />
 				</div>
 			</div>
