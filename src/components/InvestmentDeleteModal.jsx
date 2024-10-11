@@ -5,9 +5,15 @@ import eyeOn from '../assets/ic_eye_on.png';
 import eyeOff from '../assets/ic_eye_off.png';
 import { deleteInvestment, updateInvestment } from '../shared/apis/investmentApis.js';
 
+const initialValidation = {
+	isPasswordOk: false,
+	isFirst: true,
+};
+
 function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }) {
 	const [isPWshow, setIsPWshow] = useState(false);
 	const [pw, setPw] = useState('');
+	const [validation, setValidation] = useState(initialValidation);
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
@@ -15,8 +21,19 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 	const togglePWshow = () => {
 		setIsPWshow(!isPWshow);
 	};
+	const validate = () => {
+		const newValidation = { ...initialValidation, isFirst: false };
+
+		if (pw.length !== 0) newValidation.isPasswordOk = true;
+
+		setValidation(newValidation);
+	};
 
 	const handleDelete = () => {
+		validate();
+		// NOTE validation Check
+		if (!validation.isPasswordOk) return null;
+
 		const deleteData = async () => {
 			const body = { password: pw };
 
@@ -37,7 +54,10 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 
 			<form id={style.modalBody}>
 				<div id={style.password}>
-					<label htmlFor="password">비밀번호</label>
+					<label htmlFor="password">
+						비밀번호{' '}
+						{!validation.isFirst && !validation.isPasswordOk && <span className={style.errorMsg}>비밀번호를 입력해주세요.</span>}
+					</label>
 					<input
 						id="password"
 						type={isPWshow ? '' : 'password'}
