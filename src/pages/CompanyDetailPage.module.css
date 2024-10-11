@@ -113,6 +113,7 @@
 			}
 
 			button {
+				cursor: pointer;
 				padding: 8px 24px;
 				background-color: #eb5230;
 				border-radius: 50px;

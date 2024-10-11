@@ -1,4 +1,5 @@
 button.modal {
+	cursor: pointer;
 	width: 183px;
 	border-radius: 50px;
 	padding: 13px 48px;
@@ -81,6 +82,7 @@ button.modal {
 	}
 
 	button {
+		cursor: pointer;
 		background-color: inherit;
 		border: none;
 	}
