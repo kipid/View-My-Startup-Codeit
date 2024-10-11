@@ -12,32 +12,32 @@ import { useUser } from '../context/UserProvider';
 import { createComparison, createWatch } from '../shared/apis/companiesService';
 
 function MyComparisonPage() {
-	const [isMyCompanyModalOpen, setIsMyCompnayModalOpen] = useState(false);
-	const [isComparisonModalOpen, setIsComaprisonModalOpen] = useState(false);
-	const [myCompany, setMyComany] = useState('');
+	const [isMyCompanyModalOpen, setIsMyCompanyModalOpen] = useState(false);
+	const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+	const [myCompany, setMyCompany] = useState('');
 	const [comparisons, setComparisons] = useState([]);
 	const navigate = useNavigate();
 
 	const myCompanyModalHandler = () => {
-		setIsMyCompnayModalOpen(true);
+		setIsMyCompanyModalOpen(true);
 	};
 
 	const myCompanyModalCloseHandler = newMyCompany => {
-		setMyComany(newMyCompany);
-		setIsMyCompnayModalOpen(false);
+		setMyCompany(newMyCompany);
+		setIsMyCompanyModalOpen(false);
 	};
 
 	const comparisonModalHandler = () => {
-		setIsComaprisonModalOpen(true);
+		setIsComparisonModalOpen(true);
 	};
 
 	const comparisonModalCloseHandler = newComparisons => {
 		setComparisons(newComparisons);
-		setIsComaprisonModalOpen(false);
+		setIsComparisonModalOpen(false);
 	};
 
 	const handleDeleteMyCompany = id => {
-		setMyComany('');
+		setMyCompany('');
 	};
 
 	const handleDeleteComparison = id => {
@@ -45,7 +45,7 @@ function MyComparisonPage() {
 	};
 
 	const handleRestart = () => {
-		setMyComany('');
+		setMyCompany('');
 		setComparisons([]);
 	};
 
@@ -81,7 +81,7 @@ function MyComparisonPage() {
 	return (
 		<div className={styles.myComparisonPage}>
 			<div className={styles.container}>
-				<div className={styles.myComanyHeader}>
+				<div className={styles.myCompanyHeader}>
 					<p className={styles.title}>나의 기업을 선택해 주세요!</p>
 					{myCompany && comparisons.length > 0 && (
 						<button className={styles.restartButton} onClick={handleRestart} type="button">
@@ -105,7 +105,7 @@ function MyComparisonPage() {
 							</p>
 							<div className={styles.companyInfo}>
 								<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
-								<div className={styles.comanyInfoText}>
+								<div className={styles.companyInfoText}>
 									<p className={styles.companyName}>{myCompany.name}</p>
 									<p className={styles.companyCategory}>{myCompany.category}</p>
 								</div>
@@ -135,7 +135,11 @@ function MyComparisonPage() {
 							</button>
 							{isComparisonModalOpen && (
 								<Modal>
-									<SelectComparisonModal comparisons={comparisons} onClose={comparisonModalCloseHandler} />
+									<SelectComparisonModal
+										myCompanyId={myCompany.id}
+										comparisons={comparisons}
+										onClose={comparisonModalCloseHandler}
+									/>
 								</Modal>
 							)}
 						</div>
@@ -155,7 +159,7 @@ function MyComparisonPage() {
 											onClick={() => handleDeleteComparison(comparison.id)}
 										/>
 										<img className={styles.companyLogo} src={comparison.logo ? comparison.logo : noLogo} alt="로고" />
-										<div className={styles.comanyInfoText}>
+										<div className={styles.companyInfoText}>
 											<p className={styles.companyName}>{comparison.name}</p>
 											<p className={styles.companyCategory}>{comparison.category}</p>
 										</div>
