@@ -27,12 +27,15 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 		if (pw.length !== 0) newValidation.isPasswordOk = true;
 
 		setValidation(newValidation);
+
+		if (!newValidation.isAmountOk || !newValidation.isPasswordOk) return false;
+
+		return true;
 	};
 
 	const handleDelete = () => {
-		validate();
-		// NOTE validation Check
-		if (!validation.isPasswordOk) return null;
+		// // NOTE validation Check
+		if (!validate()) return null;
 
 		const deleteData = async () => {
 			const body = { password: pw };

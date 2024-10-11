@@ -31,12 +31,15 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 		if (pw.length !== 0) newValidation.isPasswordOk = true;
 
 		setValidation(newValidation);
+
+		if (!newValidation.isAmountOk || !newValidation.isPasswordOk) return false;
+
+		return true;
 	};
 
 	const handleUpdate = () => {
-		validate();
-		// NOTE validation Check
-		if (!validation.isAmountOk || !validation.isPasswordOk) return null;
+		// // NOTE validation Check
+		if (!validate()) return null;
 
 		const { id } = investmentDetail;
 
