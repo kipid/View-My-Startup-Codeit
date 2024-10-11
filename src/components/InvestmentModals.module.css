@@ -126,6 +126,12 @@ button.modal {
 			font-family: inherit;
 		}
 
+		> input::placeholder,
+		> textarea::placeholder {
+			color: #747474;
+			font-size: 16px;
+		}
+
 		#eye {
 			width: 24px;
 			height: 24px;
