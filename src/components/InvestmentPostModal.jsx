@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
@@ -15,6 +15,11 @@ const initialDetail = {
 	userId: '',
 	companyId: '',
 };
+const initialValidation = {
+	isAmountOk: false,
+	isPasswordOk: false,
+	isFirst: true,
+};
 
 function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 	const user = useUser();
@@ -23,6 +28,7 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 	const [detail, setDetail] = useState(initialDetail);
 	const [pw, setPw] = useState('');
 	const [pwCheck, setPwCheck] = useState('');
+	const [validation, setValidation] = useState(initialValidation);
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
@@ -33,8 +39,20 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 	const togglePWCheckshow = () => {
 		setIsPWCheckshow(!isPWCheckshow);
 	};
+	const validate = () => {
+		const newValidation = { ...initialValidation, isFirst: false };
+
+		if (!isNaN(Number(detail.amount)) && detail.amount.length !== 0) newValidation.isAmountOk = true;
+		if (pw.length !== 0 && pw === pwCheck) newValidation.isPasswordOk = true;
+
+		setValidation(newValidation);
+	};
 
 	const handlePost = () => {
+		validate();
+		// NOTE validation Check
+		if (!validation.isAmountOk || !validation.isPasswordOk) return null;
+
 		const postData = async () => {
 			const body = { ...detail, amount: Number(detail.amount), password: pw, userId: user.userUuid, companyId: companyDetail.id };
 
@@ -77,7 +95,10 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 					/>
 				</div>
 				<div id={style.amount}>
-					<label htmlFor="amount">투자 금액</label>
+					<label htmlFor="amount">
+						투자 금액{' '}
+						{!validation.isFirst && !validation.isAmountOk && <span className={style.errorMsg}>숫자로 입력해주세요.</span>}
+					</label>
 					<input
 						id="amount"
 						type="number"
@@ -104,7 +125,12 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 					/>
 				</div>
 				<div id={style.password}>
-					<label htmlFor="password">비밀번호</label>
+					<label htmlFor="password">
+						비밀번호{' '}
+						{!validation.isFirst && !validation.isPasswordOk && (
+							<span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>
+						)}
+					</label>
 					<input
 						id="password"
 						type={isPWshow ? '' : 'password'}
@@ -116,8 +142,14 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 					/>
 					<img id={style.eye} src={isPWshow ? eyeOn : eyeOff} alt="비밀번호 표시" onClick={togglePWshow} />
 				</div>
+
 				<div id={style.password}>
-					<label htmlFor="passwordCheck">비밀번호 확인</label>
+					<label htmlFor="passwordCheck">
+						비밀번호 확인{' '}
+						{!validation.isFirst && !validation.isPasswordOk && (
+							<span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>
+						)}
+					</label>
 					<input
 						id="passwordCheck"
 						type={isPWCheckshow ? '' : 'password'}
