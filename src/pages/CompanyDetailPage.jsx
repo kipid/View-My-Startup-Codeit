@@ -148,6 +148,7 @@ function CompanyDetailPage() {
 								<th>순위</th>
 								<th>투자 금액</th>
 								<th>투자 코멘트</th>
+								<th> </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -156,8 +157,8 @@ function CompanyDetailPage() {
 									<td>{item.name}</td>
 									<td>{idx + 1 + (pageNum - 1) * pageSize}위</td>
 									<td>{getScaledNumber(item.amount)}원</td>
+									<td>{item.comment}</td>
 									<td>
-										<p>{item.comment} </p>
 										<TouchInvestment investmentDetail={item} onUpdate={handleUpdate} onDelete={handleDelete} />
 									</td>
 								</tr>
