@@ -49,12 +49,14 @@ function LoginPage() {
 			try {
 				postPwdIter({ email })
 					.then(async iter => {
+						if (iter?.message) {
+							setError(iter);
+							return;
+						}
 						const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
 						setPwd('');
 						const result = await postLogin({ email, pwdEncrypted });
-						if (result?.message) {
-							setError(result);
-						} else if (result) {
+						if (result) {
 							setUser(result);
 							localStorage.setItem('userUuid', result.userUuid);
 							localStorage.setItem('nickname', result.nickname);

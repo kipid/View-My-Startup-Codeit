@@ -20,7 +20,7 @@ function Nav() {
 			const sessionPwd = localStorage.getItem('sessionPwd');
 			const sessionCreatedAt = localStorage.getItem('sessionCreatedAt');
 			if (nickname && sessionPwd && sessionCreatedAt) {
-				setUser({ id: userUuid, nickname, sessionPwd, createdAt: sessionCreatedAt });
+				setUser({ userUuid, nickname, sessionPwd, createdAt: sessionCreatedAt });
 			}
 		}
 	}, [setUser]);
