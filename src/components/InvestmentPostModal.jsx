@@ -6,7 +6,7 @@ import eyeOn from '../assets/ic_eye_on.png';
 import eyeOff from '../assets/ic_eye_off.png';
 import { updateInvestment } from '../shared/apis/investmentApis.js';
 
-function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpdate, show = false }) {
+function InvestmentPostModal({ investmentDetail, onClose, onUpdate, show = false }) {
 	const [isPWshow, setIsPWshow] = useState(false);
 	const [detail, setDetail] = useState(investmentDetail);
 	const [pw, setPw] = useState('');
@@ -32,6 +32,8 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 		onUpdate();
 	};
 
+	const logo = ''; // TODO investmentDetail로부터 coompanyId를 받아서 logo를 가져올것.
+
 	return (
 		<div id={style.InvestmentUpdateModal}>
 			<div id={style.modalHeader}>
@@ -45,9 +47,9 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 				<div id={style.info}>
 					<p>투자 기업 정보</p>
 					<div>
-						<img src={companyDetail.logo ?? noImage} alt="companyLogo" />
-						<p>{companyDetail.name}</p>
-						<p>{companyDetail.category}</p>
+						<img src={logo ?? noImage} alt="companyLogo" />
+						<p>코드잇</p>
+						<p>에듀테크</p>
 					</div>
 				</div>
 				<div id={style.name}>
@@ -118,4 +120,4 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 	);
 }
 
-export default InvestmentUpdateModal;
+export default InvestmentPostModal;

@@ -63,6 +63,7 @@ function CompanyDetailPage() {
 				<Modal>
 					<InvestmentUpdateModal
 						investmentDetail={modalData}
+						companyDetail={companyDetail}
 						onClose={handleModalClose}
 						onUpdate={() => {
 							handleModalClose();
