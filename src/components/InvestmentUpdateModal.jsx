@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from './InvestmentModals.module.css';
 import icDelete from '../assets/ic_delete.png';
 import noImage from '../assets/no_image.png';
@@ -20,6 +20,7 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 	const [pw, setPw] = useState('');
 	const [validation, setValidation] = useState(initialValidation);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isPwWrong, setIsPwWrong] = useState(false);
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
@@ -41,7 +42,8 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 	};
 
 	const handleUpdate = () => {
-		// // NOTE validation Check
+		setIsPwWrong(false);
+		// NOTE validation Check
 		if (!validate()) return null;
 
 		const { id } = investmentDetail;
@@ -52,9 +54,13 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 			delete body.updatedAt;
 
 			const investment = await updateInvestment(id, body);
+			if (investment.status === 401) {
+				setIsPwWrong(true);
+			} else {
+				setIsModalOpen(true);
+			}
 		};
 		updateData();
-		setIsModalOpen(true);
 	};
 
 	return (
@@ -131,6 +137,7 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 								{!validation.isFirst && !validation.isPasswordOk && (
 									<span className={style.errorMsg}>비밀번호를 입력해주세요.</span>
 								)}
+								{isPwWrong && <span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>}
 							</label>
 							<input
 								id="password"
