@@ -1,7 +1,16 @@
 #companyDetailPage {
 	width: 1200px;
 
+	@media (max-width: 1200px) {
+		width: 100%;
+	}
+
 	#companyDetail {
+		@media (max-width: 1200px) {
+			padding: 0 24px;
+			width: 100%;
+		}
+
 		#companyDetailHeader {
 			height: 112px;
 			border-bottom: 1px solid #747474;
@@ -33,12 +42,13 @@
 
 		#companyDetailInfo {
 			margin: 36px 0;
-			display: flex;
-			justify-content: space-between;
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 24px;
 			height: 92px;
 
 			> div {
-				width: 384px;
+				min-width: 200px;
 				border-radius: 10px;
 				background-color: #282828;
 				padding: 36px 24px;
@@ -60,7 +70,8 @@
 		}
 
 		#companyDetailDesc {
-			width: 1196px;
+			width: 100%;
+			min-width: 648px;
 			height: 287px;
 			border-radius: 10px;
 			padding: 24px;
@@ -82,6 +93,11 @@
 		flex-direction: column;
 		gap: 24px;
 
+		@media (max-width: 1200px) {
+			padding: 0 24px;
+			width: 100%;
+		}
+
 		#investmentsHeader {
 			display: flex;
 			justify-content: space-between;
@@ -97,6 +113,7 @@
 			}
 
 			button {
+				cursor: pointer;
 				padding: 8px 24px;
 				background-color: #eb5230;
 				border-radius: 50px;
@@ -111,9 +128,12 @@
 		#investmentBody {
 			display: flex;
 			flex-direction: column;
+			width: 100%;
+			overflow-x: auto;
 
 			table {
 				width: 100%;
+				min-width: 697px;
 				height: 375px;
 				padding-top: 16px;
 
@@ -127,8 +147,11 @@
 					th {
 						width: 95px;
 
-						&:last-child {
+						&:nth-child(4) {
 							width: auto;
+						}
+						&:last-child {
+							width: 36px;
 						}
 					}
 				}
@@ -137,20 +160,23 @@
 					text-align: center;
 					height: 64px;
 
-					td:last-child {
+					td:nth-child(4) {
 						height: 100%;
 						text-align: left;
 						display: flex;
 						flex-wrap: wrap;
 						justify-content: space-between;
 						align-content: center;
-
-						p {
-							margin-left: 10px;
-						}
+						margin-left: 10px;
 					}
 				}
 			}
+		}
+	}
+
+	#modalWrapper {
+		> div {
+			align-items: center;
 		}
 	}
 }

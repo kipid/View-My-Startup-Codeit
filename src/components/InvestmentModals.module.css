@@ -1,4 +1,5 @@
 button.modal {
+	cursor: pointer;
 	width: 183px;
 	border-radius: 50px;
 	padding: 13px 48px;
@@ -43,6 +44,31 @@ button.modal {
 	}
 }
 
+#InvestmentCompleteModal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+
+	div:first-child {
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+
+		button {
+			cursor: pointer;
+			background-color: inherit;
+			border: none;
+		}
+	}
+
+	p {
+		font-size: 15px;
+		text-align: center;
+		margin-bottom: 24px;
+	}
+}
+
 #modalHeader {
 	display: flex;
 	justify-content: space-between;
@@ -56,6 +82,7 @@ button.modal {
 	}
 
 	button {
+		cursor: pointer;
 		background-color: inherit;
 		border: none;
 	}
@@ -126,6 +153,12 @@ button.modal {
 			font-family: inherit;
 		}
 
+		> input::placeholder,
+		> textarea::placeholder {
+			color: #747474;
+			font-size: 16px;
+		}
+
 		#eye {
 			width: 24px;
 			height: 24px;
@@ -133,5 +166,11 @@ button.modal {
 			right: 18px;
 			bottom: 0;
 		}
+	}
+
+	span.errorMsg {
+		margin-left: 10px;
+		color: var(--red-error);
+		font-size: 16px;
 	}
 }

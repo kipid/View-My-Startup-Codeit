@@ -3,7 +3,7 @@ const getScaledNumber = number => {
 
 	const scaler = 10000;
 	let scale = 0;
-	let rest = number;
+	let rest = Number(number);
 	const dic = ['', '만', '억', '조', '경', '해', '자', '양', '구', '간'];
 
 	while (rest >= scaler && scale < dic.length) {

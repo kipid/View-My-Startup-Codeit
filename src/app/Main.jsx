@@ -12,6 +12,7 @@ import SignupPage from '../pages/SignupPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import { UserProvider, useSetUser } from '../context/UserProvider.jsx';
 import Profile from '../pages/Profile.jsx';
+import LoginWithGoogle from '../pages/LoginWithGoogle.jsx';
 
 function Main() {
 	return (
@@ -21,6 +22,7 @@ function Main() {
 					<Route path="/" element={<App />}>
 						<Route index element={<LandingPage />} />
 						<Route path="login" element={<LoginPage />} />
+						<Route path="log-in-with-google" element={<LoginWithGoogle />} />
 						<Route path="signup" element={<SignupPage />} />
 						<Route path="profile" element={<Profile />} />
 						<Route path="companies">

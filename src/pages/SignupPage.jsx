@@ -145,7 +145,7 @@ function SignupPage() {
 							type="email"
 							autoComplete="on"
 							required
-							className={!email || EMAIL_REGEX.test(email) ? styles.alert : ''}
+							className={!email || !EMAIL_REGEX.test(email) ? styles.alert : ''}
 							value={email}
 							onChange={e => setEmail(e.target.value)}
 						/>
@@ -162,7 +162,7 @@ function SignupPage() {
 							type="text"
 							autoComplete="on"
 							required
-							className={!name || NAME_REGEX.test(name) ? styles.alert : ''}
+							className={!name || !NAME_REGEX.test(name) ? styles.alert : ''}
 							value={name}
 							onChange={e => setName(e.target.value)}
 						/>
@@ -179,7 +179,7 @@ function SignupPage() {
 							type="text"
 							autoComplete="on"
 							required
-							className={!nickname || NICKNAME_REGEX.test(nickname) ? styles.alert : ''}
+							className={!nickname || !NICKNAME_REGEX.test(nickname) ? styles.alert : ''}
 							value={nickname}
 							onChange={e => setNickname(e.target.value)}
 						/>

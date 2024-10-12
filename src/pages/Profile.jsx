@@ -79,8 +79,8 @@ function Profile() {
 						<h3>닉네임</h3>
 						<p>{user?.nickname}</p>
 					</div>
-					<button className={styles.getSsns} type="button" onClick={handleShowAllSessions}>
-						모든 Session 불러오기
+					<button type="button" className={styles.getSsns} onClick={handleShowAllSessions}>
+						&gt;&gt; 모든 Session 불러오기
 					</button>
 					<table className={styles.table}>
 						<tbody>
