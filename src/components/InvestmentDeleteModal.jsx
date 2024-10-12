@@ -32,7 +32,7 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 
 		setValidation(newValidation);
 
-		if (!newValidation.isAmountOk || !newValidation.isPasswordOk) return false;
+		if (!newValidation.isPasswordOk) return false;
 
 		return true;
 	};
@@ -46,7 +46,7 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 
 			const investment = await deleteInvestment(investmentId, body);
 
-			if (investment.status) {
+			if (investment.status === 401) {
 				setIsPwWrong(true);
 			} else {
 				setIsModalOpen(true);
