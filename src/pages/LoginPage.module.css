@@ -216,6 +216,11 @@ button:disabled {
 	width: 54px;
 }
 
+.disabledButton {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
 .check_description {
 	margin-top: 20px;
 	display: flex;

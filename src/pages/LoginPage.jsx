@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postLogin, postPwdIter } from '../shared/apis/loginSignupService.js';
-import encrypt from '../shared/apis/encrypt.js';
-import { useSetUser, useUser } from '../context/UserProvider';
+import { postLogin, postPreGoogle, postPwdIter } from '../shared/apis/loginSignupService.js';
+import encrypt, { generateRandomHexString } from '../shared/apis/encrypt.js';
+import { useSetUser, useUser } from '../context/UserProvider.jsx';
 import eyeOnIcon from '../assets/ic_eye_on.png';
 import eyeOffIcon from '../assets/ic_eye_off.png';
 
@@ -157,12 +157,35 @@ function LoginPage() {
 				<div className={styles.oauth}>
 					<div className={styles.dividingLine}>또는</div>
 					<div className={styles.oauth_images}>
-						<Link to="https://www.google.com/">
+						<button
+							type="button"
+							onClick={async () => {
+								const state = generateRandomHexString();
+								let sW;
+								let sH;
+								if (window.screenWidth > window.screenHeight) {
+									sW = window.screenWidth;
+									sH = window.screenHeight;
+								} else {
+									sW = window.screenHeight;
+									sH = window.screenWidth;
+								}
+								const result = await postPreGoogle({ state, sW, sH });
+								if (result) {
+									window.open(
+										`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`,
+										'_blank',
+									);
+								} else {
+									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
+								}
+							}}
+						>
 							<img src="/images/oauth-Google.png" alt="구글로 로그인하기" className={styles.img_oauth} />
-						</Link>
-						<Link to="https://www.kakaocorp.com/page/">
+						</button>
+						<button className={styles.disabledButton} type="button" onClick={() => 'https://www.kakaocorp.com/page/'}>
 							<img src="/images/oauth-Kakao.png" alt="카카오로 로그인하기" className={styles.img_oauth} />
-						</Link>
+						</button>
 					</div>
 				</div>
 				<div className={styles.check_description}>

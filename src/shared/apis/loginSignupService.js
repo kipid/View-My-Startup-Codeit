@@ -1,3 +1,4 @@
+import axios from 'axios';
 import encrypt from './encrypt.js';
 import instance from './instance.js';
 
@@ -37,6 +38,21 @@ export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
 	const user = await instance.post(`/account/log-in`, data);
 	return user.data;
 	// return { userUuid, nickname, sessionPwd, createdAt }
+}
+
+export async function postPreGoogle(data = { state: '', sW: 0, sH: 0 }) {
+	const result = await instance.post(`/account/log-in-with-google`, data);
+	return result.data;
+}
+
+export async function getGoogle(params) {
+	const result = await axios.get(`https://www.googleapis.com/oauth2/v2/userinfo`, { params });
+	return result.data;
+}
+
+export async function postLoginWithGoogle(data = { sW: 0, sH: 0, state: '', email: '' }) {
+	const session = await instance.post(`/account/log-in-with-google.do`);
+	return session.data;
 }
 
 export async function postLogout(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
