@@ -22,7 +22,7 @@ function Main() {
 					<Route path="/" element={<App />}>
 						<Route index element={<LandingPage />} />
 						<Route path="login" element={<LoginPage />} />
-						<Route path="log-in-with-google" element={<LoginWithGoogle />} />
+						<Route path="account/log-in-with-google" element={<LoginWithGoogle />} />
 						<Route path="signup" element={<SignupPage />} />
 						<Route path="profile" element={<Profile />} />
 						<Route path="companies">

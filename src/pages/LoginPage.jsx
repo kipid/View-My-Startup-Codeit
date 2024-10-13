@@ -88,7 +88,7 @@ function LoginPage() {
 
 	return (
 		<>
-			{user && !error && <Navigate to="/companies" />}
+			{user && !error && <Navigate to="/" />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
@@ -163,17 +163,17 @@ function LoginPage() {
 								const state = generateRandomHexString();
 								let sW;
 								let sH;
-								if (window.screenWidth > window.screenHeight) {
-									sW = window.screenWidth;
-									sH = window.screenHeight;
+								if (window.screen.width > window.screen.height) {
+									sW = window.screen.width;
+									sH = window.screen.height;
 								} else {
-									sW = window.screenHeight;
-									sH = window.screenWidth;
+									sW = window.screen.height;
+									sH = window.screen.width;
 								}
-								const result = await postPreGoogle({ state, sW, sH });
-								if (result) {
+								const res = await postPreGoogle({ state, sW, sH });
+								if (res?.result) {
 									window.open(
-										`https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`,
+										`https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`,
 										'_blank',
 									);
 								} else {

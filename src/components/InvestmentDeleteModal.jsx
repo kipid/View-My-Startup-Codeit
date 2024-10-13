@@ -17,6 +17,7 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 	const [pw, setPw] = useState('');
 	const [validation, setValidation] = useState(initialValidation);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isPwWrong, setIsPwWrong] = useState(false);
 
 	// NOTE show가 false이면 아무것도 렌더하지 않음
 	if (!show) return null;
@@ -31,7 +32,7 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 
 		setValidation(newValidation);
 
-		if (!newValidation.isAmountOk || !newValidation.isPasswordOk) return false;
+		if (!newValidation.isPasswordOk) return false;
 
 		return true;
 	};
@@ -44,9 +45,14 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 			const body = { password: pw };
 
 			const investment = await deleteInvestment(investmentId, body);
+
+			if (investment.status === 401) {
+				setIsPwWrong(true);
+			} else {
+				setIsModalOpen(true);
+			}
 		};
 		deleteData();
-		setIsModalOpen(true);
 	};
 
 	return (
@@ -71,6 +77,7 @@ function InvestmentDeleteModal({ investmentId, onClose, onDelete, show = false }
 								{!validation.isFirst && !validation.isPasswordOk && (
 									<span className={style.errorMsg}>비밀번호를 입력해주세요.</span>
 								)}
+								{isPwWrong && <span className={style.errorMsg}>비밀번호가 일치하지 않습니다.</span>}
 							</label>
 							<input
 								id="password"

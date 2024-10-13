@@ -1,7 +1,14 @@
-import { useEffect } from 'react';
-import { getGoogle, postLoginWithGoogle } from '../shared/apis/loginSignupService';
+import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getGoogle, postLoginWithGoogle } from '../shared/apis/loginSignupService.js';
+import { useSetUser, useUser } from '../context/UserProvider.jsx';
+import PopUp from '../components/PopUp.jsx';
 
 function LoginWithGoogle() {
+	const [error, setError] = useState(null);
+	const user = useUser();
+	const setUser = useSetUser();
+
 	useEffect(() => {
 		async function loginWithGoogle() {
 			let { hash } = window.location;
@@ -18,19 +25,24 @@ function LoginWithGoogle() {
 					if (resp.verified_email && resp.email) {
 						let sW;
 						let sH;
-						if (window.screenWidth > window.screenHeight) {
-							sW = window.screenWidth;
-							sH = window.screenHeight;
+						if (window.screen.width > window.screen.height) {
+							sW = window.screen.width;
+							sH = window.screen.height;
 						} else {
-							sW = window.screenHeight;
-							sH = window.screenWidth;
+							sW = window.screen.height;
+							sH = window.screen.width;
 						}
 						const session = await postLoginWithGoogle({
 							sW,
 							sH,
-							state: hashMap.state.val,
+							state: hashMap.state,
 							email: resp.email,
 						});
+						if (session?.message) {
+							setError(session);
+							return;
+						}
+						setUser(session);
 					}
 				}
 			}
@@ -38,7 +50,13 @@ function LoginWithGoogle() {
 		loginWithGoogle();
 	});
 
-	return <h1>Login with Google</h1>;
+	return (
+		<>
+			{user && !error && <Navigate to="/" />}
+			<h1>Login with Google</h1>
+			<PopUp error={error} popUpText={error?.message} setError={setError} />
+		</>
+	);
 }
 
 export default LoginWithGoogle;
