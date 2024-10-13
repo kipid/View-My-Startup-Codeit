@@ -51,8 +51,9 @@ export async function getGoogle(params) {
 }
 
 export async function postLoginWithGoogle(data = { sW: 0, sH: 0, state: '', email: '' }) {
-	const session = await instance.post(`/account/log-in-with-google.do`);
+	const session = await instance.post(`/account/log-in-with-google.do`, data);
 	return session.data;
+	// return { userUuid, nickname, sessionPwd, createdAt }
 }
 
 export async function postLogout(data = { userId: '', createdAt: 0, sessionEncrypted: '' }) {
