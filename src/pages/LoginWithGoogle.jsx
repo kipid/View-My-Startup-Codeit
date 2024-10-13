@@ -18,12 +18,12 @@ function LoginWithGoogle() {
 					if (resp.verified_email && resp.email) {
 						let sW;
 						let sH;
-						if (window.screenWidth > window.screenHeight) {
-							sW = window.screenWidth;
-							sH = window.screenHeight;
+						if (window.screen.width > window.screen.height) {
+							sW = window.screen.width;
+							sH = window.screen.height;
 						} else {
-							sW = window.screenHeight;
-							sH = window.screenWidth;
+							sW = window.screen.height;
+							sH = window.screen.width;
 						}
 						const session = await postLoginWithGoogle({
 							sW,
