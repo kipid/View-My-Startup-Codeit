@@ -4,9 +4,9 @@ import { getCompanies } from '../shared/apis/companiesService.js';
 import useAsync from '../shared/hooks/useAsync.js';
 import getScaledNumber from '../shared/utils/getScaledNumber.js';
 import Modal from '../components/Modal.jsx';
-import InvestmentUpdateModal from '../components/InvestmentUpdateModal.jsx';
 import noLogo from '../assets/no-logo.png';
 import styles from './ComparisonResultPage.module.css';
+import InvestmentPostModal from '../components/InvestmentPostModal.jsx';
 
 function MyCompanyBox({ companies, myCompanyId }) {
 	const myCompany = companies.find(company => company.id === myCompanyId);
@@ -14,7 +14,7 @@ function MyCompanyBox({ companies, myCompanyId }) {
 	return (
 		<div className={styles.companyInfo}>
 			<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
-			<div className={styles.comanyInfoText}>
+			<div className={styles.companyInfoText}>
 				<p className={styles.companyName}>{myCompany.name}</p>
 				<p className={styles.companyCategory}>{myCompany.category}</p>
 			</div>
@@ -166,6 +166,8 @@ function ComparisonResultPage() {
 		fetchRankingCompanies();
 	}, [rankingSort]);
 
+	const myCompany = rankingCompanies.find(company => company.id === myCompanyId);
+
 	return (
 		rankingCompanies.length > 0 && (
 			<div>
@@ -224,7 +226,12 @@ function ComparisonResultPage() {
 						</button>
 						{isModalOpen && (
 							<Modal>
-								<InvestmentUpdateModal investmentDetail={myCompanyId} onClose={() => setIsModalOpen(false)} onUpdate show />
+								<InvestmentPostModal
+									companyDetail={myCompany}
+									onClose={() => setIsModalOpen(false)}
+									onPost={() => setIsModalOpen(false)}
+									show
+								/>
 							</Modal>
 						)}
 					</div>
