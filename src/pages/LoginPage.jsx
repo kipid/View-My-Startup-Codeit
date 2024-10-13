@@ -88,7 +88,7 @@ function LoginPage() {
 
 	return (
 		<>
-			{user && !error && <Navigate to="/companies" />}
+			{user && !error && <Navigate to="/" />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
