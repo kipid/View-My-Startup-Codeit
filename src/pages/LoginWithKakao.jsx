@@ -56,7 +56,7 @@ function LoginWithKakao() {
 			}
 		}
 		loginWithKakao();
-	});
+	}, []);
 
 	return (
 		<>

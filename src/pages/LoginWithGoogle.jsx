@@ -49,7 +49,7 @@ function LoginWithGoogle() {
 			}
 		}
 		loginWithGoogle();
-	});
+	}, []);
 
 	return (
 		<>
