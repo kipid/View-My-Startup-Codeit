@@ -297,7 +297,7 @@ function SignupPage() {
 								}
 								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial, email: 'anony@example.com' });
 								if (!nicknameAvailable.nickname) {
-									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
+									setError({ message: `닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.` });
 									return;
 								}
 								const state = generateRandomHexString();
@@ -330,7 +330,7 @@ function SignupPage() {
 								}
 								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial, email: 'anony@example.com' });
 								if (!nicknameAvailable.nickname) {
-									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
+									setError({ message: `닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.` });
 									return;
 								}
 								const state = generateRandomHexString();
