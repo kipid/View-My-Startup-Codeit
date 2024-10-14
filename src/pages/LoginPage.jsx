@@ -171,7 +171,7 @@ function LoginPage() {
 									sW = window.screen.height;
 									sH = window.screen.width;
 								}
-								const res = await postPreSocial({ state, sW, sH, authorizor: 'google' });
+								const res = await postPreSocial({ nickname: '', state, sW, sH, authorizor: 'google' });
 								if (res?.result) {
 									window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`;
 								} else {
@@ -194,7 +194,7 @@ function LoginPage() {
 									sW = window.screen.height;
 									sH = window.screen.width;
 								}
-								const res = await postPreSocial({ state, sW, sH, authorizor: 'kakao' });
+								const res = await postPreSocial({ nickname: '', state, sW, sH, authorizor: 'kakao' });
 								if (res?.result) {
 									window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=f04c73ec37a59918252c890afbd3dda0&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao')}&response_type=code&scope=account_email&state=${state}`;
 								} else {
