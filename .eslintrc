@@ -33,6 +33,7 @@
 		"jsx-a11y/no-noninteractive-element-interactions": "off",
 		"jsx-a11y/label-has-associated-control": [2, { "some": ["nesting", "id"] }],
 		"guard-for-in": "off",
-		"no-underscore-dangle": "off"
+		"no-underscore-dangle": "off",
+		"camelcase": "off"
 	}
 }

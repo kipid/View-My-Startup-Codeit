@@ -92,7 +92,7 @@
 	font-weight: 500;
 }
 
-form {
+.form {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -159,7 +159,7 @@ form {
 	}
 }
 
-form .button {
+.form .button {
 	cursor: pointer;
 	width: 100%;
 	height: 56px;

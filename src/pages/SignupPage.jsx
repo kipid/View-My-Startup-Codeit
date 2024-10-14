@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postCheck, postSignup } from '../shared/apis/loginSignupService.js';
+import { postCheck, postPreSocial, postSignup } from '../shared/apis/loginSignupService.js';
 import encrypt, { generateRandomHexString, ITER_FULL } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider';
 
@@ -25,6 +25,9 @@ function SignupPage() {
 	const [pwdVisibility, setPwdVisibility] = useState(false);
 	const [pwdCfmVisibility, setPwdCfmVisibility] = useState(false);
 	const [validation, setValidation] = useState({ email: false, name: false, nickname: false, pwd: false, pwdCfm: false });
+	const [nicknameForSocial, setNicknameForSocial] = useState('');
+	const [nicknameForSocialError, setNicknameForSocialError] = useState('');
+	const [validationSocial, setValidationSocial] = useState(false);
 	const [error, setError] = useState(null);
 	const user = useUser();
 	const setUser = useSetUser();
@@ -89,6 +92,22 @@ function SignupPage() {
 		}
 	}, [email, name, nickname, pwd, pwdCfm]);
 
+	useEffect(() => {
+		if (!nicknameForSocial) {
+			setNicknameForSocialError('닉네임을 입력해주세요.');
+			setValidationSocial(draft => false);
+		} else if (NICKNAME_REGEX.test(nicknameForSocial)) {
+			setNicknameForSocialError('');
+			setValidationSocial(draft => true);
+		} else if (nicknameForSocial.length > 20) {
+			setNicknameForSocialError('닉네임은 20자 이하여야 합니다.');
+			setValidationSocial(draft => false);
+		} else {
+			setNicknameForSocialError('잘못된 닉네임 형식입니다.');
+			setValidationSocial(draft => false);
+		}
+	}, [nicknameForSocial]);
+
 	const handleSignup = async () => {
 		if (validation.email && validation.nickname && validation.pwd && validation.pwdCfm) {
 			try {
@@ -130,12 +149,12 @@ function SignupPage() {
 
 	return (
 		<>
-			{user && !error && <Navigate to="/companies" />}
+			{user && !error && <Navigate to="/" />}
 			<section className={styles.section}>
 				<Link to="/">
 					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
 				</Link>
-				<form>
+				<form className={styles.form}>
 					<label htmlFor="email">
 						이메일
 						<input
@@ -168,7 +187,7 @@ function SignupPage() {
 						/>
 					</label>
 					<div id="name-error" className={styles.error}>
-						{nicknameError}
+						{nameError}
 					</div>
 					<label htmlFor="nickname">
 						닉네임
@@ -248,24 +267,92 @@ function SignupPage() {
 				</form>
 				<div className={styles.oauth}>
 					<span>간편 가입하기</span>
+					<div className={styles.form}>
+						<label htmlFor="nicknameForSocial">
+							닉네임
+							<input
+								id="nicknameForSocial"
+								name="nicknameForSocial"
+								placeholder="닉네임을 입력해주세요"
+								type="text"
+								autoComplete="on"
+								required
+								className={!nicknameForSocial || !NICKNAME_REGEX.test(nicknameForSocial) ? styles.alert : ''}
+								value={nicknameForSocial}
+								onChange={e => setNicknameForSocial(e.target.value)}
+							/>
+						</label>
+						<div id="nicknameForSocial-error" className={styles.error}>
+							{nicknameForSocialError}
+						</div>
+					</div>
 					<div className={styles.oauth_images}>
-						<a
-							target="_blank"
-							href="#login"
-							onClick={() => {
+						<button
+							className={validationSocial ? '' : styles.disabledButton}
+							type="button"
+							onClick={async () => {
+								if (!validationSocial) {
+									setError({ message: '닉네임이 유효하지 않습니다.' });
+									return;
+								}
+								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial });
+								if (!nicknameAvailable.nickname) {
+									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
+									return;
+								}
 								const state = generateRandomHexString();
-								window.open(
-									`https://accounts.google.com/o/oauth2/v2/auth?cliend_id=${process.env.GOOGLE_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent(`https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`)}&state=${state}&prompt=consent`,
-								);
-								return false;
+								let sW;
+								let sH;
+								if (window.screen.width > window.screen.height) {
+									sW = window.screen.width;
+									sH = window.screen.height;
+								} else {
+									sW = window.screen.height;
+									sH = window.screen.width;
+								}
+								const res = await postPreSocial({ nickname: nicknameForSocial, state, sW, sH, authorizor: 'google' });
+								if (res?.result) {
+									window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`;
+								} else {
+									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
+								}
 							}}
-							rel="noreferrer"
 						>
 							<img src="/images/oauth-Google.png" alt="구글로 가입하기" className={styles.img_oauth} />
-						</a>
-						<a target="_blank" href="https://www.kakaocorp.com/page/" rel="noreferrer">
+						</button>
+						<button
+							className={validationSocial ? '' : styles.disabledButton}
+							type="button"
+							onClick={async () => {
+								if (!validationSocial) {
+									setError({ message: '닉네임이 유효하지 않습니다.' });
+									return;
+								}
+								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial });
+								if (!nicknameAvailable.nickname) {
+									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
+									return;
+								}
+								const state = generateRandomHexString();
+								let sW;
+								let sH;
+								if (window.screen.width > window.screen.height) {
+									sW = window.screen.width;
+									sH = window.screen.height;
+								} else {
+									sW = window.screen.height;
+									sH = window.screen.width;
+								}
+								const res = await postPreSocial({ nickname: nicknameForSocial, state, sW, sH, authorizor: 'kakao' });
+								if (res?.result) {
+									window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=f04c73ec37a59918252c890afbd3dda0&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao')}&response_type=code&scope=account_email&state=${state}`;
+								} else {
+									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
+								}
+							}}
+						>
 							<img src="/images/oauth-Kakao.png" alt="카카오로 가입하기" className={styles.img_oauth} />
-						</a>
+						</button>
 					</div>
 				</div>
 				<div className={styles.check_description}>

@@ -40,18 +40,18 @@ export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
 
-export async function postPreGoogle(data = { state: '', sW: 0, sH: 0 }) {
-	const result = await instance.post(`/account/log-in-with-google`, data);
+export async function postPreSocial(data = { nickname: '', state: '', sW: 0, sH: 0, authorizor: '' }) {
+	const result = await instance.post(`/account/log-in-with-social`, data);
 	return result.data;
 }
 
-export async function getGoogle(params) {
+export async function getGoogleUserInfo(params) {
 	const result = await axios.get(`https://www.googleapis.com/oauth2/v2/userinfo`, { params });
 	return result.data;
 }
 
-export async function postLoginWithGoogle(data = { sW: 0, sH: 0, state: '', email: '' }) {
-	const session = await instance.post(`/account/log-in-with-google.do`, data);
+export async function postLoginWithSocial(data = { sW: 0, sH: 0, state: '', email: '', authorizor: '' }) {
+	const session = await instance.post(`/account/log-in-with-social.do`, data);
 	return session.data;
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
