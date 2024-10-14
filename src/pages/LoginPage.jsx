@@ -184,7 +184,6 @@ function LoginPage() {
 							<img src="/images/oauth-Google.png" alt="구글로 로그인하기" className={styles.img_oauth} />
 						</button>
 						<button
-							className={styles.disabledButton}
 							type="button"
 							onClick={async () => {
 								const state = generateRandomHexString();
