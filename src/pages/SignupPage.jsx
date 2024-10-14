@@ -295,7 +295,7 @@ function SignupPage() {
 									setError({ message: '닉네임이 유효하지 않습니다.' });
 									return;
 								}
-								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial });
+								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial, email: 'anony@example.com' });
 								if (!nicknameAvailable.nickname) {
 									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
 									return;
@@ -328,7 +328,7 @@ function SignupPage() {
 									setError({ message: '닉네임이 유효하지 않습니다.' });
 									return;
 								}
-								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial });
+								const nicknameAvailable = await postCheck({ nickname: nicknameForSocial, email: 'anony@example.com' });
 								if (!nicknameAvailable.nickname) {
 									setError(`닉네임 ${nicknameForSocial} 은 이미 사용 중 입니다.`);
 									return;
