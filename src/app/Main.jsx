@@ -13,6 +13,7 @@ import NotFoundPage from '../pages/NotFoundPage.jsx';
 import { UserProvider, useSetUser } from '../context/UserProvider.jsx';
 import Profile from '../pages/Profile.jsx';
 import LoginWithGoogle from '../pages/LoginWithGoogle.jsx';
+import LoginWithKakao from '../pages/LoginWithKakao.jsx';
 
 function Main() {
 	return (
@@ -23,6 +24,7 @@ function Main() {
 						<Route index element={<LandingPage />} />
 						<Route path="login" element={<LoginPage />} />
 						<Route path="account/log-in-with-google" element={<LoginWithGoogle />} />
+						<Route path="account/log-in-with-kakao" element={<LoginWithKakao />} />
 						<Route path="signup" element={<SignupPage />} />
 						<Route path="profile" element={<Profile />} />
 						<Route path="companies">

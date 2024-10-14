@@ -37,6 +37,7 @@ function LoginWithGoogle() {
 							sH,
 							state: hashMap.state,
 							email: resp.email,
+							authorizor: 'google',
 						});
 						if (session?.message) {
 							setError(session);

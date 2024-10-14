@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postLogin, postPreGoogle, postPwdIter } from '../shared/apis/loginSignupService.js';
+import { postLogin, postPreGoogle, postPreKakao, postPwdIter } from '../shared/apis/loginSignupService.js';
 import encrypt, { generateRandomHexString } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider.jsx';
 import eyeOnIcon from '../assets/ic_eye_on.png';
@@ -183,7 +183,30 @@ function LoginPage() {
 						>
 							<img src="/images/oauth-Google.png" alt="구글로 로그인하기" className={styles.img_oauth} />
 						</button>
-						<button className={styles.disabledButton} type="button" onClick={() => 'https://www.kakaocorp.com/page/'}>
+						<button
+							className={styles.disabledButton}
+							type="button"
+							onClick={async () => {
+								const state = generateRandomHexString();
+								let sW;
+								let sH;
+								if (window.screen.width > window.screen.height) {
+									sW = window.screen.width;
+									sH = window.screen.height;
+								} else {
+									sW = window.screen.height;
+									sH = window.screen.width;
+								}
+								const res = await postPreKakao({ state, sW, sH, authorizor: 'kakao' });
+								if (res?.result) {
+									window.open(
+										`https://kauth.kakao.com/oauth/authorize?client_id=f04c73ec37a59918252c890afbd3dda0&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao')}&response_type=code&state=${state}`,
+									);
+								} else {
+									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
+								}
+							}}
+						>
 							<img src="/images/oauth-Kakao.png" alt="카카오로 로그인하기" className={styles.img_oauth} />
 						</button>
 					</div>

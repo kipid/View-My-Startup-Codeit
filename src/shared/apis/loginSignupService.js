@@ -1,4 +1,5 @@
 import axios from 'axios';
+import querystring from 'querystring';
 import encrypt from './encrypt.js';
 import instance from './instance.js';
 
@@ -40,8 +41,13 @@ export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
 
-export async function postPreGoogle(data = { state: '', sW: 0, sH: 0 }) {
+export async function postPreGoogle(data = { state: '', sW: 0, sH: 0, authorizor: '' }) {
 	const result = await instance.post(`/account/log-in-with-google`, data);
+	return result.data;
+}
+
+export async function postPreKakao(data = { state: '', sW: 0, sH: 0, authorizor: '' }) {
+	const result = await instance.post(`/account/log-in-with-kakao`, data);
 	return result.data;
 }
 
@@ -50,8 +56,22 @@ export async function getGoogle(params) {
 	return result.data;
 }
 
-export async function postLoginWithGoogle(data = { sW: 0, sH: 0, state: '', email: '' }) {
+export async function postKakao(data = { token: '' }) {
+	const result = await axios.post(`https://kauth.kakao.com/oauth/token`, querystring.stringify(data), {
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+		},
+	});
+}
+
+export async function postLoginWithGoogle(data = { sW: 0, sH: 0, state: '', email: '', authorizor: '' }) {
 	const session = await instance.post(`/account/log-in-with-google.do`, data);
+	return session.data;
+	// return { userUuid, nickname, sessionPwd, createdAt }
+}
+
+export async function postLoginWithKakao(data = { sW: 0, sH: 0, state: '', email: '', authorizor: '' }) {
+	const session = await instance.post(`/account/log-in-with-kakao.do`, data);
 	return session.data;
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
