@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import PopUp from '../components/PopUp.jsx';
-import { postLogin, postPreGoogle, postPreKakao, postPwdIter } from '../shared/apis/loginSignupService.js';
+import { postLogin, postPreSocial, postPwdIter } from '../shared/apis/loginSignupService.js';
 import encrypt, { generateRandomHexString } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider.jsx';
 import eyeOnIcon from '../assets/ic_eye_on.png';
@@ -58,7 +58,9 @@ function LoginPage() {
 						const pwdEncrypted = encrypt(iter.salt, pwd, iter.iter);
 						setPwd('');
 						const result = await postLogin({ email, pwdEncrypted });
-						if (result) {
+						if (result?.message) {
+							setError(result);
+						} else if (result) {
 							setUser(result);
 							localStorage.setItem('userUuid', result.userUuid);
 							localStorage.setItem('nickname', result.nickname);
@@ -67,7 +69,6 @@ function LoginPage() {
 							return;
 						}
 						setUser(null);
-						// setError({ message: '로그인에 실패했습니다. 다시 시도해 주세요.' });
 					})
 					.catch(err => setError(err));
 			} catch (err) {
@@ -170,12 +171,9 @@ function LoginPage() {
 									sW = window.screen.height;
 									sH = window.screen.width;
 								}
-								const res = await postPreGoogle({ state, sW, sH, authorizor: 'google' });
+								const res = await postPreSocial({ state, sW, sH, authorizor: 'google' });
 								if (res?.result) {
-									window.open(
-										`https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`,
-										'_blank',
-									);
+									window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`;
 								} else {
 									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
 								}
@@ -196,11 +194,9 @@ function LoginPage() {
 									sW = window.screen.height;
 									sH = window.screen.width;
 								}
-								const res = await postPreKakao({ state, sW, sH, authorizor: 'kakao' });
+								const res = await postPreSocial({ state, sW, sH, authorizor: 'kakao' });
 								if (res?.result) {
-									window.open(
-										`https://kauth.kakao.com/oauth/authorize?client_id=f04c73ec37a59918252c890afbd3dda0&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao')}&response_type=code&state=${state}`,
-									);
+									window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=f04c73ec37a59918252c890afbd3dda0&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao')}&response_type=code&scope=account_email&state=${state}`;
 								} else {
 									setError({ message: '서버와의 통신에 문제가 있습니다. 잠시 후 다시 시도해 주세요.' });
 								}

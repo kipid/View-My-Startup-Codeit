@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { postKakao, postLoginWithKakao } from '../shared/apis/loginSignupService.js';
+import { postLoginWithSocial } from '../shared/apis/loginSignupService.js';
 import { useSetUser, useUser } from '../context/UserProvider.jsx';
 import PopUp from '../components/PopUp.jsx';
 
@@ -20,40 +20,35 @@ function LoginWithKakao() {
 					const keyNValue = searchVar.split('=');
 					searchMap[decodeURIComponent(keyNValue[0])] = decodeURIComponent(keyNValue[1]);
 				}
-				if (searchMap.code && searchMap.state) {
-					const resp = await postKakao({
-						grant_type: 'authorization_code',
-						client_id: 'f04c73ec37a59918252c890afbd3dda0',
-						redirect_uri: 'https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao',
-						code: searchMap.code,
-						client_secret: 'HB9bLmA11ubEUjbJddanmFMoe6dglyt8',
-					});
-					console.log('resp', resp);
-					if (resp.email) {
-						let sW;
-						let sH;
-						if (window.screen.width > window.screen.height) {
-							sW = window.screen.width;
-							sH = window.screen.height;
-						} else {
-							sW = window.screen.height;
-							sH = window.screen.width;
-						}
-						const session = await postLoginWithKakao({
-							sW,
-							sH,
-							state: searchMap.state,
-							email: resp.email,
-							authorizor: 'kakao',
-						});
-						if (session?.message) {
-							setError(session);
-							return;
-						}
-						setUser(session);
+				const { code, state } = searchMap;
+				if (code && state) {
+					let sW;
+					let sH;
+					if (window.screen.width > window.screen.height) {
+						sW = window.screen.width;
+						sH = window.screen.height;
+					} else {
+						sW = window.screen.height;
+						sH = window.screen.width;
 					}
+					const session = await postLoginWithSocial({
+						sW,
+						sH,
+						state,
+						code,
+						authorizor: 'kakao',
+					});
+					if (session?.message) {
+						setError(session);
+						return;
+					}
+					setUser(session);
+					return;
 				}
+				setError({ message: '제대로 된 입력값 (code & state) 이 들어오지 않았습니다.' });
+				return;
 			}
+			setError({ message: '유효한 search 값이 들어오지 않았습니다.' });
 		}
 		loginWithKakao();
 	}, []);
