@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../components/Modal';
-import SelectMyCompanyModal from '../components/SelectMyCompanyModal';
-import SelectComparisonModal from '../components/SelectComparisonModal';
+import Modal from '../components/Modal.jsx';
+import SelectMyCompanyModal from '../components/SelectMyCompanyModal.jsx';
+import SelectComparisonModal from '../components/SelectComparisonModal.jsx';
 import styles from './MyComparisonPage.module.css';
 import addIcon from '../assets/ic_add.png';
 import restartIcon from '../assets/ic_restart.png';
 import noLogo from '../assets/no-logo.png';
 import minusLogo from '../assets/ic_minus.png';
-import { useUser } from '../context/UserProvider';
-import { createComparison, createWatch } from '../shared/apis/companiesService';
+import { useUser } from '../context/UserProvider.jsx';
+import { createComparison, createWatch } from '../shared/apis/companiesService.js';
 
 function MyComparisonPage() {
 	const [isMyCompanyModalOpen, setIsMyCompanyModalOpen] = useState(false);
