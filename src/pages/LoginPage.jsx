@@ -170,7 +170,7 @@ function LoginPage() {
 									sW = window.screen.height;
 									sH = window.screen.width;
 								}
-								const res = await postPreGoogle({ state, sW, sH });
+								const res = await postPreGoogle({ state, sW, sH, authorizor: 'google' });
 								if (res?.result) {
 									window.open(
 										`https://accounts.google.com/o/oauth2/v2/auth?client_id=917606771008-avkhv20t8tsjs6abvti8b3g3ccqfhouu.apps.googleusercontent.com&redirect_uri=${encodeURIComponent('https://view-my-startup-by-team-1.netlify.app/account/log-in-with-google')}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile')}&prompt=consent&state=${state}`,

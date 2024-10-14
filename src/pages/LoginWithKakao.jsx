@@ -24,7 +24,9 @@ function LoginWithKakao() {
 					const resp = await postKakao({
 						grant_type: 'authorization_code',
 						client_id: 'f04c73ec37a59918252c890afbd3dda0',
+						redirect_uri: 'https://view-my-startup-by-team-1.netlify.app/account/log-in-with-kakao',
 						code: searchMap.code,
+						client_secret: 'HB9bLmA11ubEUjbJddanmFMoe6dglyt8',
 					});
 					console.log('resp', resp);
 					if (resp.email) {
