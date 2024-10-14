@@ -99,7 +99,7 @@ function LoginPage() {
 					<br />
 					투자를 시작하세요!
 				</p>
-				<form>
+				<form className={styles.form}>
 					<label htmlFor="email">
 						이메일
 						<input

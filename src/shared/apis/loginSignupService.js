@@ -40,7 +40,7 @@ export async function postLogin(data = { email: '', pwdEncrypted: '' }) {
 	// return { userUuid, nickname, sessionPwd, createdAt }
 }
 
-export async function postPreSocial(data = { state: '', sW: 0, sH: 0, authorizor: '' }) {
+export async function postPreSocial(data = { nickname: '', state: '', sW: 0, sH: 0, authorizor: '' }) {
 	const result = await instance.post(`/account/log-in-with-social`, data);
 	return result.data;
 }
