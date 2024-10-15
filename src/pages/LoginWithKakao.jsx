@@ -36,6 +36,7 @@ function LoginWithKakao() {
 						sH,
 						state,
 						code,
+						email: '',
 						authorizor: 'kakao',
 					});
 					if (session?.message) {

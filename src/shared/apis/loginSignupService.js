@@ -50,7 +50,7 @@ export async function getGoogleUserInfo(params) {
 	return result.data;
 }
 
-export async function postLoginWithSocial(data = { sW: 0, sH: 0, state: '', email: '', authorizor: '' }) {
+export async function postLoginWithSocial(data = { sW: 0, sH: 0, state: '', code: '', email: '', authorizor: '' }) {
 	const session = await instance.post(`/account/log-in-with-social.do`, data);
 	return session.data;
 	// return { userUuid, nickname, sessionPwd, createdAt }
