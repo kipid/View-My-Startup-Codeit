@@ -77,7 +77,7 @@ function InvestmentPostModal({ companyDetail, onClose, onPost, show = false }) {
 			) : (
 				<>
 					<div id={style.modalHeader}>
-						<p>투자 정보 수정</p>
+						<p>기업 투자하기</p>
 						<button type="button" onClick={onClose}>
 							<img src={icDelete} alt="modalOff" />
 						</button>
