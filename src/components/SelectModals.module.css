@@ -56,11 +56,11 @@
 	justify-content: center;
 	gap: 5px;
 	flex-wrap: nowrap;
-	overflow-x: hidden;
+	overflow-x: auto;
 }
 
 .selectedCompanyInfo {
-	min-width: 90px;
+	min-width: 85px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

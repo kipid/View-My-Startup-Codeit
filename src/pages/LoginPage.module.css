@@ -224,6 +224,7 @@ button:disabled {
 }
 
 .img_oauth {
+	cursor: pointer;
 	width: 54px;
 	border-radius: 50%;
 }

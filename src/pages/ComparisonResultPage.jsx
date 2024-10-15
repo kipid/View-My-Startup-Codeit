@@ -13,11 +13,13 @@ function MyCompanyBox({ companies, myCompanyId }) {
 
 	return (
 		<div className={styles.companyInfo}>
-			<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
-			<div className={styles.companyInfoText}>
-				<p className={styles.companyName}>{myCompany.name}</p>
-				<p className={styles.companyCategory}>{myCompany.category}</p>
-			</div>
+			<Link to={`/companies/${myCompanyId}`}>
+				<img className={styles.companyLogo} src={myCompany.logo ? myCompany.logo : noLogo} alt="로고" />
+				<div className={styles.companyInfoText}>
+					<p className={styles.companyName}>{myCompany.name}</p>
+					<p className={styles.companyCategory}>{myCompany.category}</p>
+				</div>
+			</Link>
 		</div>
 	);
 }
@@ -42,8 +44,10 @@ function ResultTable({ myCompanyId, comparisonIds, companies }) {
 						return (
 							<tr key={company.id}>
 								<td className={styles.companyNameCell}>
-									<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
-									&nbsp; {company.name}
+									<Link to={`/companies/${company.id}`}>
+										<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+										&nbsp; {company.name}
+									</Link>
 								</td>
 								<td>{company.description}</td>
 								<td>{company.category}</td>
@@ -92,8 +96,10 @@ function RankingTable({ myCompanyId, companies }) {
 						<tr key={company.id}>
 							<td>{rank}위</td>
 							<td className={styles.companyNameCell}>
-								<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
-								&nbsp; {company.name}
+								<Link to={`/companies/${company.id}`}>
+									<img className={styles.logo} src={company.logo ? company.logo : noLogo} alt="Company Logo" />
+									&nbsp; {company.name}
+								</Link>
 							</td>
 							<td>{company.description}</td>
 							<td>{company.category}</td>
@@ -182,7 +188,7 @@ function ComparisonResultPage() {
 							</Link>
 						</div>
 						<div className={styles.myCompanyWrapper}>
-							<MyCompanyBox companies={resultCompanies} myCompanyId={myCompanyId} />
+							<MyCompanyBox companies={rankingCompanies} myCompanyId={myCompanyId} />
 						</div>
 
 						<div className={styles.resultWrapper}>
