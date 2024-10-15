@@ -7,6 +7,9 @@ import encrypt, { generateRandomHexString } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider.jsx';
 import eyeOnIcon from '../assets/ic_eye_on.png';
 import eyeOffIcon from '../assets/ic_eye_off.png';
+import VMSlogo from '../assets/logo_vms.png';
+import googleLogin from '../assets/ic_google.png';
+import kakaoLogin from '../assets/ic_kakao.png';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -92,7 +95,7 @@ function LoginPage() {
 			{user && !error && <Navigate to="/" />}
 			<section className={styles.section}>
 				<Link to="/">
-					<img className={styles.logo} src="/images/site-logo.png" alt="View My StartUp Logo" />
+					<img className={styles.logo} src={VMSlogo} alt="View My StartUp Logo" />
 				</Link>
 				<p>
 					로그인하고 나의 스타트업에
@@ -179,7 +182,7 @@ function LoginPage() {
 								}
 							}}
 						>
-							<img src="/images/oauth-Google.png" alt="구글로 로그인하기" className={styles.img_oauth} />
+							<img src={googleLogin} alt="구글로 로그인하기" className={styles.img_oauth} />
 						</button>
 						<button
 							type="button"
@@ -202,7 +205,7 @@ function LoginPage() {
 								}
 							}}
 						>
-							<img src="/images/oauth-Kakao.png" alt="카카오로 로그인하기" className={styles.img_oauth} />
+							<img src={kakaoLogin} alt="카카오로 로그인하기" className={styles.img_oauth} />
 						</button>
 					</div>
 				</div>
