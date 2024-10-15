@@ -30,13 +30,19 @@ img {
 db error 가 날 땐,
 
 ```[.linenums]
-npx prisma migrate reset --force
+npm install --production && npx prisma migrate reset --force
 ```/
 
 후 다시
 
 ```[.linenums]
 npm install --production && npx prisma migrate deploy && npx prisma generate && npx prisma db seed
+```/
+
+데이터를 유지하고 싶을땐
+
+```[.linenums]
+npm install --production && npx prisma migrate deploy && npx prisma generate
 ```/
 
 
@@ -73,7 +79,7 @@ npm install --production && npx prisma migrate deploy && npx prisma generate && 
 
 ## Schema 모음.
 
-User: <refer class="model-User"></refer> <refer class="model-UserSession"></refer>
+User: <refer class="model-User"></refer> <refer class="model-UserSession"></refer> <refer class="model-SocialLogin"></refer>
 
 Company: <refer class="model-Company"></refer>
 
@@ -90,9 +96,9 @@ Investment: <refer class="model-Investment"></refer>
 ```[.linenums]
 model User {
   id           String @id @default(uuid())
-  email        String @unique // 이메일
-  nickname     String @unique // 서비스 내 표시할 별명
-  name         String // 유저 성명
+  email        String @unique @db.VarChar(32) // 이메일
+  nickname     String @unique @db.VarChar(20) // 서비스 내 표시할 별명
+  name         String @db.VarChar(100) // 유저 성명
   iter         Int    @default(10000) // Hash iteration, 매 인증성공시마다 1씩 감소
   salt         String @db.Char(32) // Random string, length: 32
   pwdEncrypted String @db.Char(104) // Encrypted password, length: 104
@@ -106,12 +112,12 @@ model User {
   UserSession UserSession[]
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "nickname" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "email" VARCHAR(32) NOT NULL,
+    "nickname" VARCHAR(20) NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
     "iter" INTEGER NOT NULL DEFAULT 10000,
     "salt" CHAR(32) NOT NULL,
     "pwdEncrypted" CHAR(104) NOT NULL,
@@ -128,6 +134,8 @@ CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
 
 </div>
 
+
+
 <div id="model-UserSession"><div class="number none">UserSession</div>
 
 ```[.linenums]
@@ -140,7 +148,7 @@ model UserSession {
   // Hash 는 정방향으로는 순쉽간에 결과가 나오지만, 이 Hash 의 역함수를 구하는건 굉장히 어렵습니다. Rainbow table 로 모든 암호에 대해 마지막 sessionEncrypted 가 뭐가 나오는지 저장해놓고 역산할수는 있지만, 이 마저도 각 유저별로 랜덤한 다른 salt 를 첨가하는 것으로 막을 수 있습니다.
   // 이 암호는 양자컴퓨터로도 못 푸는 것으로 알고 있습니다.
   // 정확히 어떻게 동작하는건지 궁금하신 분은 이강수님 (kipacti@gmail.com) 에게 문의해 주세요.
-  ip               String @db.Char(45) // IPv6 port 포함 max 값
+  ip               String @db.VarChar(45) // IPv6 port 포함 max 값
   sessionSalt      String @db.Char(32)
   sessionEncrypted String @db.Char(104)
 
@@ -151,11 +159,11 @@ model UserSession {
   @@index([userId, createdAt(sort: Desc)])
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "UserSession" (
     "userId" TEXT NOT NULL,
     "iter" INTEGER NOT NULL DEFAULT 1000,
-    "ip" CHAR(45) NOT NULL,
+    "ip" VARCHAR(45) NOT NULL,
     "sessionSalt" CHAR(32) NOT NULL,
     "sessionEncrypted" CHAR(104) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -168,6 +176,37 @@ CREATE INDEX "UserSession_userId_createdAt_idx" ON "UserSession"("userId", "crea
 
 ALTER TABLE "UserSession" ADD CONSTRAINT "UserSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 ```/
+
+</div>
+
+
+
+<div id="model-SocialLogin"><div class="number none">SocialLogin</div>
+
+model SocialLogin {
+  nickname   String   @db.VarChar(20)
+  authorizor String   @db.VarChar(10)
+  state      String   @db.Char(32)
+  ip         String   @db.VarChar(45)
+  sW         Int
+  sH         Int
+  createdAt  DateTime @default(now())
+
+  @@id([state, ip])
+}
+
+-- CreateTable
+CREATE TABLE "SocialLogin" (
+    "nickname" VARCHAR(20) NOT NULL,
+    "authorizor" VARCHAR(10) NOT NULL,
+    "state" CHAR(32) NOT NULL,
+    "ip" VARCHAR(45) NOT NULL,
+    "sW" INTEGER NOT NULL,
+    "sH" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SocialLogin_pkey" PRIMARY KEY ("state","ip")
+);
 
 </div>
 
@@ -198,7 +237,7 @@ model Company {
   watcherList Watch[]
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "Company" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -238,7 +277,7 @@ model Watch {
   companyId String?
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "Watch" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -271,7 +310,7 @@ model Comparison {
   companyId String?
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "Comparison" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -314,7 +353,7 @@ model Investment {
   @@index([userId, createdAt(sort: Desc)])
 }
 
-# PostgreSQL
+-- CreateTable
 CREATE TABLE "Investment" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -347,13 +386,17 @@ ALTER TABLE "Investment" ADD CONSTRAINT "Investment_companyId_fkey" FOREIGN KEY 
 #### GET /companies/?skip=0&take=10&sort=recent&keyword=
 
 ```[.linenums]
-query = { keyword = '', skip = 0, take = 10, sort = 'recent', include = '' }
+query = { keyword = '', skip = 0, take = 10, sort = 'recent', include = '', exclude = '' }
 
 return { list: rankedCompanies-with-include, totalCount }
 ```/
 
 <div class="p">
 <code>include</code> can be 'investments' or 'watcherAndComparison'.
+</div>
+
+<div class="p">
+<code>exclude</code> is a companyId to exclude from the result.
 </div>
 
 
