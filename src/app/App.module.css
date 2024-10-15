@@ -8,3 +8,8 @@
     margin: var(--24px) auto;
   }
 }
+
+a,
+button {
+  cursor: pointer;
+}
