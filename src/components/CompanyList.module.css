@@ -57,6 +57,10 @@
 
 	& td {
 		margin: 0.5em;
+
+		& .logo {
+			border: none;
+		}
 	}
 
 	& tr td:nth-child(1) {

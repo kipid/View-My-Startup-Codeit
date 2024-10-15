@@ -29,3 +29,9 @@ export async function deleteInvestment(id, body) {
 
 	return investment;
 }
+
+export async function getMyInvestments(params = { page: 0, pageSize: 10, orderBy: 'recent' }, userId = '') {
+	const investments = await axiosGet(`/investments/user/${userId}`, params);
+
+	return investments;
+}
