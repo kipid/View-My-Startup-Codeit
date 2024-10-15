@@ -22,32 +22,46 @@ function InvestmentStatusPage() {
 	const userId = useUser()?.userUuid;
 	const isAllTab = activeTab === 'all';
 
+	console.log(companies);
+
 	useEffect(() => {
 		setPageNum(1);
 		const fetch = async () => {
 			if (isAllTab) {
 				const companiesData = await getCompaniesAsync({ skip: 0, take: 1000, keyword: '', include: 'investments' });
-				setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 				const companiesList = companiesData.list.map(company => {
 					return { ...company, accumulInvestByVMS: company.investments.reduce((acc, invest) => acc + Number(invest.amount), 0) };
 				});
+
+				setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 				setCompanies(companiesList.sort((a, b) => b.accumulInvestByVMS - a.accumulInvestByVMS));
 				setSort('accumulInvestByVMSDesc');
 			} else {
-				const companiesData = await getMyInvestmentsAsync({ page: 1, pageSize: 1000 }, userId);
-				setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
-				const companiesList = companiesData.list.map(invest => {
+				const companiesData = await getMyInvestmentsAsync({ page: 1, pageSize: 3000 }, userId);
+				const investList = companiesData.list.map(invest => {
 					return { ...invest.company, amount: invest.amount };
 				});
+				const companiesList = Object.values(
+					investList.reduce((acc, company) => {
+						if (acc[company.id]) {
+							acc[company.id].amount += Number(company.amount);
+						} else {
+							acc[company.id] = { ...company, amount: Number(company.amount) };
+						}
+						return acc;
+					}, {}),
+				);
+
+				setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
 				setCompanies(companiesList.sort((a, b) => b.amount - a.amount));
 				setSort('myInvestmentDesc');
-				console.log(pageNum, pageNumMax, pageSize, sort, companies);
 			}
 		};
 		fetch();
 	}, [activeTab]);
 
 	useEffect(() => {
+		setPageNum(1);
 		let sortFn = (a, b) => a - b;
 		switch (sort) {
 			case 'myInvestmentAsc':
@@ -196,7 +210,7 @@ function InvestmentStatusPage() {
 				</table>
 			</div>
 			<Pagination pageNum={pageNum} setPageNum={setPageNum} pageNumMax={pageNumMax} />
-			<PopUp error={error} popUpText={error?.message} setError={setError || setMyInvError} />
+			<PopUp error={error || myInvError} popUpText={error?.message} setError={setError || setMyInvError} />
 		</>
 	);
 }
