@@ -48,6 +48,7 @@ function LoginWithKakao() {
 						return;
 					} catch (err) {
 						setError(err);
+						return;
 					}
 				}
 				setError({ message: '제대로 된 입력값 (code & state) 이 들어오지 않았습니다.' });
