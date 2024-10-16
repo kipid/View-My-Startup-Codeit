@@ -47,14 +47,16 @@ function CompanyDetailPage() {
 	};
 
 	useEffect(() => {
+		window.scrollTo(0, 0); // 스크롤 된 상태로 페이지 넘어가게 하는 것 방지.
+		// Pagination 은 스크롤이 유지된채로 바뀌는게 좋을거 같아서 disable 시켜놨습니다만 처음 페이지가 열릴땐 스크롤이 필요할거 같아서 넣었습니다.
+	}, []);
+
+	useEffect(() => {
 		// NOTE useEffect를 async 하지 않고 비동기 처리하기 위한 함수
 		const fetchData = async () => {
 			const company = await getCompanyWithId(companyId);
 			const data = await getInvestments({ page: pageNum, pageSize }, companyId);
 			const total = await getInvestmentsTotalAmount(companyId);
-
-			// window.scrollTo(0, 0); // 스크롤 된 상태로 페이지 넘어가게 하는 것 방지.
-			// Pagination 은 스크롤이 유지된채로 바뀌는게 좋을거 같아서 disable 시켜놨습니다.
 
 			setList([...data.list]);
 			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
