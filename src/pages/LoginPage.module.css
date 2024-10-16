@@ -36,7 +36,6 @@
 
 	& .table {
 		max-width: 100%;
-		width: 35em;
 
 		& th {
 			font-size: var(--16px);
@@ -224,6 +223,7 @@ button:disabled {
 }
 
 .img_oauth {
+	cursor: pointer;
 	width: 54px;
 	border-radius: 50%;
 }

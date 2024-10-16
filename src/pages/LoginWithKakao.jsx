@@ -31,19 +31,25 @@ function LoginWithKakao() {
 						sW = window.screen.height;
 						sH = window.screen.width;
 					}
-					const session = await postLoginWithSocial({
-						sW,
-						sH,
-						state,
-						code,
-						authorizor: 'kakao',
-					});
-					if (session?.message) {
-						setError(session);
+					try {
+						const session = await postLoginWithSocial({
+							sW,
+							sH,
+							state,
+							code,
+							email: '',
+							authorizor: 'kakao',
+						});
+						if (session?.message) {
+							setError(session);
+							return;
+						}
+						setUser(session);
+						return;
+					} catch (err) {
+						setError(err);
 						return;
 					}
-					setUser(session);
-					return;
 				}
 				setError({ message: '제대로 된 입력값 (code & state) 이 들어오지 않았습니다.' });
 				return;

@@ -47,6 +47,7 @@ function SelectMyCompanyModal({ onClose }) {
 
 	const handleKeyUp = e => {
 		const keyword = e.target.value.trim();
+		setPageNum(1);
 		setSearch(keyword);
 	};
 

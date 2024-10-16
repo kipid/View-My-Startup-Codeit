@@ -5,6 +5,8 @@ import PopUp from '../components/PopUp.jsx';
 import { postCheck, postPreSocial, postSignup } from '../shared/apis/loginSignupService.js';
 import encrypt, { generateRandomHexString, ITER_FULL } from '../shared/apis/encrypt.js';
 import { useSetUser, useUser } from '../context/UserProvider';
+import eyeOnIcon from '../assets/ic_eye_on.png';
+import eyeOffIcon from '../assets/ic_eye_off.png';
 
 const EMAIL_REGEX = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+@[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\-_.]+\.[\w]{2,3}$/;
 const PWD_MIN_LENGTH = 6;
@@ -220,7 +222,7 @@ function SignupPage() {
 								onChange={e => setPwd(e.target.value)}
 							/>
 							<button type="button" onClick={() => setPwdVisibility(!pwdVisibility)}>
-								<img src="/images/btn_visibility_off_24px.svg" alt="Button visibility off" />
+								<img src={pwdVisibility ? eyeOnIcon : eyeOffIcon} alt="Button visibility off" />
 							</button>
 						</div>
 					</label>
@@ -248,7 +250,7 @@ function SignupPage() {
 								onChange={e => setPwdCfm(e.target.value)}
 							/>
 							<button type="button" onClick={() => setPwdCfmVisibility(!pwdCfmVisibility)}>
-								<img src="/images/btn_visibility_off_24px.svg" alt="Button visibility off" />
+								<img src={pwdCfmVisibility ? eyeOnIcon : eyeOffIcon} alt="Button visibility off" />
 							</button>
 						</div>
 					</label>

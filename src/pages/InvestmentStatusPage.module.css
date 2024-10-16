@@ -3,8 +3,15 @@
 	justify-content: space-between;
 	align-items: center;
 
-	& h2 {
+	& div {
+		cursor: pointer;
 		margin-bottom: var(--16px);
+		display: flex;
+		gap: 20px;
+
+		& .inactive {
+			color: var(--gray-600);
+		}
 	}
 
 	& select {
@@ -30,6 +37,23 @@
 .tableContainer {
 	width: 100%;
 	overflow-x: auto;
+	padding-bottom: 12px;
+
+	&::-webkit-scrollbar {
+		height: 12px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--gray-100);
+		border-radius: 8px;
+		border: 2px solid var(--gray-200);
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--gray-200);
+		border-radius: 8px;
+		border: none;
+	}
 }
 
 .table {
@@ -60,7 +84,11 @@
 	}
 
 	& td {
-		margin: .5em;
+		margin: 0.5em;
+
+		& .logo {
+			border: none;
+		}
 	}
 
 	& tr td:nth-child(1) {
