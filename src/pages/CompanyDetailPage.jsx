@@ -53,7 +53,8 @@ function CompanyDetailPage() {
 			const data = await getInvestments({ page: pageNum, pageSize }, companyId);
 			const total = await getInvestmentsTotalAmount(companyId);
 
-			window.scrollTo(0, 0); // 스크롤 된 상태로 페이지 넘어가게 하는 것 방지.
+			// window.scrollTo(0, 0); // 스크롤 된 상태로 페이지 넘어가게 하는 것 방지.
+			// Pagination 은 스크롤이 유지된채로 바뀌는게 좋을거 같아서 disable 시켜놨습니다.
 
 			setList([...data.list]);
 			setPageNumMax(Math.ceil(data.totalCount / pageSize) ?? 1);
