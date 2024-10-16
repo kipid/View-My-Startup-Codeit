@@ -52,7 +52,7 @@ function InvestmentStatusPage() {
 					}, {}),
 				);
 
-				setPageNumMax(companiesData?.totalCount ? Math.ceil(companiesData.totalCount / pageSize) : 1);
+				setPageNumMax(Math.ceil(companiesList.length / pageSize));
 				setCompanies(companiesList.sort((a, b) => b.amount - a.amount));
 				setSort('myInvestmentDesc');
 			}
