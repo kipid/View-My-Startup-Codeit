@@ -7,6 +7,7 @@ import eyeOff from '../assets/ic_eye_off.png';
 import { updateInvestment } from '../shared/apis/investmentApis.js';
 import Modal from './Modal.jsx';
 import InvestmentCompleteModal from './InvestmentCompleteModal.jsx';
+import getScaledNumber from '../shared/utils/getScaledNumber.js';
 
 const initialValidation = {
 	isAmountOk: false,
@@ -101,11 +102,12 @@ function InvestmentUpdateModal({ investmentDetail, companyDetail, onClose, onUpd
 								}
 							/>
 						</div>
-						<div id={style.amount}>
+						<div id={style.amount} style={{ height: '125px' }}>
 							<label htmlFor="amount">
 								투자 금액{' '}
 								{!validation.isFirst && !validation.isAmountOk && <span className={style.errorMsg}>숫자로 입력해주세요.</span>}
 							</label>
+							<div className={style.scaledAmount}>{getScaledNumber(detail.amount)}원</div>
 							<input
 								id="amount"
 								type="number"
