@@ -550,12 +550,90 @@ return investment or status(204: NO_CONTENT)
 
 ### /account
 
+#### POST /account/log-in-with-social
+
+```[.linenums]
+s.object({
+	authorizor: s.string(),
+	sW: s.integer(),
+	sH: s.integer(),
+	state: s.size(s.string(), 32),
+	nickname: s.string(),
+});
+
+return { result: true/false } // 잘 저장되었는지를 판단해서 결과를 보내줌.
+```/
+
+
+
+#### POST /account/log-in-with-social.do
+
+```[.linenums]
+s.partial(s.object({
+	code: s.string(),
+	authorizor: s.string(),
+	email: s.string(),
+	sW: s.integer(),
+	sH: s.integer(),
+	state: s.size(s.string(), 32),
+}));
+
+return { userUuid: id, nickname, sessionPwd, createdAt: userSession.createdAt } (Session response)
+or { message: '에러 상세 내용' };
+```/
+
+
+
+#### POST /account/log-in
+
+```[.linenums]
+data = { email, pwdEncrypted }
+
+return { userUuid, nickname, sessionPwd, createdAt }
+```/
+
+
+
+#### POST /account/sign-up
+
+```[.linenums]
+data = {
+	email,
+	name,
+	nickname,
+	salt,
+	pwdEncrypted,
+}
+
+return { userUuid, nickname, sessionPwd, createdAt }
+```/
+
+
+
+#### POST /account/check
+
+```[.linenums]
+data = { email, nickname }
+
+return { email:true/false, nickname:true/false }
+```/
+
+
+
 #### POST /account/iter
 
 ```[.linenums]
 data = { email }
 
 return { iter: Number, salt: String }
+```/
+
+
+
+#### GET /account/users
+
+```[.linenums]
+return users (전체 user 의 데이터, 실제 개발 모드에서는 보안을 위해 삭제할 예정.)
 ```/
 
 
@@ -580,22 +658,12 @@ return [{ ip, iter, createdAt }, ...]
 
 
 
-#### POST /account/log-in
-
-```[.linenums]
-data = { email, pwdEncrypted }
-
-return { userUuid, nickname, sessionPwd, createdAt }
-```/
-
-
-
 #### POST /account/log-out
 
 ```[.linenums]
 data = { userId, createdAt, sessionEncrypted }
 
-return { message }
+return { message: '로그아웃이 잘 되었는지 메세지를 보냄.' }
 ```/
 
 
@@ -605,33 +673,7 @@ return { message }
 ```[.linenums]
 data = { userId, createdAt, sessionEncrypted }
 
-return { message }
-```/
-
-
-
-#### POST /account/check
-
-```[.linenums]
-data = { email, nickname }
-
-return { email:true/false, nickname:true/false }
-```/
-
-
-
-#### POST /account/sign-up
-
-```[.linenums]
-data = {
-	email,
-	name,
-	nickname,
-	salt,
-	pwdEncrypted,
-}
-
-return { userUuid, nickname, sessionPwd, createdAt }
+return { message: '모든 Session 이 잘 지워졌는지 메세지를 보냄.' }
 ```/
 
 
