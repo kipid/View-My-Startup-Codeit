@@ -14,6 +14,10 @@ button.modal {
 		background-color: inherit;
 		color: #eb5230;
 	}
+
+	@media (max-width: 744px) {
+		font-size: 14px;
+	}
 }
 
 #InvestmentUpdateModal {
