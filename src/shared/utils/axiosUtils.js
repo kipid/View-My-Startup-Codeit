@@ -10,8 +10,8 @@ const HTTP_METHODS = Object.freeze({
 	PUT: 'PUT',
 });
 
-const BASE_URL = `https://view-my-startup-codeit-be.onrender.com`;
-// const BASE_URL = `http://localhost:3100`;
+// const BASE_URL = `https://view-my-startup-codeit-be.onrender.com`;
+const BASE_URL = `http://localhost:3100`;
 
 const instance = axios.create({
 	baseURL: BASE_URL,

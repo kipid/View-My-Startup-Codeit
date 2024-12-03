@@ -342,5 +342,7 @@ BE: https://view-my-startup-codeit-be.onrender.com/
 
 
 
-## 프로젝트 회고록
+## 프로젝트 시작 명령어
 
+FE: npm run start
+BE: npm run dev
